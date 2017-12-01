@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-const captcha = input => {
+const nextDigitCaptcha = input => {
   const digits = input.toString().split('').map(i => parseInt(i));
 
   return _.reduce(
@@ -14,6 +14,21 @@ const captcha = input => {
     0);
 };
 
+const halfwayDigitCaptcha = input => {
+  const digits = input.toString().split('').map(i => parseInt(i));
+
+  return _.reduce(
+    digits,
+    (result, value, i) => {
+      if (value === digits[(i + (digits.length / 2)) % digits.length]) {
+        return result + value;
+      }
+      return result;
+    },
+    0);
+};
+
 module.exports = {
-  captcha,
+  nextDigitCaptcha,
+  halfwayDigitCaptcha
 };
