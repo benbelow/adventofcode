@@ -1,4 +1,6 @@
 const checksum = require('./day2').checksum;
+const divisors = require('./day2').divisors;
+const difference = require('./day2').difference;
 
 describe('Day 2', () => {
   describe('Part 1', () => {
@@ -27,6 +29,29 @@ describe('Day 2', () => {
 3591	1843	3448	1775	3564	2632	1002	3065	77	3579	78	99	1668	98	2963	3553
 2155	225	2856	3061	105	204	1269	171	2505	2852	977	1377	181	1856	2952	2262`;
     expect(checksum(input)).toBe(41919);
+    })
+  })
+
+  describe('Part 2', () => {
+    describe('difference', () => {
+      it('example 1', () => {
+        expect(difference([5,1,9,5])).toBe(8);
+      })
+    })
+
+    describe('divisors', () => {
+      it('example 1', () => {
+        expect(divisors([5,9,2,8])).toBe(4);
+      })
+
+      it('example 2', () => {
+        expect(divisors([9,4,7,3])).toBe(3);
+      })
+
+      it('example 1', () => {
+        expect(divisors([3, 8, 6, 5])).toBe(2);
+      })
+
     })
   })
 })
