@@ -1,18 +1,9 @@
 const checksum = require('./day2').checksum;
+const checksum2 = require('./day2').checksum2;
 const divisors = require('./day2').divisors;
 const difference = require('./day2').difference;
 
-describe('Day 2', () => {
-  describe('Part 1', () => {
-    it('example test case', () => {
-      const input = `5 1 9 5
-7 5 3
-2 4 6 8`;
-      expect(checksum(input)).toBe(18);
-    })
-
-    it('final test case', () => {
-      const input = `798	1976	1866	1862	559	1797	1129	747	85	1108	104	2000	248	131	87	95
+const finalInput =  `798	1976	1866	1862	559	1797	1129	747	85	1108	104	2000	248	131	87	95
 201	419	336	65	208	57	74	433	68	360	390	412	355	209	330	135
 967	84	492	1425	1502	1324	1268	1113	1259	81	310	1360	773	69	68	290
 169	264	107	298	38	149	56	126	276	45	305	403	89	179	394	172
@@ -28,7 +19,18 @@ describe('Day 2', () => {
 91	683	1736	1998	1960	1727	84	1992	1072	1588	1768	74	58	1956	1627	893
 3591	1843	3448	1775	3564	2632	1002	3065	77	3579	78	99	1668	98	2963	3553
 2155	225	2856	3061	105	204	1269	171	2505	2852	977	1377	181	1856	2952	2262`;
-    expect(checksum(input)).toBe(41919);
+
+describe('Day 2', () => {
+  describe('Part 1', () => {
+    it('example test case', () => {
+      const input = `5 1 9 5
+7 5 3
+2 4 6 8`;
+      expect(checksum(input)).toBe(18);
+    })
+
+    it('final test case', () => {
+      expect(checksum(finalInput)).toBe(41919);
     })
   })
 
@@ -50,6 +52,19 @@ describe('Day 2', () => {
 
       it('example 1', () => {
         expect(divisors([3, 8, 6, 5])).toBe(2);
+      })
+
+      describe('checksum', () => {
+        it('example test case', () => {
+          const input = `5 9 2 8
+9 4 7 3
+3 8 6 5`
+          expect(checksum2(input)).toBe(9);
+        })
+
+        it('final test case', () => {
+           expect(checksum2(finalInput)).toBe(303);
+        })
       })
 
     })

@@ -1,14 +1,16 @@
 const _ = require('lodash');
 
-const checksum = input => {
-  const lines = _(input.split('\n'))
-    .map(l => l.split(/ |\t/))
-    .map(l => _.map(l, i => parseInt(i)))
-    .value();
-  const result = _.reduce(lines, (r, line) => {
-    return r + difference(line);
-  }, 0)
-  return result;
+const checksum = comparator => {
+  return input => {
+    const lines = _(input.split('\n'))
+      .map(l => l.split(/ |\t/))
+      .map(l => _.map(l, i => parseInt(i)))
+      .value();
+    const result = _.reduce(lines, (r, line) => {
+      return r + comparator(line);
+    }, 0)
+    return result;
+  }
 }
 
 const difference = input => {
@@ -32,7 +34,8 @@ const divisors = input => {
 }
 
 module.exports = {
-  checksum,
+  checksum: checksum(difference),
   divisors,
   difference,
+  checksum2: checksum(divisors),
 }
