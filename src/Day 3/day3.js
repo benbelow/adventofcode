@@ -45,16 +45,80 @@ const lowestSquareRootHigherThan = input => {
   }
 };
 
+const directions = {
+  LEFT: [-1, 0],
+  UP: [0, 1],
+  RIGHT: [1, 0],
+  DOWN: [0, -1],
+}
+
 const stressTester = function* () {
+  const values = [];
+
+  let currentDirection = 0;
+  const directionOrder = [directions.RIGHT, directions.UP, directions.LEFT, directions.DOWN];
+  const changeDirection = () => currentDirection = (currentDirection + 1) % 4;
+
+  let index = 1;
   let coord = [0,0];
+  const x = () => coord[0];
+  const y = () => coord[1];
+
+  const ring = () => highestSquareRootLowerThan(index);
+  // Starts at 0
+  const ringIndex = () => (ring() - 1) / 2;
+
+  // moves in current Direction
+  const move = () => {
+    index += 1;
+    coord[0] = coord[0] + directionOrder[currentDirection][0];
+    coord[1] = coord[1] + directionOrder[currentDirection][1];
+    calculateValue();
+  }
+
+  const calculateValue = () => {
+    const xDiff = v => Math.abs(v.x - x());
+    const yDiff = v => Math.abs(v.y - y());
+
+    const newValue = _(values)
+    .filter(v => (
+         (xDiff(v) === 1 && yDiff(v) === 1)
+      || (xDiff(v) === 1 && yDiff(v) === 0)
+      || (xDiff(v) === 0 && yDiff(v) === 1)
+    ))
+    .reduce((sum, v) => sum + v.value, 0)
+
+    values.push({x: x(), y: y(), value: newValue})
+  }
+
+  // base case
+  values.push({x: x(), y: y(), value: 1})
+  yield(_.last(values).value);
+
+  while(true) {
+    move();
+    if (
+      !(x() === ringIndex() && y() === (-1 * ringIndex()))
+      && (
+          directionOrder[currentDirection] === directions.RIGHT && x() >= ringIndex()
+          || directionOrder[currentDirection] === directions.UP && y() === ringIndex()
+          || directionOrder[currentDirection] === directions.LEFT && x() === (-1 * ringIndex())
+          || directionOrder[currentDirection] === directions.DOWN && y() === (-1 * ringIndex())
+      )
+    ) {
+      changeDirection();
+    }
+
+    yield(_.last(values).value);
+  }
 }
 
 const firstLargerValueThan = input => {
-  var result = stressTester();
+  var st = stressTester();
+  var result = st.next().value;
   while (result <= input) {
-    result = stressTester();
+    result = st.next().value;
   }
-
   return result;
 }
 
