@@ -1,7 +1,7 @@
 const part1 = require('./puzzle').part1;
 const part2 = require('./puzzle').part2;
 
-const finalInput = '';
+const finalInput = ``;
 
 describe('Puzzle', () => {
   describe('Part 1', () => {
