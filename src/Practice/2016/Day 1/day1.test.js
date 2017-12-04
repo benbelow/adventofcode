@@ -32,12 +32,12 @@ describe('Day1', () => {
   describe('Part 2', () => {
     describe('example cases', () => {
       it('example 1', () => {
-        expect(part2(0)).toBe(0);
+        expect(part2('R8, R4, R4, R8')).toBe(4);
       });
     });
 
     it('final input', () => {
-      expect(part2(0)).toBe(0);
+      expect(part2(finalInput)).toBe(181);
     });
   })
 });
