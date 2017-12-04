@@ -1,9 +1,9 @@
-const part1 = require('./template').part1;
-const part2 = require('./template').part2;
+const part1 = require('./puzzle').part1;
+const part2 = require('./puzzle').part2;
 
 const finalInput = '';
 
-describe('Template', () => {
+describe('Puzzle', () => {
   describe('Part 1', () => {
     describe('example cases', () => {
       it('example 1', () => {
