@@ -67,13 +67,36 @@ UUUUD`;
 
   describe('Part 2', () => {
     describe('example cases', () => {
+      it('example 0', () => {
+        expect(part2('UUU')).toBe('5');
+      });
+      it('example 0', () => {
+        expect(part2('LLL')).toBe('5');
+      });
+      it('example 0', () => {
+        expect(part2('RRR')).toBe('8');
+      });
+      it('example 0', () => {
+        expect(part2('URRUU')).toBe('1');
+      });
+      it('example 0', () => {
+        expect(part2(`R
+R
+R`)).toBe('678');
+      });
+
+
       it('example 1', () => {
-        expect(part2(0)).toBe(0);
+        let input = `ULL
+RRDDD
+LURDL
+UUUUD`;
+        expect(part2(input)).toBe('5db3');
       });
     });
 
     it('final input', () => {
-      expect(part2(finalInput)).toBe('');
+      expect(part2(finalInput)).toBe('46c91');
     });
   })
 });

@@ -37,7 +37,6 @@ const R = n => {
 };
 
 const followInstruction = (input, n) => {
-  console.log(input, n);
   switch(input) {
     case 'U':
       return U(n);
@@ -50,24 +49,74 @@ const followInstruction = (input, n) => {
   }
 };
 
+const followInstruction2 = (input, n) => {
+  switch(input) {
+    case 'U':
+      return U2(n);
+    case 'L':
+      return L2(n);
+    case 'D':
+      return D2(n);
+    case 'R':
+      return R2(n);
+  }
+};
+
+const U2 = n => {
+  if([1, 2, 4, 5, 9].includes(n)) {
+    return n;
+  } else if ([13, 3].includes(n)) {
+    return n-2;
+  } else if ([6,7,8,10,11,12].includes(n)) {
+    return n-4;
+  }
+};
+
+const L2 = n => {
+  if([1,2,5,10,13].includes(n)) {
+    return n;
+  } else {
+    return n-1;
+  }
+};
+
+const D2 = n => {
+  if([5,9,10,12,13].includes(n)) {
+    return n;
+  } else if ([1,11].includes(n)) {
+    return n+2;
+  } else if ([6,7,8,2,3,4].includes(n)) {
+    return n+4;
+  }
+};
+
+const R2 = n => {
+  if([1,4,9,12,13].includes(n)) {
+    return n;
+  } else {
+    return n+1;
+  }
+};
+
 const part1 = (input) => {
   let code = '';
   const currentNumber = () => parseInt(_.last(code)) || 5;
   const instructions = parseInstructions(input);
-  console.log(instructions);
   _.each(instructions, i => {
-    console.log(currentNumber());
-    console.log(_.reduce(i, (pos, input) => followInstruction(input, pos), currentNumber()));
     code += _.reduce(i, (pos, input) => followInstruction(input, pos), currentNumber());
-    console.log(code);
-    console.log(_.last(code));
   });
-  console.log(code);
   return parseInt(code);
 };
 
 const part2 = (input) => {
-  return input;
+  let code = [];
+  const currentKey = () => _.last(code) ? _.last(code) : 5;
+  const instructions = parseInstructions(input);
+  _.each(instructions, i => {
+    code.push(_.reduce(i, (pos, input) => {
+      return followInstruction2(input, pos)}, currentKey()));
+  });
+  return _.reduce(code, (s, c) => s + c.toString(16), '');
 };
 
 module.exports = {
