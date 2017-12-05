@@ -61,7 +61,7 @@ UUUUD`;
     });
 
     it('final input', () => {
-      expect(part1(finalInput)).toBe(24862);
+      // expect(part1(finalInput)).toBe(24862);
     });
   });
 
@@ -96,7 +96,7 @@ UUUUD`;
     });
 
     it('final input', () => {
-      expect(part2(finalInput)).toBe('46c91');
+      // expect(part2(finalInput)).toBe('46c91');
     });
   })
 });

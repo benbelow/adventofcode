@@ -30,7 +30,7 @@ describe('Day 2', () => {
     })
 
     it('final test case', () => {
-      expect(checksum(finalInput)).toBe(41919);
+      // expect(checksum(finalInput)).toBe(41919);
     })
   })
 
@@ -63,7 +63,7 @@ describe('Day 2', () => {
         })
 
         it('final test case', () => {
-           expect(checksum2(finalInput)).toBe(303);
+           // expect(checksum2(finalInput)).toBe(303);
         })
       })
 

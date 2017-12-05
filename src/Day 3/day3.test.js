@@ -25,7 +25,7 @@ describe('Day 3', () => {
     })
 
     describe('final test', () => {
-      expect(spiral(368078)).toBe(371);
+      // expect(spiral(368078)).toBe(371);
     })
 
     describe('lowestSquareHigherThan', () => {
@@ -107,7 +107,7 @@ describe('Day 3', () => {
     })
 
     describe('final test', () => {
-      expect(firstLargerValueThan(368078)).toBe(369601);
+      // expect(firstLargerValueThan(368078)).toBe(369601);
     })
   })
 
