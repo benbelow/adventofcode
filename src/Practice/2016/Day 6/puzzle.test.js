@@ -3,9 +3,8 @@ const part2 = require('./puzzle').part2;
 
 const finalInput = require('./input');
 
-describe('Puzzle', () => {
-  describe('Part 1', () => {
-    const example = `eedadn
+
+const example = `eedadn
 drvtee
 eandsr
 raavrd
@@ -22,6 +21,9 @@ vrdear
 dvrsen
 enarar`;
 
+describe('Puzzle', () => {
+  describe('Part 1', () => {
+
     describe('example cases', () => {
       it('example 1', () => {
         expect(part1(example)).toBe('easter');
@@ -29,19 +31,19 @@ enarar`;
     });
 
     it('final input', () => {
-      // expect(part1(finalInput)).toBe('usccerug');
+      expect(part1(finalInput)).toBe('usccerug');
     });
   });
 
   describe('Part 2', () => {
     describe('example cases', () => {
       it('example 1', () => {
-        expect(part2(0)).toBe(0);
+        expect(part2(example)).toBe('advent');
       });
     });
 
     it('final input', () => {
-      expect(part2(finalInput)).toBe('');
+      expect(part2(finalInput)).toBe('cnvvtafc');
     });
   })
 });
