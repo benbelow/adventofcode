@@ -1,6 +1,7 @@
 const part1 = require('./puzzle').part1;
 const part2 = require('./puzzle').part2;
 const isRealRoom = require('./puzzle').isRealRoom;
+const unencryptRoom = require('./puzzle').unencryptRoom;
 
 const finalInput = require('./input');
 
@@ -38,13 +39,13 @@ totally-real-room-200[decoy]`;
 
   describe('Part 2', () => {
     describe('example cases', () => {
-      it('example 1', () => {
-        expect(part2(0)).toBe(0);
+      it('unencrypt', () => {
+        expect(unencryptRoom('qzmt-zixmtkozy-ivhz-343')).toBe('very encrypted name');
       });
     });
 
     it('final input', () => {
-      expect(part2(finalInput)).toBe('');
+      expect(part2(finalInput)).toBe('324');
     });
   })
 });
