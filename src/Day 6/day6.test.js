@@ -3,14 +3,12 @@ const part2 = require('./day6').part2;
 
 const finalInput = require('./input');
 
-const example = ``;
+const input = `0, 2, 7, 0`;
 
 describe('Puzzle', () => {
   describe('Part 1', () => {
     describe('example cases', () => {
       it('example 1', () => {
-        const input = `0, 2, 7, 0`;
-
         expect(part1(input)).toBe(5);
       });
     });
@@ -23,14 +21,12 @@ describe('Puzzle', () => {
   describe('Part 2', () => {
     describe('example cases', () => {
       it('example 1', () => {
-        const input = ``;
-
-        expect(part2(0)).toBe(0);
+        expect(part2(input)).toBe(4);
       });
     });
 
     it('final input', () => {
-      // expect(part2(finalInput)).toBe('');
+      // expect(part2(finalInput)).toBe(1610);
     });
   })
 });
