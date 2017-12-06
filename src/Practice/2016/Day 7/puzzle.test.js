@@ -1,5 +1,6 @@
 const part1 = require('./puzzle').part1;
 const part2 = require('./puzzle').part2;
+const tls = require('./puzzle').IPsupportsTLS;
 
 const finalInput = require('./input');
 
@@ -7,24 +8,32 @@ describe('Puzzle', () => {
   describe('Part 1', () => {
     describe('example cases', () => {
       it('example 1', () => {
-        // expect(part1('abba[mnop]qrst')).toBe(true);
+        expect(tls('abba[mnop]qrst')).toBe(true);
       });
 
       it('example 1', () => {
-        // expect(part1('abcd[bddb]xyyx')).toBe(false);
+        expect(tls('abcd[bddb]xyyx')).toBe(false);
       });
 
       it('example 1', () => {
-        // expect(part1('aaaa[qwer]tyui')).toBe(false);
+        expect(tls('aaaa[qwer]tyui')).toBe(false);
       });
 
       it('example 1', () => {
-        // expect(part1('ioxxoj[asdfgh]zxcvbn')).toBe(true);
+        expect(tls('ioxxoj[asdfgh]zxcvbn')).toBe(true);
+      });
+
+      it('example 1', () => {
+        expect(tls('one[asdfgh]two[hhdhjd]threer')).toBe(true);
+      });
+
+      it('example 1', () => {
+        expect(tls('ioxxoj[asdfgh]zxcvbn[poop]')).toBe(false);
       });
     });
 
     it('final input', () => {
-      // expect(part1(finalInput)).toBe('');
+      // expect(part1(finalInput)).toBe(105);
     });
   });
 
