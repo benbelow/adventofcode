@@ -28,7 +28,7 @@ class Grid {
   }
 
   prettyPrint() {
-    console.log(_.reduce(this.rows, (grid, row) => `${grid}${_.reduce(row, (s, v) => s + (v ? '#' : '.'), '')}\n`, ''));
+    console.log(_.reduce(this.rows, (grid, row) => `${grid}${_.reduce(row, (s, v) => s + (v ? '|' : ' '), '')}\n`, ''));
     return this;
   }
 
