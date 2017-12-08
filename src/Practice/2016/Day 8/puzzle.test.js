@@ -7,24 +7,19 @@ describe('Puzzle', () => {
   describe('Part 1', () => {
     describe('example cases', () => {
       it('example 1', () => {
-        expect(part1(0)).toBe(0);
+        expect(part1('rect 3x2')).toBe(6);
+      });
+
+      it('example 1', () => {
+        expect(part1(`rect 3x2
+rotate column x=1 by 1
+rotate row y=0 by 4
+rotate column x=1 by 3`)).toBe(6);
       });
     });
 
     it('final input', () => {
-      expect(part1(finalInput)).toBe('');
+      expect(part1(finalInput)).toBe(123);
     });
   });
-
-  describe('Part 2', () => {
-    describe('example cases', () => {
-      it('example 1', () => {
-        expect(part2(0)).toBe(0);
-      });
-    });
-
-    it('final input', () => {
-      expect(part2(finalInput)).toBe('');
-    });
-  })
 });
