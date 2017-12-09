@@ -1,13 +1,6 @@
 const _ = require('lodash');
 
 const part1 = (input) => {
-  const potentialMarkers = _.reduce(input, (ms, v, i) => {
-    if (v === '(') {
-      ms.push(i);
-      return ms;
-    }
-    return ms;
-  }, []);
 
   const marker = index => {
     const stringMarker = input.slice(index + 1, input.length).split(')')[0];
@@ -17,22 +10,47 @@ const part1 = (input) => {
     }
   };
 
-  const markers = _.filter(potentialMarkers, (m, i) => {
-    let preceedingMarker = potentialMarkers[i-1];
-    return preceedingMarker === undefined || preceedingMarker + marker(preceedingMarker).characterNumber < m;
-  });
+  let ignoreNum = 0;
+  const markers = _.reduce(input, (markers, c, i) => {
+    if (ignoreNum > 0) {
+      ignoreNum--;
+      return markers;
+    }
 
-  const markerCharIndexes = _.flatten(_.map(markers, m => _.range(m, m + 5 + marker(m).characterNumber)));
+    if (c !== '(') {
+      return markers;
+    }
+
+    if (c === '(') {
+      ignoreNum += parseInt(input.slice(i, input.length).split('x')[0].split('(')[1]);
+      return _.merge(markers, markers.push(i));
+    }
+
+    return markers;
+  }, [] );
+
+  const markerCharIndexes = _.flatten(_.map(markers, m => {
+    let mm = marker(m);
+    const markerLength = 3 + mm.characterNumber.toString().length + mm.repetitions.toString().length;
+    return _.range(m, m + markerLength + (mm.characterNumber))
+  }));
+
 
   let decompressed = _.reduce(input, (final, c, i) => {
     if(markers.includes(i)){
       let m = marker(i);
-      return final + input.slice(i + 5, i + 5 + parseInt(m.characterNumber)).repeat(m.repetitions);
+      const markerLength = 3 + m.characterNumber.toString().length + m.repetitions.toString().length;
+      return final + input.slice(i + markerLength, i + markerLength + parseInt(m.characterNumber)).repeat(m.repetitions);
     } else if (markerCharIndexes.includes(i)) {
       return final;
     }
     return final + c;
   }, '');
+
+  console.log(_.reduce(markers, (s, m) => {
+    console.log(s, m, marker(m));
+    return s + (parseInt(marker(m).characterNumber) * parseInt(marker(m).repetitions))
+  }, 0));
 
   console.log(decompressed);
   return decompressed.length;
