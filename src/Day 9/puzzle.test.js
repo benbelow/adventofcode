@@ -45,7 +45,7 @@ describe('Puzzle', () => {
     });
 
     it('final input', () => {
-      expect(part1(finalInput)).toBe(10820);
+      // expect(part1(finalInput)).toBe(10820);
     });
   });
 
@@ -82,7 +82,7 @@ describe('Puzzle', () => {
     });
 
     it('final input', () => {
-      // expect(part2(finalInput)).toBe('');
+      // expect(part2(finalInput)).toBe(5547);
     });
   })
 });
