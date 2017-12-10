@@ -3,16 +3,18 @@ const part2 = require('./puzzle').part2;
 
 const finalInput = require('./input');
 
+const example1 = `3, 4, 1, 5`;
+
 describe('Puzzle', () => {
   describe('Part 1', () => {
     describe('example cases', () => {
       it('example 1', () => {
-        expect(part1(0)).toBe(0);
+        expect(part1(example1, 5)).toBe(12);
       });
     });
 
     it('final input', () => {
-      expect(part1(finalInput)).toBe('');
+      expect(part1(finalInput)).toBe(46600);
     });
   });
 
@@ -24,7 +26,7 @@ describe('Puzzle', () => {
     });
 
     it('final input', () => {
-      expect(part2(finalInput)).toBe('');
+      // expect(part2(finalInput)).toBe('');
     });
   })
 });
