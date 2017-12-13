@@ -43,12 +43,28 @@ const part1 = (input) => {
     tickLasers();
   }
 
-  console.log(sev);
   return sev;
 };
 
 const part2 = (input) => {
-  return input;
+    const lines = input.split('\n');
+    const layers = _.map(lines, i => ({
+      depth: parseInt(i.split(':')[0]),
+      range: parseInt(i.split(':')[1])
+    }));
+
+    const isCaught = (delay) => {
+      const test = _.map(layers, l => (delay + l.depth) % (l.range * 2 - 2));
+      return _.filter(test, t => t === 0).length !== 0;
+    }
+
+    for(let i = 0; i < 999999999; i++) {
+      if(!isCaught(i)) {
+        return i;
+      }
+    }
+
+    return -1;
 };
 
 module.exports = {
