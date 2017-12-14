@@ -1,59 +1,25 @@
 const _ = require('lodash');
 
-const part1 = (input) => {
-
-  const marker = index => {
-    const stringMarker = input.slice(index + 1, input.length).split(')')[0];
-    return {
-      characterNumber: parseInt(stringMarker.split('x')[0]),
-      repetitions: parseInt(stringMarker.split('x')[1]),
-    }
-  };
-
-  let ignoreNum = 0;
-  const markers = _.reduce(input, (markers, c, i) => {
-    if (ignoreNum > 0) {
-      ignoreNum--;
-      return markers;
-    }
-
-    if (c !== '(') {
-      return markers;
+const part1 = input => {
+  let numberToIgnore = 0;
+  return _.reduce(input, (sum, c, i) => {
+    if (numberToIgnore > 0) {
+      numberToIgnore--;
+      return sum;
     }
 
     if (c === '(') {
-      ignoreNum += parseInt(input.slice(i, input.length).split('x')[0].split('(')[1]);
-      return _.merge(markers, markers.push(i));
+      const marker = input.slice(i, input.length).split('(')[1].split(')')[0];
+      const characters = parseInt(marker.split('x')[0]);
+      const repetitions = parseInt(marker.split('x')[1]);
+
+      // Add one for the closing bracket. Already accounted for opening bracket
+      numberToIgnore += (marker.length + 1) + characters;
+      return sum + (characters * repetitions);
     }
 
-    return markers;
-  }, [] );
-
-  const markerCharIndexes = _.flatten(_.map(markers, m => {
-    let mm = marker(m);
-    const markerLength = 3 + mm.characterNumber.toString().length + mm.repetitions.toString().length;
-    return _.range(m, m + markerLength + (mm.characterNumber))
-  }));
-
-
-  let decompressed = _.reduce(input, (final, c, i) => {
-    if(markers.includes(i)){
-      let m = marker(i);
-      const markerLength = 3 + m.characterNumber.toString().length + m.repetitions.toString().length;
-      return final + input.slice(i + markerLength, i + markerLength + parseInt(m.characterNumber)).repeat(m.repetitions);
-    } else if (markerCharIndexes.includes(i)) {
-      return final;
-    }
-    return final + c;
-  }, '');
-
-  console.log(_.reduce(markers, (s, m) => {
-    console.log(s, m, marker(m));
-    return s + (parseInt(marker(m).characterNumber) * parseInt(marker(m).repetitions))
-  }, 0));
-
-  console.log(decompressed);
-  return decompressed.length;
+    return sum + 1;
+  }, 0)
 };
 
 const part2 = (input) => {
