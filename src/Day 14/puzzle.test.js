@@ -33,7 +33,7 @@ describe('Puzzle', () => {
       it('blocks', () => {
         expect(part2(`[
 '11010100',
-'01010101']`)).toBe(4);
+'11010101']`)).toBe(4);
       });
 
       it('example 1', () => {
@@ -42,7 +42,7 @@ describe('Puzzle', () => {
     });
 
     it('final input', () => {
-      // expect(part2(cachedFinal)).toBe(0);
+      expect(part2(cachedFinal)).toBe(0);
     });
   })
 });

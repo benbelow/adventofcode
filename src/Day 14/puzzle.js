@@ -29,10 +29,36 @@ const cachedPart1 = cache => {
 }
 
 const part2 = (cache) => {
-  const rows = eval(cache);
-  console.log(_.map(rows, r => _.map(r)));
+  const rows = (_.map(eval(cache), r => _.map(r, i => parseInt(i))));
 
-  return rows.length;
+  const floodFill = coord => {
+    if(coord[1] >= rows.length
+      || coord[1] < 0
+      || coord[0] >= rows[coord[1]].length
+      || coord[0] < 0
+      || rows[coord[1]][coord[0]] === 0) {
+      return;
+    }
+    rows[coord[1]][coord[0]] = 0;
+    floodFill([coord[0], coord[1] + 1]);
+    floodFill([coord[0], coord[1] - 1]);
+    floodFill([coord[0] + 1, coord[1]]);
+    floodFill([coord[0] - 1, coord[1]]);
+  }
+
+  let coord = [0,0];
+  let groups = 0;
+
+  for(let y = 0; y < rows.length; y++) {
+    for(let x = 0; x < rows[y].length; x++) {
+      if(rows[y][x] === 1) {
+        groups++;
+        floodFill([x,y]);
+      }
+    }
+  }
+
+  return groups;
 };
 
 module.exports = {
