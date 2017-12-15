@@ -16,13 +16,8 @@ const part1 = (initialA, initialB) => {
   const genA = generator(initialA, factorA, divider);
   const genB = generator(initialB, factorB, divider);
 
-  const last16Bits = i => {
-    const binary = i.toString(2);
-    return binary.slice(binary.length - 16, binary.length);
-  };
-
   const last16BitsMatch = (a, b) => {
-    return last16Bits(a) === last16Bits(b);
+    return (a & 0xFFFF) === (b & 0xFFFF);
   };
 
   let count = 0;
@@ -49,13 +44,8 @@ const part2 = (initialA, initialB) => {
   const genA = generator(initialA, factorA, divider, 4);
   const genB = generator(initialB, factorB, divider, 8);
 
-  const last16Bits = i => {
-    const binary = i.toString(2);
-    return binary.slice(binary.length - 16, binary.length);
-  };
-
   const last16BitsMatch = (a, b) => {
-    return last16Bits(a) === last16Bits(b);
+    return (a & 0xFFFF) === (b & 0xFFFF);
   };
 
   let count = 0;
