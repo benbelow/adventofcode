@@ -14,19 +14,13 @@ describe('Puzzle', () => {
     });
 
     it('final input', () => {
-      expect(part1(finalInput)).toBe('ociedpjbmfnkhlga');
+      // expect(part1(finalInput)).toBe('ociedpjbmfnkhlga');
     });
   });
 
   describe('Part 2', () => {
-    describe('example cases', () => {
-      it('example 1', () => {
-        // expect(part2(0)).toBe(0);
-      });
-    });
-
     it('final input', () => {
-      expect(part2(finalInput)).toBe('not');
+      // expect(part2(finalInput)).toBe('gnflbkojhicpmead');
     });
   })
 });

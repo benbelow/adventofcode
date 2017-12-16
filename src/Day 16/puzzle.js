@@ -40,9 +40,10 @@ const part1 = (input, numDancers = 16) => {
   return dancers;
 };
 
-const part2 = (input, numDancers = 16) => {
+const part2 = (input, initialState = undefined) => {
+  const numDancers = 16;
   let originalDancers = alphabet.slice(0, numDancers);
-  let dancers = alphabet.slice(0, numDancers);
+  let dancers = initialState ? initialState : alphabet.slice(0, numDancers);
 
   const instructions = input.split(',').map(x => x.trim());
 
@@ -74,12 +75,16 @@ const part2 = (input, numDancers = 16) => {
     });
   };
 
-  _.each(_.range(1000000000), j => {
-    runInstructions();
-  });
+  const total = 1000000000;
 
-  console.log(dancers);
-  console.log(seenStates);
+  for(let i =0; i < total; i++) {
+    runInstructions();
+    if(_.uniq(seenStates).length !== seenStates.length) {
+      return (seenStates[(total - i + 1) % seenStates.length]);
+    }
+    seenStates.push(dancers);
+  }
+
   return dancers;
 };
 
