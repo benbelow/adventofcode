@@ -19,12 +19,12 @@ describe('Puzzle', () => {
   describe('Part 2', () => {
     describe('example cases', () => {
       it('example 1', () => {
-        // expect(part2(0)).toBe(0);
+        expect(part2(3, 2017)).toBe(1226);
       });
     });
 
     it('final input', () => {
-      expect(part2(finalInput)).toBe('');
+      // expect(part2(finalInput)).toBe(33601318);
     });
   })
 });

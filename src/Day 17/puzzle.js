@@ -9,23 +9,27 @@ const part1 = (input) => {
     data.splice(index, 0, i);
   });
 
-  // console.log(data, index, data[index + 1]);
+  console.log(data[1]);
 
   return data[(index + 1) % data.length];
 };
 
-const part2 = (input) => {
-  let data = [0];
+const part2 = (input, upperBound = 50000000) => {
+  let total = 1;
   let index = 0;
+  let answer;
 
-  _.each(_.range(1, 50000000), i => {
-    index = ((index + input) % data.length) + 1;
-    data.splice(index, 0, i);
+  _.each(_.range(1, upperBound + 1), i => {
+    index = ((index + input) % total) + 1;
+    total++;
+    if(index === 1) {
+      answer = i;
+     }
   });
 
-  // console.log(data, index, data[index + 1]);
+  console.log(answer);
 
-  return data[(_.indexOf(data, 0) + 1) % data.length];
+  return answer;
 };
 
 module.exports = {
