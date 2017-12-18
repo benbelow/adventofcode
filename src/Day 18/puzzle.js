@@ -13,7 +13,7 @@ const part1 = (input) => {
     return i.split(' ');
   });
 
-  const perform  = ins => {
+  const perform = ins => {
 
     // console.log(ins);
     const val = parseInt(ins[2]) ? parseInt(ins[2]) : registers[ins[2]];
@@ -23,7 +23,7 @@ const part1 = (input) => {
       registers[ins[1]] = 0;
     }
 
-    switch(ins[0]) {
+    switch (ins[0]) {
       case 'snd':
         lastPlayed = registers[reg];
         break;
@@ -34,7 +34,7 @@ const part1 = (input) => {
         registers[reg] += val;
         break;
       case 'mul':
-        if(parseInt(ins[2])) {
+        if (parseInt(ins[2])) {
           registers[reg] *= parseInt(ins[2]);
         } else {
           registers[reg] *= registers[ins[2]];
@@ -49,14 +49,14 @@ const part1 = (input) => {
         }
         break;
       case 'jgz':
-        if(registers[reg] > 0) {
+        if (registers[reg] > 0) {
           j += (val - 1);
           // toIgnore += ((val + instructions.length) % instructions.length);
         }
     }
   };
 
-  while(!result && k < 1400) {
+  while (!result && k < 1400) {
     // console.log(j);
     perform(instructions[(j % instructions.length)]);
     if (_.filter(_.values(registers), v => isNaN(v)).length > 0) {
@@ -70,161 +70,71 @@ const part1 = (input) => {
 };
 
 const part2 = (input) => {
-  const registersA = {};
-  const registersB = {};
-
-  const qA = [];
-  const qB = [];
-
-  let stuckA = false;
-  let stuckB = false;
-
-  let lastPlayed;
-  let result = 0;
-
-  let jA = 0;
-  let jB = 0;
-  let k = 0;
-
   const instructions = _.map(input.split('\n'), i => {
     return i.split(' ');
   });
 
-  const performA = ins => {
-    if (stuckA) {
-      console.log('A: ', ins, k);
-    }
+  let programs = [];
 
-    if (!_.keys(registersA).includes(ins[1])) {
-      registersA[ins[1]] = 0;
-    }
+  function Program(id) {
+    this.registers = { p: id };
+    this.queue = [];
+    this.sent = 0;
+    this.id = id;
+    this.index = 0;
 
-    const val = !isNaN(parseInt(ins[2])) ? parseInt(ins[2]) : registersA[ins[2]];
-    const val1 = !isNaN(parseInt(ins[1])) ? parseInt(ins[1]) : registersA[ins[1]];
-    const reg = ins[1];
+    this.next = () => this.index++;
 
-    switch(ins[0]) {
-      case 'snd':
-        qB.unshift(val1);
-        break;
-      case 'set':
-        if (isNaN(val)) {
-          console.log(parseInt('a'));
-          console.log(ins);
+    this.getNumber = a => {
+      return isNaN(a) ? this.registers[a] : parseInt(a);
+    };
+
+    this.commands = {
+      'set': (a, b) => {
+        this.registers[a] = this.getNumber(b);
+        this.next();
+      },
+      'mul': (a, b) => {
+        this.registers[a] *= this.getNumber(b);
+        this.next();
+      },
+      'add': (a, b) => {
+        this.registers[a] += this.getNumber(b);
+        this.next();
+      },
+      'mod': (a, b) => {
+        this.registers[a] %= this.getNumber(b);
+        this.next();
+      },
+      'snd': a => {
+        programs[(this.id + 1) % 2].queue.push(this.getNumber(a));
+        this.sent++;
+        this.next();
+      },
+      "jgz": (a, b) => { this.index += this.getNumber(a) > 0 ? this.getNumber(b) : 1; },
+      'rcv': a => {
+        if (this.queue.length > 0) {
+          this.registers[a] = this.queue.shift();
+          this.next();
         }
-        registersA[reg] = val;
-        break;
-      case 'add':
-        registersA[reg] += val;
-        break;
-      case 'mul':
-        if(parseInt(ins[2])) {
-          registersA[reg] *= parseInt(ins[2]);
-        } else {
-          registersA[reg] *= registersA[ins[2]];
-        }
-        break;
-      case 'mod':
-        registersA[reg] = registersA[reg] % val;
-        break;
-      case 'rcv':
-        if (qA.length > 0) {
-          stuckA = false;
-          registersA[reg] = qA.pop();
-        } else {
-          stuckA = true;
-          jA--;
-        }
-        break;
-      case 'jgz':
-        if(registersA[reg] > 0) {
-          jA += (val - 1);
-          // toIgnore += ((val + instructions.length) % instructions.length);
-        }
-    }
-  };
-
-
-  const performB = ins => {
-    if (stuckB) {
-      console.log('B: ', ins, k);
-    }
-
-    if (!_.keys(registersB).includes(ins[1])) {
-      registersB[ins[1]] = 0;
-      if (ins[1] === 'p') {
-        registersB[ins[1]] = 1;
       }
-    }
+    };
 
-    const val = !isNaN(parseInt(ins[2])) ? parseInt(ins[2]) : registersB[ins[2]];
-    const val1 = !isNaN(parseInt(ins[1])) ? parseInt(ins[1]) : registersB[ins[1]];
-    const reg = ins[1];
+    this.execute = () => {
+      const currentInstruction = instructions[this.index];
+      this.commands[currentInstruction[0]](currentInstruction[1], currentInstruction[2]);
+    };
 
-    switch(ins[0]) {
-      case 'snd':
-        result++;
-        qA.unshift(val1);
-        break;
-      case 'set':
-        registersB[reg] = val;
-        break;
-      case 'add':
-        registersB[reg] += val;
-        break;
-      case 'mul':
-        if(parseInt(ins[2])) {
-          registersB[reg] *= parseInt(ins[2]);
-        } else {
-          registersB[reg] *= registersB[ins[2]];
-        }
-        break;
-      case 'mod':
-        registersB[reg] = registersB[reg] % val;
-        break;
-      case 'rcv':
-        if (qB.length > 0) {
-          stuckB = false;
-          registersB[reg] = qB.pop();
-        } else {
-          stuckB = true;
-          jB--;
-        }
-        break;
-      case 'jgz':
-        if(registersB[reg] > 0) {
-          jB += (val - 1);
-        }
-    }
-  };
+    this.isStuck = () => instructions[this.index][0] === 'rcv' && this.queue.length === 0;
 
-  const kMax = 20000;
-
-  while(!(stuckA && stuckB) && k < kMax) {
-    if (jA < 0 || jB < 0) {
-      console.log('oops');
-    }
-    performA(instructions[(jA % instructions.length)]);
-    performB(instructions[(jB % instructions.length)]);
-    if (_.filter(_.values(registersB), v => isNaN(v)).length > 0) {
-      console.log(registersB);
-      console.log(instructions[(jB % instructions.length)]);
-    }
-    if (_.filter(_.values(registersA), v => isNaN(v)).length > 0) {
-      console.log(registersA);
-      console.log(instructions[(jA % instructions.length)]);
-    }
-    jA++;
-    jB++;
-    k++;
   }
 
-  if (k === kMax) {
-    console.log(k);
-    return -1;
-  }
+  programs = [new Program(0), new Program(1)];
 
-  return result;
+  while(_.filter(programs, p => p.isStuck()).length !== programs.length) {
+    _.each(programs, p => p.execute() );
+  }
+  return programs[1].sent;
 };
 
 module.exports = {
