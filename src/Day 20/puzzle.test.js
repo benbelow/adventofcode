@@ -2,35 +2,32 @@ const part1 = require('./puzzle').part1;
 const part2 = require('./puzzle').part2;
 
 const finalInput = require('./input');
-const example = `     |          
-     |  +--+    
-     A  |  C    
- F---|----E|--+ 
-     |  |  |  D 
-     +B-+  +--+ `;
+const example = `p=< 3,0,0>, v=< 2,0,0>, a=<-1,0,0>
+p=< 4,0,0>, v=< 0,0,0>, a=<-2,0,0> `;
 
 describe('Puzzle', () => {
   describe('Part 1', () => {
     describe('example cases', () => {
       it('example 1', () => {
-        expect(part1(example)).toBe('ABCDEF');
+        expect(part1(example)).toBe(0);
       });
     });
 
     it('final input', () => {
-      // expect(part1(finalInput)).toBe('LIWQYKMRP');
+      // NOT: 14, 156, 264, 400
+      expect(part1(finalInput)).toBe(344);
     });
   });
 
   describe('Part 2', () => {
     describe('example cases', () => {
       it('example 1', () => {
-        expect(part2(example)).toBe(38);
+        // expect(part2(0)).toBe(0);
       });
     });
 
     it('final input', () => {
-      // expect(part2(finalInput)).toBe(16764);
+      // expect(part2(finalInput)).toBe('');
     });
   })
 });
