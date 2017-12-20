@@ -24,12 +24,6 @@ class Particle {
     ) {
       this.passedMin = true;
     }
-
-    // if (this.id === 0) {
-    //   console.log(this.vel);
-    //   console.log(_.filter(this.pos, (v, i) => Math.sign(v) === Math.sign(this.acc[i]) || Math.sign(this.acc[i]) === 0));
-    //   console.log(this.id, this.pos, this.hasPassedOrigin())
-    // }
   }
 
   dist() {
@@ -74,13 +68,6 @@ const part1 = (input) => {
 
   let i =0;
   const longTerm = 50;
-  // while (_.filter(particles, p => !p.hasPassedOrigin()).length > 0) {
-    // _.forEach(particles, p => p.tick());
-    // i++;
-  // }
-
-  // console.log(_.filter(particles, p => !p.hasPassedOrigin()));
-
   let minAccParticles = _.first(_.map(_.groupBy(particles, p => p.totalAcc())));
   let minVelParticles = _.first(_.map(_.groupBy(minAccParticles, p => p.totalVel())));
   let closest = _.map(_.groupBy(minVelParticles, p => p.minPos()))[0][0];
