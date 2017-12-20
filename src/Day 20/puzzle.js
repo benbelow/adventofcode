@@ -88,7 +88,25 @@ const part1 = (input) => {
 };
 
 const part2 = (input) => {
-  return input;
+
+  let particles = _.map(input.split('\n'), (p, i) => {
+    return new Particle(i, ...p.split(', '));
+  });
+
+  const longTerm = 100;
+  let i =0;
+
+  const hasCollisions = particle => {
+    return _.filter(particles, p2 => p2.id !== particle.id && _.isEqual(particle.pos, p2.pos)).length > 0;
+  };
+
+  while(i < longTerm) {
+    _.forEach(particles, p => p.tick());
+    particles = _.filter(particles, p => !hasCollisions(p));
+    i++;
+  }
+
+  return particles.length;
 };
 
 module.exports = {

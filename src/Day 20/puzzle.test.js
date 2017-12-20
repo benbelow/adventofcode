@@ -15,19 +15,24 @@ describe('Puzzle', () => {
 
     it('final input', () => {
       // NOT: 14, 156, 264, 400
-      expect(part1(finalInput)).toBe(344);
+      // expect(part1(finalInput)).toBe(344);
     });
   });
+
+  const example2 = `p=<-6,0,0>, v=< 3,0,0>, a=< 0,0,0>    
+p=<-4,0,0>, v=< 2,0,0>, a=< 0,0,0>
+p=<-2,0,0>, v=< 1,0,0>, a=< 0,0,0>
+p=< 3,0,0>, v=<-1,0,0>, a=< 0,0,0>`
 
   describe('Part 2', () => {
     describe('example cases', () => {
       it('example 1', () => {
-        // expect(part2(0)).toBe(0);
+        expect(part2(example2)).toBe(1);
       });
     });
 
     it('final input', () => {
-      // expect(part2(finalInput)).toBe('');
+      // expect(part2(finalInput)).toBe(404);
     });
   })
 });
