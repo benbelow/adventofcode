@@ -1,7 +1,6 @@
 const _ = require('lodash');
 
 const part1 = (input) => {
-  // const ports = _.sortBy(_.map(input.split('\n'), i => _.map(i.split('/'), q => parseInt(q)).sort()), x => x[0] * 10 + x[1]);
   const ports = _.map(input.split('\n'), i => _.map(i.split('/'), q => parseInt(q)));
   const pins = 0;
 
