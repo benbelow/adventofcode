@@ -6,7 +6,7 @@ module.exports = function (wallaby) {
     ],
 
     tests: [
-      'src/**/*test.js'
+      'src/2018/**/*test.js'
     ],
 
     env: {
