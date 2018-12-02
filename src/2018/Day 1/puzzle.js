@@ -6,7 +6,7 @@ const part1 = (input) => {
 };
 
 const part2 = (input) => {
-  const instructions = input.split(/\n/g);
+  const instructions = input.includes(',') ? input.split(',') : input.split(/\n/g);
   const seen = {0: true};
   let frequency = 0;
 
