@@ -37,7 +37,39 @@ const part1 = (input) => {
 };
 
 const part2 = (input) => {
-    return input;
+    const metrics = input.split('\n').map(claimToMetrics);
+
+    const maxX = _.max(metrics.map(m => m.xOffset + m.width));
+    const maxY = _.max(metrics.map(m => m.yOffset + m.height));
+
+    const minX = _.min(metrics.map(m => m.xOffset));
+    const minY = _.min(metrics.map(m => m.yOffset));
+
+    const clashes = {};
+
+    for(let x = minX; x <= maxX; x++ ){
+        for(let y = minY; y <= maxY; y++){
+            const crossovers = metrics.filter(m => x >= m.xOffset && x < m.xOffset + m.width && y >= m.yOffset && y < m.yOffset + m.height);
+            if (crossovers.length < 2) {
+                continue;
+            }
+
+            crossovers.forEach(m => {
+                if (!clashes[m.id]) {
+                    clashes[m.id] = true;
+                }
+            })
+        }
+    }
+
+    const answers = metrics.filter(m => !clashes[m.id]);
+
+    if (answers.length !== 1){
+        console.log(answers.length);
+        return 'Error, expected 1 answer'
+    }
+
+    return answers[0].id;
 };
 
 const claimToCoords = (claim) => {
@@ -55,7 +87,7 @@ const claimToCoords = (claim) => {
 };
 
 const claimToMetrics = (claim) => {
-
+    const id = Number(claim.split(' ')[0].replace('#', ''));
     const offsets = claim.split(' ')[2];
     const dimensions = claim.split(' ')[3];
 
@@ -66,7 +98,7 @@ const claimToMetrics = (claim) => {
     const height = Number(dimensions.split('x')[1]);
 
     return {
-        xOffset, yOffset, width, height
+        id, xOffset, yOffset, width, height
     }
 };
 

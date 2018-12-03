@@ -16,7 +16,7 @@ describe('Puzzle', () => {
         });
 
         it('final input', () => {
-            // SLOW!
+            // SLOW ~7s
             // expect(part1(finalInput)).toBe(96569);
         });
     });
@@ -24,12 +24,13 @@ describe('Puzzle', () => {
     describe('Part 2', () => {
         describe('example cases', () => {
             it('example 1', () => {
-                expect(part2(0)).toBe(3);
+                expect(part2(example)).toBe(3);
             });
         });
 
         it('final input', () => {
-            // expect(part2(finalInput)).toBe('');
+            // SLOW ~8s
+            // expect(part2(finalInput)).toBe(1023);
         });
     });
 });
