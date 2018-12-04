@@ -22,27 +22,27 @@ const example = `[1518-11-01 00:00] Guard #10 begins shift
 [1518-11-05 00:55] wakes up`;
 
 describe('Puzzle', () => {
-  describe('Part 1', () => {
-    describe('example cases', () => {
-      it('example 1', () => {
-        expect(part1(example)).toBe(240);
-      });
+    describe('Part 1', () => {
+        describe('example cases', () => {
+            it('example 1', () => {
+                expect(part1(example)).toBe(240);
+            });
+        });
+
+        it('final input', () => {
+            expect(part1(finalInput)).toBe(50558);
+        });
     });
 
-    it('final input', () => {
-      expect(part1(finalInput)).toBe(50558);
-    });
-  });
+    describe('Part 2', () => {
+        describe('example cases', () => {
+            it('example 1', () => {
+                expect(part2(example)).toBe(4455);
+            });
+        });
 
-  describe('Part 2', () => {
-    describe('example cases', () => {
-      it('example 1', () => {
-        // expect(part2(0)).toBe(0);
-      });
+        it('final input', () => {
+            expect(part2(finalInput)).toBe(28198);
+        });
     });
-
-    it('final input', () => {
-      // expect(part2(finalInput)).toBe('');
-    });
-  })
 });

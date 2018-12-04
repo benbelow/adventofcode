@@ -12,12 +12,16 @@ const part1 = (input) => {
     const guardData = getGuardData(orderedData);
 
     const sleepyGuard = _.maxBy(_.values(guardData), 'minutesAsleep');
-    console.log(sleepyGuard)
     return sleepyGuard.id * sleepyGuard.sleepiestMinute;
 };
 
 const part2 = (input) => {
-    return input;
+    const data = input.split('\n').map(mapLine);
+    const orderedData = _.orderBy(data, ['year', 'month', 'day', 'hour', 'minute']);
+    const guardData = getGuardData(orderedData);
+
+    const sleepyGuard = _.maxBy(_.values(guardData), 'sleepiestMinuteValue');
+    return sleepyGuard.id * sleepyGuard.sleepiestMinute;
 };
 
 const mapLine = (line) => {
@@ -73,11 +77,10 @@ const getGuardData = (orderedData) => {
         lastMinute = d.minute;
     });
 
-    console.log(result);
-
     _.forEach(result, (v) => {
         v.minutesAsleep = _.sum(v.histogram);
-        v.sleepiestMinute = v.histogram.indexOf(_.max(v.histogram))
+        v.sleepiestMinute = v.histogram.indexOf(_.max(v.histogram));
+        v.sleepiestMinuteValue = _.max(v.histogram);
     });
 
     return result;
