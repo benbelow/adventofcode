@@ -17,7 +17,17 @@ const part1 = (input) => {
 };
 
 const part2 = (input) => {
-  return input;
+  const letters = 'abcdefghijklmnopqrstuvwxyz';
+
+  const results = [];
+
+  for(let letter of letters) {
+    const count = part1(input.split('').filter(s => s.toLowerCase() !== letter).join(''));
+    results.push({ letter, count });
+    console.log(letter, count);
+  }
+
+  return _.minBy(results, 'count').count;
 };
 
 const isMatch = (s1, s2) => {

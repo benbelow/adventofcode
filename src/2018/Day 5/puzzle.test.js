@@ -26,19 +26,20 @@ describe('Puzzle', () => {
     });
 
     it('final input', () => {
-      expect(part1(finalInput)).toBe('');
+      // expect(part1(finalInput)).toBe(11814);
     });
   });
 
   describe('Part 2', () => {
     describe('example cases', () => {
       it('example 1', () => {
-        // expect(part2(0)).toBe(0);
+        expect(part2(example)).toBe(4);
       });
     });
 
     it('final input', () => {
-      // expect(part2(finalInput)).toBe('');
+      // slow (5s)
+      // expect(part2(finalInput)).toBe(4282);
     });
   })
 });
