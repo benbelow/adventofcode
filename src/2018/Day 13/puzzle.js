@@ -184,27 +184,38 @@ const part1 = (input) => {
         });
     });
 
-    const crashedCart = () => carts.find(c => carts.some(c2 => c2.id !== c.id && c.x() === c2.x() && c.y() === c2.y()));
-
     const hasCartCrashed = (c) => carts.some(c1 => c1.id !== c.id && c.x() === c1.x() && c.y() === c1.y());
 
     let failsafe = 0;
 
     let answer;
 
-    while(!answer && failsafe < 999100000000) {
+    console.log(carts.map(c => c.coord));
+
+    while(carts.length > 1 && failsafe < 999100000000) {
         carts.sort((a, b) => a.x() + a.y() * 1000 - b.x() - b.y() * 1000);
+        let cartsToRemove = [];
         carts.forEach(c => {
             c.move(grid);
             if (hasCartCrashed(c)) {
-                console.log(c);
-                answer = {answer: c.coord, tick: failsafe};
+                console.log("crash at " + c.coord);
+                cartsToRemove = [...cartsToRemove, ...carts.filter(c2 => c2.x() === c.x() && c2.y() === c.y())];
             }
         });
+
+        // console.log(cartsToRemove);
+
+        cartsToRemove.forEach(c => {
+            carts = carts.filter(c2 => !(c2.x() === c.x() && c2.y() === c.y()));
+        });
         failsafe++;
+        // console.log(carts.map(c => c.coord));
     }
 
-    return answer;
+    if (carts.length > 1) {
+        throw new Error();
+    }
+    return carts[0];
 };
 
 const part2 = (input) => {
