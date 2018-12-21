@@ -14,12 +14,12 @@ describe('Puzzle', () => {
     describe('Part 1', () => {
         describe('example cases', () => {
             it('example 1', () => {
-                expect(part1(example)).toEqual([7, 3]);
+                expect(part1(example).answer).toEqual([7, 3]);
             });
         });
 
         it('final input', () => {
-            expect(part1(finalInput)).toEqual('');
+            expect(part1(finalInput).answer).toEqual([39, 52]);
         });
     });
 

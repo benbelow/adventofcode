@@ -167,6 +167,8 @@ class Cart{
 }
 
 const part1 = (input) => {
+    // return cheat(input);
+
     let grid = {};
     let carts = [];
 
@@ -184,14 +186,25 @@ const part1 = (input) => {
 
     const crashedCart = () => carts.find(c => carts.some(c2 => c2.id !== c.id && c.x() === c2.x() && c.y() === c2.y()));
 
+    const hasCartCrashed = (c) => carts.some(c1 => c1.id !== c.id && c.x() === c1.x() && c.y() === c1.y());
+
     let failsafe = 0;
 
-    while(!crashedCart() && failsafe < 10000) {
-        carts.forEach(c => c.move(grid));
+    let answer;
+
+    while(!answer && failsafe < 999100000000) {
+        carts.sort((a, b) => a.x() + a.y() * 1000 - b.x() - b.y() * 1000);
+        carts.forEach(c => {
+            c.move(grid);
+            if (hasCartCrashed(c)) {
+                console.log(c);
+                answer = {answer: c.coord, tick: failsafe};
+            }
+        });
         failsafe++;
     }
 
-    return crashedCart().coord;
+    return answer;
 };
 
 const part2 = (input) => {
