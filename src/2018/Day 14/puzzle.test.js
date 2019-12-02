@@ -21,19 +21,28 @@ describe('Puzzle', () => {
     });
 
     it('final input', () => {
-      expect(part1(509671)).toBe('');
+      // expect(part1(509671)).toBe('2810862211');
     });
   });
 
   describe('Part 2', () => {
     describe('example cases', () => {
       it('example 1', () => {
-        // expect(part2(0)).toBe(0);
+        expect(part2('51589')).toBe(9);
+      });
+      it('example 2', () => {
+        expect(part2('01245')).toBe(5);
+      });
+      it('example 3', () => {
+        expect(part2('92510')).toBe(18);
+      });
+      it('example 4', () => {
+        expect(part2('59414')).toBe(2018);
       });
     });
 
     it('final input', () => {
-      // expect(part2(finalInput)).toBe('');
+      expect(part2('509671')).toBe('');
     });
   })
 });
