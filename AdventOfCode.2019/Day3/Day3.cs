@@ -12,6 +12,12 @@ namespace AdventOfCode._2019.Day3
             var lines = FileReader.ReadInputLines(3).ToList();
             return GetClosestIntersection(lines.First(), lines.Last());
         }
+        
+        public static int Part2()
+        {
+            var lines = FileReader.ReadInputLines(3).ToList();
+            return GetFewestStepsToCrossOver(lines.First(), lines.Last());
+        }
 
         public static int GetClosestIntersection(string wireInstructions1, string wireInstructions2)
         {
@@ -29,6 +35,7 @@ namespace AdventOfCode._2019.Day3
 
             return crossovers
                 .Select(c => wire1.DistanceTravelledAt(c.Item1, c.Item2) + wire2.DistanceTravelledAt(c.Item1, c.Item2))
+                .Where(s => s > 0)
                 .Min();
         }
 
@@ -84,35 +91,51 @@ namespace AdventOfCode._2019.Day3
             public void MoveHorizontal(int xMove)
             {
                 var newX = xCoord + xMove;
-                VisitHorizontalRange(yCoord, Math.Min(newX, xCoord), Math.Max(newX, xCoord));
+
+                if (xMove < 0)
+                {
+                    for (var i = xCoord - 1; i >= newX; i--)
+                    {
+                        Visit(i, yCoord);
+                    }
+                }
+
+                if (xMove > 0)
+                {
+                    for (var i = xCoord + 1; i <= newX; i++)
+                    {
+                        Visit(i, yCoord);
+                    }
+                }
+                
                 xCoord = newX;
             }
 
             public void MoveVertical(int yMove)
             {
                 var newY = yCoord + yMove;
-                VisitVerticalRange(xCoord, Math.Min(newY, yCoord), Math.Max(newY, yCoord));
+                if (yMove < 0)
+                {
+                    for (var i = yCoord - 1; i >= newY; i--)
+                    {
+                        Visit(xCoord, i);
+                    }
+                }
+
+                if (yMove > 0)
+                {
+                    for (var i = yCoord + 1; i <= newY; i++)
+                    {
+                        Visit(xCoord, i);
+                    }
+                }
                 yCoord = newY;
-            }
-
-            private void VisitHorizontalRange(int y, int xMin, int xMax)
-            {
-                for (var i = xMin; i <= xMax; i++)
-                {
-                    Visit(i, y);
-                }
-            }
-
-            private void VisitVerticalRange(int x, int yMin, int yMax)
-            {
-                for (var i = yMin; i <= yMax; i++)
-                {
-                    Visit(x, i);
-                }
             }
 
             private void Visit(int x, int y)
             {
+                distanceTravelled++;
+                
                 visitedCoordinates.TryGetValue(x, out var yCoords);
                 if (yCoords == null)
                 {
@@ -120,14 +143,12 @@ namespace AdventOfCode._2019.Day3
                 }
                 else
                 {
-                    yCoords.TryGetValue(x, out var visited);
+                    yCoords.TryGetValue(y, out var visited);
                     if (visited == null)
                     {
                         yCoords[y] = distanceTravelled;
                     }
                 }
-
-                distanceTravelled++;
             }
 
             public bool Visited(int x, int y)
