@@ -22,8 +22,10 @@ namespace AdventOfCode._2019.Day5
 
         public static int Part2()
         {
-            var lines = FileReader.ReadInputLines(4).ToList();
-            return 5;
+            var lines = FileReader.ReadInputLines(5).ToList();
+            var output = IntCodeComputer.ParseAndRunIntCode(lines.First(), () => 5);
+
+            return output.Outputs.Single();
         }
     }
 }

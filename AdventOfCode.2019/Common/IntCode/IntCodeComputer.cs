@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 
 namespace AdventOfCode._2019.Common.IntCode
@@ -48,21 +49,43 @@ namespace AdventOfCode._2019.Common.IntCode
 
                 switch (operation)
                 {
+                    // ADD
                     case 1:
                         state = state.ApplyOperation(index, (x, y) => x + y, modes);
                         index += 4;
                         break;
+                    // MULTIPLY
                     case 2:
                         state = state.ApplyOperation(index, (x, y) => x * y, modes);
                         index += 4;
                         break;
+                    // INPUT
                     case 3:
                         state = state.ApplyInput(index, getInput);
                         index += 2;
                         break;
+                    // OUTPUT
                     case 4:
                         state = state.ApplyOutput(index, x => { outputs.Add(x); }, modes);
                         index += 2;
+                        break;
+                    // JUMP IF TRUE
+                    case 5:
+                        index = state.JumpIf(index, modes, true);
+                        break;
+                    // JUMP IF FALSE
+                    case 6:
+                        index = state.JumpIf(index, modes, false);
+                        break;
+                    // LESS THAN
+                    case 7:
+                        state = state.Compare(index, modes, (x, y) => x < y);
+                        index += 4;
+                        break;
+                    // EQUALS
+                    case 8:
+                        state = state.Compare(index, modes, (x, y) => x == y);
+                        index += 4;
                         break;
                     default:
                         throw new Exception($"Unrecognised instruction: {value}");
@@ -80,12 +103,10 @@ namespace AdventOfCode._2019.Common.IntCode
 
         private static IList<int> ApplyOperation(this IList<int> state, int index, Func<int, int, int> operation, IList<ParameterMode> modes)
         {
-            var valueX = state.ElementAtWrapped(index + 1);
-            var valueY = state.ElementAtWrapped(index + 2);
             var outputIndex = state.ElementAtWrapped(index + 3);
 
-            var operandX = state.GetOperand(valueX, modes.ElementAtOrDefault(0));
-            var operandY = state.GetOperand(valueY, modes.ElementAtOrDefault(1));
+            var operandX = state.GetOperand(index + 1, modes.ElementAtOrDefault(0));
+            var operandY = state.GetOperand(index + 2, modes.ElementAtOrDefault(1));
 
             var output = operation(operandX, operandY);
             var indexToUpdate = state.WrappedIndex(outputIndex);
@@ -103,14 +124,40 @@ namespace AdventOfCode._2019.Common.IntCode
 
         private static IList<int> ApplyOutput(this IList<int> state, int index, Action<int> applyOutput, IEnumerable<ParameterMode> modes)
         {
-            var outputValue = state.ElementAtWrapped(index + 1);
-            var output = state.GetOperand(outputValue, modes.SingleOrDefault());
+            var output = state.GetOperand(index + 1, modes.SingleOrDefault());
             applyOutput(output);
             return state;
         }
 
-        private static int GetOperand(this IEnumerable<int> state, int value, ParameterMode? parameterMode)
+        private static int JumpIf(this IList<int> state, int index, IList<ParameterMode> modes, bool jumpBehaviour)
         {
+            var param1 = state.GetOperand(index + 1, modes.ElementAtOrDefault(0));
+            var param2 = state.GetOperand(index + 2, modes.ElementAtOrDefault(1));
+            if (jumpBehaviour)
+            {
+                return param1 != 0 ? param2 : index + 3;
+            }
+
+            return param1 == 0 ? param2 : index + 3;
+        }
+
+        private static IList<int> Compare(this IList<int> state, int index, IList<ParameterMode> modes, Func<int, int, bool> comparator)
+        {
+            var param1 = state.GetOperand(index + 1, modes.ElementAtOrDefault(0));
+            var param2 = state.GetOperand(index + 2, modes.ElementAtOrDefault(1));
+
+            var indexToUpdate = state.ElementAtWrapped(index + 3);
+
+            var valueToStore = comparator(param1, param2) ? 1 : 0;
+
+            state[indexToUpdate] = valueToStore;
+            return state;
+        }
+
+        private static int GetOperand(this IList<int> state, int index, ParameterMode? parameterMode)
+        {
+            var value = state.ElementAtWrapped(index);
+            
             if (parameterMode == null)
             {
                 parameterMode = ParameterMode.Position;

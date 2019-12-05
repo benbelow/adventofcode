@@ -9,13 +9,15 @@ namespace AdventOfCode._2019.Day5
         [Test]
         public void Part1()
         {
-            Day5.Part1().Should().Be(475);
+            Day5.Part1().Should().Be(9654885);
         }
 
         [Test]
         public void Part2()
         {
-            Day5.Part2().Should().Be(297);
+            var answer = Day5.Part2();
+            answer.Should().BeLessThan(15058689);
+            answer.Should().Be(7079459);
         }
     }
 }
