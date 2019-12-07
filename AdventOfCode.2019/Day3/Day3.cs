@@ -21,16 +21,16 @@ namespace AdventOfCode._2019.Day3
 
         public static int GetClosestIntersection(string wireInstructions1, string wireInstructions2)
         {
-            var wire1 = BuildWire(wireInstructions1.Split(","));
-            var wire2 = BuildWire(wireInstructions2.Split(","));
+            var wire1 = BuildWire(wireInstructions1.Split(','));
+            var wire2 = BuildWire(wireInstructions2.Split(','));
             var crossovers = GetCrossoverPoints(wire1, wire2);
             return crossovers.Select(c => Math.Abs(c.Item1) + Math.Abs(c.Item2)).Where(d => d > 0).Min();
         }
 
         public static int GetFewestStepsToCrossOver(string wireInstructions1, string wireInstructions2)
         {
-            var wire1 = BuildWire(wireInstructions1.Split(","));
-            var wire2 = BuildWire(wireInstructions2.Split(","));
+            var wire1 = BuildWire(wireInstructions1.Split(','));
+            var wire2 = BuildWire(wireInstructions2.Split(','));
             var crossovers = GetCrossoverPoints(wire1, wire2);
 
             return crossovers

@@ -15,7 +15,7 @@ namespace AdventOfCode._2019.Common.IntCode
 
         public static List<int> ParseIntCode(string intCode)
         {
-            return intCode.Split(",").Select(int.Parse).ToList();
+            return intCode.Split(',').Select(int.Parse).ToList();
         }
 
         public static IntCodeOutput RunIntCode(IList<int> initialState, int? noun = null, int? verb = null, Func<int> getInput = null)

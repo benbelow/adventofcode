@@ -9,16 +9,16 @@ namespace AdventOfCode._2019.Day4
         public static int Part1()
         {
             var lines = FileReader.ReadInputLines(4).ToList();
-            var min = int.Parse(lines.First().Split("-").First());
-            var max = int.Parse(lines.First().Split("-").Last());
+            var min = int.Parse(lines.First().Split('-').First());
+            var max = int.Parse(lines.First().Split('-').Last());
             return NumberOfPasswordsInRange(min, max, false);
         }
 
         public static int Part2()
         {
             var lines = FileReader.ReadInputLines(4).ToList();
-            var min = int.Parse(lines.First().Split("-").First());
-            var max = int.Parse(lines.First().Split("-").Last());
+            var min = int.Parse(lines.First().Split('-').First());
+            var max = int.Parse(lines.First().Split('-').Last());
             return NumberOfPasswordsInRange(min, max, true);
         }
 

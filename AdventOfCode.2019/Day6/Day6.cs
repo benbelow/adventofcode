@@ -32,8 +32,8 @@ namespace AdventOfCode._2019.Day6
 
             foreach (var inputLine in inputLines)
             {
-                var orbiteeId = inputLine.Split(")").First();
-                var orbiterId = inputLine.Split(")").Last();
+                var orbiteeId = inputLine.Split(')').First();
+                var orbiterId = inputLine.Split(')').Last();
 
                 if (!celestialBodies.TryGetValue(orbiteeId, out var orbitee))
                 {
