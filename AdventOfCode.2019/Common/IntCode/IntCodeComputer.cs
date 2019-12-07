@@ -7,18 +7,17 @@ namespace AdventOfCode._2019.Common.IntCode
 {
     public static class IntCodeComputer
     {
-        public static IntCodeOutput ParseAndRunIntCode(string intCode, Func<int> getInput = null)
+        public static IntCodeFinalOutput ParseAndRunIntCode(string intCode, Func<int> getInput = null)
         {
             var initialState = ParseIntCode(intCode);
             return RunIntCode(initialState, getInput: getInput);
         }
-        
+
         /// <summary>
         /// Runs intCode given a list of inputs rather than a function
         /// </summary>
-        public static IntCodeOutput ParseAndRunIntCode(string intCode, params int[] inputs)
+        public static IntCodeFinalOutput ParseAndRunIntCode(string intCode, params int[] inputs)
         {
-
             var inputIndex = -1;
 
             int GetInput()
@@ -30,12 +29,32 @@ namespace AdventOfCode._2019.Common.IntCode
             return ParseAndRunIntCode(intCode, GetInput);
         }
 
+        public static IEnumerable<IntCodeOutput> IntCodeGenerator(string intCode, Func<int> getNextInput)
+        {
+            var initialState = ParseIntCode(intCode);
+            return RunIntCodeGenerator(initialState, getInput: getNextInput);
+        }
+
         public static List<int> ParseIntCode(string intCode)
         {
             return intCode.Split(',').Select(int.Parse).ToList();
         }
 
-        public static IntCodeOutput RunIntCode(IList<int> initialState, int? noun = null, int? verb = null, Func<int> getInput = null)
+        public static IntCodeFinalOutput RunIntCode(
+            IList<int> initialState,
+            int? noun = null,
+            int? verb = null,
+            Func<int> getInput = null)
+        {
+            var outputs = RunIntCodeGenerator(initialState, noun, verb, getInput).ToList();
+            return new IntCodeFinalOutput{ Outputs = outputs.Where(o => o.Output != null).Select(o => o.Output.Value), FinalState = outputs.Last().CurrentState};
+        }
+        
+        public static IEnumerable<IntCodeOutput> RunIntCodeGenerator(
+            IList<int> initialState,
+            int? noun = null,
+            int? verb = null,
+            Func<int> getInput = null)
         {
             if (!(noun == null || (noun >= 0 && noun <= 99) && verb == null || (verb >= 0 && verb <= 99)))
             {
@@ -85,6 +104,7 @@ namespace AdventOfCode._2019.Common.IntCode
                     case 4:
                         state = state.ApplyOutput(index, x => { outputs.Add(x); }, modes);
                         index += 2;
+                        yield return new IntCodeOutput {Output = outputs.Last(), IsComplete = false};
                         break;
                     // JUMP IF TRUE
                     case 5:
@@ -111,14 +131,11 @@ namespace AdventOfCode._2019.Common.IntCode
                 value = state.ElementAt(index);
             }
 
-            return new IntCodeOutput
-            {
-                FinalState = state,
-                Outputs = outputs
-            };
+            yield return new IntCodeOutput {IsComplete = true, CurrentState = state};
         }
 
-        private static IList<int> ApplyOperation(this IList<int> state, int index, Func<int, int, int> operation, IList<ParameterMode> modes)
+        private static IList<int> ApplyOperation(this IList<int> state, int index, Func<int, int, int> operation,
+            IList<ParameterMode> modes)
         {
             var outputIndex = state.ElementAtWrapped(index + 3);
 
@@ -139,7 +156,8 @@ namespace AdventOfCode._2019.Common.IntCode
             return state;
         }
 
-        private static IList<int> ApplyOutput(this IList<int> state, int index, Action<int> applyOutput, IEnumerable<ParameterMode> modes)
+        private static IList<int> ApplyOutput(this IList<int> state, int index, Action<int> applyOutput,
+            IEnumerable<ParameterMode> modes)
         {
             var output = state.GetOperand(index + 1, modes.SingleOrDefault());
             applyOutput(output);
@@ -158,7 +176,8 @@ namespace AdventOfCode._2019.Common.IntCode
             return param1 == 0 ? param2 : index + 3;
         }
 
-        private static IList<int> Compare(this IList<int> state, int index, IList<ParameterMode> modes, Func<int, int, bool> comparator)
+        private static IList<int> Compare(this IList<int> state, int index, IList<ParameterMode> modes,
+            Func<int, int, bool> comparator)
         {
             var param1 = state.GetOperand(index + 1, modes.ElementAtOrDefault(0));
             var param2 = state.GetOperand(index + 2, modes.ElementAtOrDefault(1));
@@ -174,7 +193,7 @@ namespace AdventOfCode._2019.Common.IntCode
         private static int GetOperand(this IList<int> state, int index, ParameterMode? parameterMode)
         {
             var value = state.ElementAtWrapped(index);
-            
+
             if (parameterMode == null)
             {
                 parameterMode = ParameterMode.Position;
