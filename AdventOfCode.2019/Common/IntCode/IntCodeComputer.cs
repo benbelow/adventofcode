@@ -12,6 +12,23 @@ namespace AdventOfCode._2019.Common.IntCode
             var initialState = ParseIntCode(intCode);
             return RunIntCode(initialState, getInput: getInput);
         }
+        
+        /// <summary>
+        /// Runs intCode given a list of inputs rather than a function
+        /// </summary>
+        public static IntCodeOutput ParseAndRunIntCode(string intCode, params int[] inputs)
+        {
+
+            var inputIndex = -1;
+
+            int GetInput()
+            {
+                inputIndex++;
+                return inputs[inputIndex];
+            }
+
+            return ParseAndRunIntCode(intCode, GetInput);
+        }
 
         public static List<int> ParseIntCode(string intCode)
         {
