@@ -15,5 +15,11 @@ namespace AdventOfCode._2019.Common
             collection = collection.ToList();
             return collection.ElementAt(collection.WrappedIndex(index));
         }
+        
+        public static IEnumerable<T> ToIEnumerable<T>(this IEnumerator<T> enumerator) {
+            while ( enumerator.MoveNext() ) {
+                yield return enumerator.Current;
+            }
+        }
     }
 }
