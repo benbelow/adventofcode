@@ -21,5 +21,15 @@ namespace AdventOfCode._2019.Common
                 yield return enumerator.Current;
             }
         }
+
+        public static Queue<T> WithValues<T>(this Queue<T> queue, params T[] initialValues)
+        {
+            foreach (var value in initialValues)
+            {
+                queue.Enqueue(value);
+            }
+
+            return queue;
+        }
     }
 }

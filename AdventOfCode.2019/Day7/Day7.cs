@@ -38,7 +38,9 @@ namespace AdventOfCode._2019.Day7
         private static int RunPhasePermutation(string program, IEnumerable<int> phases)
         {
             return phases.Aggregate(0, (current, phase) =>
-                IntCodeLogic.ParseAndRunIntCode(program, phase, () => current).ToEnumerable().Single(x => !x.IsComplete).Output ?? -1
+                IntCodeLogic.ParseAndRunIntCode(program, new Queue<int>().WithValues(phase, current))
+                    .ToEnumerable()
+                    .Single(x => !x.IsComplete).Output ?? -1
             );
         }
 

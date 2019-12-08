@@ -6,27 +6,22 @@ namespace AdventOfCode._2019.Common.IntCode
     {
         private readonly IEnumerator<IntCodeOutput> _outputs;
 
-        private int? _currentInput = 0;
-        private int _outputIndex = 0;
-        private List<IntCodeOutput> _returnedOutputs = new List<IntCodeOutput>();
+        private readonly Queue<int> _inputs = new Queue<int>();
 
         public IntCodeComputer(string program, int initialInput)
         {
-            _outputs = IntCodeLogic.ParseAndRunIntCode(program, initialInput, NextInput);
+            _inputs.Enqueue(initialInput);
+            _outputs = IntCodeLogic.ParseAndRunIntCode(program, _inputs);
         }
 
         public IntCodeOutput NextOutput(int? newInput)
         {
-            _currentInput = newInput;
+            if (newInput.HasValue)
+            {
+                _inputs.Enqueue(newInput.Value);
+            }
             _outputs.MoveNext();
-            var output = _outputs.Current;
-            _returnedOutputs.Add(output);
-            return output;
-        }
-
-        private int NextInput()
-        {
-            return _currentInput ?? 0;
+            return _outputs.Current;
         }
     }
 }

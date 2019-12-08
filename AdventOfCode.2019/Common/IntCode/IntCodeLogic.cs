@@ -8,33 +8,21 @@ namespace AdventOfCode._2019.Common.IntCode
     {
         public static IEnumerator<IntCodeOutput> ParseAndRunIntCode(
             string intCode,
-            int? firstInput = null,
-            Func<int> getNextInput = null,
+            Queue<int> inputs = null,
             int? noun = null,
             int? verb = null)
         {
-            getNextInput ??= () => 0;
+            inputs ??= new Queue<int>();
             var initialState = Parser.ParseIntCode(intCode);
-            
-            var usedInitial = false;
-            int GetInput()
-            {
-                if (usedInitial || firstInput == null)
-                {
-                    return getNextInput();
-                }
-                usedInitial = true;
-                return firstInput.Value;
-            }
 
-            return RunIntCode(initialState, getInput: GetInput, noun: noun, verb: verb);
+            return RunIntCode(initialState, inputs, noun, verb);
         }
 
         public static IEnumerator<IntCodeOutput> RunIntCode(
             IList<int> initialState,
+            Queue<int> inputs,
             int? noun = null,
-            int? verb = null,
-            Func<int> getInput = null)
+            int? verb = null)
         {
             if (!(noun == null || (noun >= 0 && noun <= 99) && verb == null || (verb >= 0 && verb <= 99)))
             {
@@ -77,7 +65,7 @@ namespace AdventOfCode._2019.Common.IntCode
                         break;
                     // INPUT
                     case 3:
-                        state = state.ApplyInput(index, getInput);
+                        state = state.ApplyInput(index, inputs.Dequeue);
                         index += 2;
                         break;
                     // OUTPUT
