@@ -86,7 +86,7 @@ namespace AdventOfCode._2019.Day8
             {
                 foreach (var pixel in row.Values)
                 {
-                    Console.Write(pixel == 1 ? "*" : " ");
+                    Console.Write(pixel == 1 ? "🎄" : "  ");
                 }
                 Console.WriteLine();
             }
