@@ -10,25 +10,25 @@ namespace AdventOfCode._2019.Day2
         public static int Part1()
         {
             var intCode = FileReader.ReadInputLines(2).Single();
-            var initialState = IntCodeComputer.ParseIntCode(intCode);
+            var initialState = IntCodeLogic.ParseIntCode(intCode);
 
-            var result = IntCodeComputer.RunIntCode(initialState, noun: 12, verb: 2);
+            var result = IntCodeLogic.RunIntCode(initialState, noun: 12, verb: 2);
             return result.FinalState.First();
         }
 
         public static int Part2Manual(int noun, int verb)
         {
             var intCode = FileReader.ReadInputLines(2).Single();
-            var initialState = IntCodeComputer.ParseIntCode(intCode);
+            var initialState = IntCodeLogic.ParseIntCode(intCode);
             
-            var result = IntCodeComputer.RunIntCode(initialState, noun: noun, verb: verb);
+            var result = IntCodeLogic.RunIntCode(initialState, noun: noun, verb: verb);
             return result.FinalState.First();
         }
 
         public static int Part2(int target)
         {
             var intCode = FileReader.ReadInputLines(2).Single();
-            var initialState = IntCodeComputer.ParseIntCode(intCode);
+            var initialState = IntCodeLogic.ParseIntCode(intCode);
 
             var result = 0;
             var noun = 0;
@@ -44,7 +44,7 @@ namespace AdventOfCode._2019.Day2
                 {
                     noun++;
                 }
-                result = IntCodeComputer.RunIntCode(new List<int>(initialState), noun: noun, verb: verb).FinalState.First();
+                result = IntCodeLogic.RunIntCode(new List<int>(initialState), noun: noun, verb: verb).FinalState.First();
             }
 
             return 100 * noun + verb;

@@ -10,7 +10,7 @@ namespace AdventOfCode._2019.Day5
         public static int Part1()
         {
             var lines = FileReader.ReadInputLines(5).ToList();
-            var output = IntCodeComputer.ParseAndRunIntCode(lines.First(), () => 1);
+            var output = IntCodeLogic.ParseAndRunIntCode(lines.First(), () => 1);
             
             if (output.Outputs.Count(x => x != 0) != 1)
             {
@@ -23,7 +23,7 @@ namespace AdventOfCode._2019.Day5
         public static int Part2()
         {
             var lines = FileReader.ReadInputLines(5).ToList();
-            var output = IntCodeComputer.ParseAndRunIntCode(lines.First(), () => 5);
+            var output = IntCodeLogic.ParseAndRunIntCode(lines.First(), () => 5);
 
             return output.Outputs.Single();
         }

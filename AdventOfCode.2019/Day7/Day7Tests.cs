@@ -26,5 +26,11 @@ namespace AdventOfCode._2019.Day7
         {
             Day7.GetMaximumThrustWithFeedback(program).Should().Be(expectedThrust);
         }
+
+        [Test]
+        public void Part2()
+        {
+            Day7.Part2().Should().Be(4275738);
+        }
     }
 }

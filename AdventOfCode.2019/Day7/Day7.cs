@@ -13,6 +13,12 @@ namespace AdventOfCode._2019.Day7
             var program = FileReader.ReadInputLines(7).Single();
             return GetMaximumThrust(program);
         }
+        
+        public static int Part2()
+        {
+            var program = FileReader.ReadInputLines(7).Single();
+            return GetMaximumThrustWithFeedback(program);
+        }
 
         public static int GetMaximumThrust(string program)
         {
@@ -33,30 +39,36 @@ namespace AdventOfCode._2019.Day7
         private static int RunPhasePermutation(string program, IEnumerable<int> phases)
         {
             return phases.Aggregate(0, (current, phase) =>
-                IntCodeComputer.ParseAndRunIntCode(program, phase, current).Outputs.Single()
+                IntCodeLogic.ParseAndRunIntCode(program, phase, current).Outputs.Single()
             );
         }
 
-        private static int RunPhasePermutationWithFeedback(string program, IEnumerable<int> phases)
+        private static int RunPhasePermutationWithFeedback(string program, IList<int> phases)
         {
             phases = phases.ToList();
-            var innerOutput = 0;
-            var outerOutputs = 0;
+            var outputs = new List<int?>();
+            var outputE = new IntCodeOutput {Output = 0};
 
-            do
+            var amplifierA = new IntCodeComputer(program, phases[0]);
+            var amplifierB = new IntCodeComputer(program, phases[1]);
+            var amplifierC = new IntCodeComputer(program, phases[2]);
+            var amplifierD = new IntCodeComputer(program, phases[3]);
+            var amplifierE = new IntCodeComputer(program, phases[4]);
+
+            while (true)
             {
-                innerOutput = phases.Aggregate(innerOutput,
-                    (current, phase) => IntCodeComputer.ParseAndRunIntCode(program, phase, current).Outputs.Single());
+                var outputA = amplifierA.NextOutput(outputE.Output);
+                var outputB = amplifierB.NextOutput(outputA.Output);
+                var outputC = amplifierC.NextOutput(outputB.Output);
+                var outputD = amplifierD.NextOutput(outputC.Output);
+                outputE = amplifierE.NextOutput(outputD.Output);
 
-                if (innerOutput == 0)
+                outputs.Add(outputE.Output);
+                if (outputE.IsComplete)
                 {
-                    return outerOutputs;
+                    return outputs.Where(o => o != null).Select(o => o.Value).Max();
                 }
-
-                outerOutputs += innerOutput;
-            } while (innerOutput != 0);
-
-            return outerOutputs;
+            }
         }
     }
 }
