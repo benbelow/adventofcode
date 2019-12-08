@@ -15,7 +15,6 @@ namespace AdventOfCode._2019.Common.IntCode
         {
             inputs ??= new Queue<int>();
             var initialState = Parser.ParseIntCode(intCode);
-
             return RunIntCode(initialState, inputs, noun, verb);
         }
 
@@ -32,21 +31,17 @@ namespace AdventOfCode._2019.Common.IntCode
             };
             var outputs = new List<int>();
 
-            while (state.Value != 99)
+            while (state.OpCode != 99)
             {
-                var instructionString = state.Value.ToString().Reverse().ToList();
-                var operation = int.Parse(string.Concat(instructionString.Take(2).Reverse()));
-                var modes = instructionString.Skip(2).Select(c => (ParameterMode) int.Parse(c.ToString())).ToList();
-
-                switch (operation)
+                switch (state.OpCode)
                 {
                     // ADD
                     case 1:
-                        state = state.ApplyOperation((x, y) => x + y, modes);
+                        state = state.ApplyOperation((x, y) => x + y);
                         break;
                     // MULTIPLY
                     case 2:
-                        state = state.ApplyOperation((x, y) => x * y, modes);
+                        state = state.ApplyOperation((x, y) => x * y);
                         break;
                     // INPUT
                     case 3:
@@ -54,7 +49,7 @@ namespace AdventOfCode._2019.Common.IntCode
                         break;
                     // OUTPUT
                     case 4:
-                        state = state.ApplyOutput(x => { outputs.Add(x); }, modes);
+                        state = state.ApplyOutput(x => { outputs.Add(x); });
                         yield return new IntCodeOutput
                         {
                             Output = outputs.Last(), IsComplete = false, CurrentState = state.State
@@ -62,19 +57,19 @@ namespace AdventOfCode._2019.Common.IntCode
                         break;
                     // JUMP IF TRUE
                     case 5:
-                        state = state.JumpIf(modes, true);
+                        state = state.JumpIf(true);
                         break;
                     // JUMP IF FALSE
                     case 6:
-                        state = state.JumpIf(modes, false);
+                        state = state.JumpIf(false);
                         break;
                     // LESS THAN
                     case 7:
-                        state = state.Compare(modes, (x, y) => x < y);
+                        state = state.Compare((x, y) => x < y);
                         break;
                     // EQUALS
                     case 8:
-                        state = state.Compare(modes, (x, y) => x == y);
+                        state = state.Compare((x, y) => x == y);
                         break;
                     default:
                         throw new Exception($"Unrecognised instruction: {state.Value}");

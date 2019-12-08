@@ -7,11 +7,9 @@ namespace AdventOfCode._2019.Common.IntCode
 {
     public static class StateOperations
     {
-        public static IntCodeState ApplyOperation(
-            this IntCodeState state,
-            Func<int, int, int> operation,
-            IEnumerable<ParameterMode> modes)
+        public static IntCodeState ApplyOperation(this IntCodeState state, Func<int, int, int> operation)
         {
+            var modes = state.ParameterModes;
             var outputIndex = state.State.ElementAtWrapped(state.Index + 3);
             var operandX = state.State.GetOperand(state.Index + 1, modes.ElementAtOrDefault(0));
             var operandY = state.State.GetOperand(state.Index + 2, modes.ElementAtOrDefault(1));
@@ -38,10 +36,9 @@ namespace AdventOfCode._2019.Common.IntCode
             };
         }
 
-        public static IntCodeState ApplyOutput(this IntCodeState state, Action<int> applyOutput,
-            IEnumerable<ParameterMode> modes)
+        public static IntCodeState ApplyOutput(this IntCodeState state, Action<int> applyOutput)
         {
-            var output = state.State.GetOperand(state.Index + 1, modes.SingleOrDefault());
+            var output = state.State.GetOperand(state.Index + 1, state.ParameterModes.SingleOrDefault());
             applyOutput(output);
             return new IntCodeState
             {
@@ -50,8 +47,9 @@ namespace AdventOfCode._2019.Common.IntCode
             };
         }
 
-        public static IntCodeState JumpIf(this IntCodeState state, ICollection<ParameterMode> modes, bool jumpBehaviour)
+        public static IntCodeState JumpIf(this IntCodeState state, bool jumpBehaviour)
         {
+            var modes = state.ParameterModes;
             var param1 = state.State.GetOperand(state.Index + 1, modes.ElementAtOrDefault(0));
             var param2 = state.State.GetOperand(state.Index + 2, modes.ElementAtOrDefault(1));
 
@@ -65,11 +63,9 @@ namespace AdventOfCode._2019.Common.IntCode
             };
         }
 
-        public static IntCodeState Compare(
-            this IntCodeState state, 
-            IList<ParameterMode> modes,
-            Func<int, int, bool> comparator)
+        public static IntCodeState Compare(this IntCodeState state, Func<int, int, bool> comparator)
         {
+            var modes = state.ParameterModes;
             var param1 = state.State.GetOperand(state.Index + 1, modes.ElementAtOrDefault(0));
             var param2 = state.State.GetOperand(state.Index + 2, modes.ElementAtOrDefault(1));
 
