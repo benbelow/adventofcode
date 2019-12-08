@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode._2019.Common;
 using AdventOfCode._2019.Common.IntCode;
@@ -39,7 +38,7 @@ namespace AdventOfCode._2019.Day7
         private static int RunPhasePermutation(string program, IEnumerable<int> phases)
         {
             return phases.Aggregate(0, (current, phase) =>
-                IntCodeLogic.ParseAndRunIntCode(program, phase, current).Outputs.Single()
+                IntCodeLogic.ParseAndRunIntCodeGenerator(program, phase, () => current).ToEnumerable().Single(x => !x.IsComplete).Output ?? -1
             );
         }
 

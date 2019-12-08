@@ -1,62 +1,33 @@
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 
 namespace AdventOfCode._2019.Common.IntCode
 {
     public static class IntCodeLogic
     {
-        public static IntCodeFinalOutput ParseAndRunIntCode(string intCode, Func<int> getInput = null)
+        public static IEnumerator<IntCodeOutput> ParseAndRunIntCodeGenerator(
+            string intCode,
+            int? firstInput = null,
+            Func<int> getNextInput = null)
         {
-            var initialState = ParseIntCode(intCode);
-            return RunIntCode(initialState, getInput: getInput);
-        }
-
-        /// <summary>
-        /// Runs intCode given a list of inputs rather than a function
-        /// </summary>
-        public static IntCodeFinalOutput ParseAndRunIntCode(string intCode, params int[] inputs)
-        {
-            var inputIndex = -1;
-
-            int GetInput()
-            {
-                inputIndex++;
-                return inputs[inputIndex];
-            }
-
-            return ParseAndRunIntCode(intCode, GetInput);
-        }
-
-        public static IEnumerator<IntCodeOutput> ParseAndRunIntCodeGenerator(string intCode, Func<int> getNextInput)
-        {
-            var initialState = ParseIntCode(intCode);
-            return RunIntCodeGenerator(initialState, getInput: getNextInput);
-        }
-
-        public static IEnumerator<IntCodeOutput> ParseAndRunIntCodeGenerator(string intCode, int firstInput, Func<int> getNextInput)
-        {
-            var initialState = ParseIntCode(intCode);
+            getNextInput ??= () => 0;
+            var initialState = Parser.ParseIntCode(intCode);
             
             var usedInitial = false;
             int GetInput()
             {
-                if (usedInitial)
+                if (usedInitial || firstInput == null)
                 {
                     return getNextInput();
                 }
                 usedInitial = true;
-                return firstInput;
+                return firstInput.Value;
             }
 
             return RunIntCodeGenerator(initialState, getInput: GetInput);
         }
 
-        public static List<int> ParseIntCode(string intCode)
-        {
-            return intCode.Split(',').Select(int.Parse).ToList();
-        }
 
         public static IntCodeFinalOutput RunIntCode(
             IList<int> initialState,
@@ -64,7 +35,7 @@ namespace AdventOfCode._2019.Common.IntCode
             int? verb = null,
             Func<int> getInput = null)
         {
-            var outputs = RunIntCodeGenerator(initialState, noun, verb, getInput).ToIEnumerable().ToList();
+            var outputs = RunIntCodeGenerator(initialState, noun, verb, getInput).ToEnumerable().ToList();
             return new IntCodeFinalOutput{ Outputs = outputs.Where(o => o.Output != null).Select(o => o.Output.Value), FinalState = outputs.Last().CurrentState};
         }
         
@@ -122,7 +93,10 @@ namespace AdventOfCode._2019.Common.IntCode
                     case 4:
                         state = state.ApplyOutput(index, x => { outputs.Add(x); }, modes);
                         index += 2;
-                        yield return new IntCodeOutput {Output = outputs.Last(), IsComplete = false};
+                        yield return new IntCodeOutput
+                        {
+                            Output = outputs.Last(), IsComplete = false, CurrentState = state
+                        };
                         break;
                     // JUMP IF TRUE
                     case 5:

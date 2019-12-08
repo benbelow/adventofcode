@@ -15,7 +15,7 @@ namespace AdventOfCode._2019.Common.IntCode
         [TestCase("1,1,1,4,99,5,6,0,99", 4, 2)]
         public void Parse_And_RunIntCode(string intCode, int indexOfCheck, int expectedResult)
         {
-            IntCodeLogic.ParseAndRunIntCode(intCode).FinalState.Skip(indexOfCheck).First().Should().Be(expectedResult);
+            IntCodeLogic.ParseAndRunIntCodeGenerator(intCode).ToEnumerable().Last().CurrentState.Skip(indexOfCheck).First().Should().Be(expectedResult);
         }
 
         [TestCase("3,9,8,9,10,9,4,9,99,-1,8", 8, 1)]
@@ -26,7 +26,11 @@ namespace AdventOfCode._2019.Common.IntCode
         [TestCase("3,3,1108,-1,8,3,4,3,99", 7, 0)]
         public void EqualTo(string intCode, int input, int expectedOutput)
         {
-            IntCodeLogic.ParseAndRunIntCode(intCode, () => input).Outputs.Single().Should().Be(expectedOutput);
+            IntCodeLogic.ParseAndRunIntCodeGenerator(intCode, getNextInput: () => input)
+                .ToEnumerable()
+                .Single(x => !x.IsComplete)
+                .Output
+                .Should().Be(expectedOutput);
         }
 
         [TestCase("3,9,7,9,10,9,4,9,99,-1,8", 8, 0)]
@@ -37,7 +41,11 @@ namespace AdventOfCode._2019.Common.IntCode
         [TestCase("3,3,1107,-1,8,3,4,3,99", 7, 1)]
         public void LessThan(string intCode, int input, int expectedOutput)
         {
-            IntCodeLogic.ParseAndRunIntCode(intCode, () => input).Outputs.Single().Should().Be(expectedOutput);
+            IntCodeLogic.ParseAndRunIntCodeGenerator(intCode, getNextInput:() => input)
+                .ToEnumerable()
+                .Single(x => !x.IsComplete)
+                .Output
+                .Should().Be(expectedOutput);
         }
 
         // Example from https://adventofcode.com/2019/day/5#part2
@@ -49,7 +57,11 @@ namespace AdventOfCode._2019.Common.IntCode
             const string code =
                 "3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31, 1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104, 999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99";
 
-            IntCodeLogic.ParseAndRunIntCode(code, () => input).Outputs.Single().Should().Be(expectedOutput);
+            IntCodeLogic.ParseAndRunIntCodeGenerator(code, getNextInput: () => input)
+                .ToEnumerable()
+                .Single(x => !x.IsComplete)
+                .Output
+                .Should().Be(expectedOutput);
         }
     }
 }

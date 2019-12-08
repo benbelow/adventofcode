@@ -16,7 +16,7 @@ namespace AdventOfCode._2019.Common
             return collection.ElementAt(collection.WrappedIndex(index));
         }
         
-        public static IEnumerable<T> ToIEnumerable<T>(this IEnumerator<T> enumerator) {
+        public static IEnumerable<T> ToEnumerable<T>(this IEnumerator<T> enumerator) {
             while ( enumerator.MoveNext() ) {
                 yield return enumerator.Current;
             }

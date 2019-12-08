@@ -10,7 +10,7 @@ namespace AdventOfCode._2019.Day2
         public static int Part1()
         {
             var intCode = FileReader.ReadInputLines(2).Single();
-            var initialState = IntCodeLogic.ParseIntCode(intCode);
+            var initialState = Parser.ParseIntCode(intCode);
 
             var result = IntCodeLogic.RunIntCode(initialState, noun: 12, verb: 2);
             return result.FinalState.First();
@@ -19,7 +19,7 @@ namespace AdventOfCode._2019.Day2
         public static int Part2Manual(int noun, int verb)
         {
             var intCode = FileReader.ReadInputLines(2).Single();
-            var initialState = IntCodeLogic.ParseIntCode(intCode);
+            var initialState = Parser.ParseIntCode(intCode);
             
             var result = IntCodeLogic.RunIntCode(initialState, noun: noun, verb: verb);
             return result.FinalState.First();
@@ -28,7 +28,7 @@ namespace AdventOfCode._2019.Day2
         public static int Part2(int target)
         {
             var intCode = FileReader.ReadInputLines(2).Single();
-            var initialState = IntCodeLogic.ParseIntCode(intCode);
+            var initialState = Parser.ParseIntCode(intCode);
 
             var result = 0;
             var noun = 0;
