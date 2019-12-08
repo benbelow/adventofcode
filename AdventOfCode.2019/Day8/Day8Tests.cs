@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Linq;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace AdventOfCode._2019.Day8
@@ -16,6 +17,23 @@ namespace AdventOfCode._2019.Day8
         public void Part1()
         {
             Day8.Part1().Should().Be(2480);
+        }
+
+        [Test]
+        public void Render()
+        {
+            var image = new SpaceImage("0222112222120000".ToList().Select(i => int.Parse(i.ToString())).ToList(), 2, 2);
+            var render = image.Render();
+            render.PixelAt(0, 0).Should().Be(0);
+            render.PixelAt(0, 1).Should().Be(1);
+            render.PixelAt(1, 0).Should().Be(1);
+            render.PixelAt(1, 1).Should().Be(0);
+        }
+
+        [Test]
+        public void Part2()
+        {
+            Day8.Part2().Should().Be("ZYBLH");
         }
     }
 }
