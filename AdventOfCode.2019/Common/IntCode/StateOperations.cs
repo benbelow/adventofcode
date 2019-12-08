@@ -8,17 +8,16 @@ namespace AdventOfCode._2019.Common.IntCode
     public static class StateOperations
     {
         /// <summary>
-        /// Applies an arbitrary operation to the next *TWO* values, outputting based on the third parameter.
+        /// Applies an arbitrary operation to the first *TWO* parameters, outputting based on the third parameter.
         /// Will need extending if it needs to be applied to more than two parameters.
         /// </summary>
         public static IntCodeState ApplyOperation(this IntCodeState state, Func<int, int, int> operation)
         {
-            var outputIndex = state.WriteParameter(3);
-            var output = operation(state.ReadParameter(1), state.ReadParameter(2));
+            var operationResult = operation(state.ReadParameter(1), state.ReadParameter(2));
             
             return new IntCodeState
             {
-                State = state.SetAt(outputIndex, output),
+                State = state.SetAt(state.WriteParameter(3), operationResult),
                 Index = state.Index + 4
             };
         }
@@ -26,11 +25,11 @@ namespace AdventOfCode._2019.Common.IntCode
         /// <summary>
         /// Accepts a single input, applying it to the memory address stored at the single parameter.
         /// </summary>
-        public static IntCodeState ApplyInput(this IntCodeState state, Func<int> getInput)
+        public static IntCodeState ApplyInput(this IntCodeState state, int input)
         {
             return new IntCodeState
             {
-                State = state.SetAt(state.WriteParameter(1), getInput()),
+                State = state.SetAt(state.WriteParameter(1), input),
                 Index = state.Index + 2
             };
         }
@@ -51,19 +50,21 @@ namespace AdventOfCode._2019.Common.IntCode
 
         /// <summary>
         /// If the condition is fulfilled, jumps to a new memory address - if not, proceeds as normal through the code.
+        /// Condition is based on a single parameter
         /// </summary>
-        public static IntCodeState JumpIf(this IntCodeState state, bool jumpBehaviour)
+        public static IntCodeState JumpIf(this IntCodeState state, Func<int, bool> shouldJump)
         {
-            var shouldJump = jumpBehaviour && state.ReadParameter(1) != 0 || !jumpBehaviour && state.ReadParameter(1) == 0;
-            var newIndex = shouldJump ? state.ReadParameter(2) : state.Index + 3;
-
             return new IntCodeState
             {
                 State = state.State,
-                Index = newIndex
+                Index = shouldJump(state.ReadParameter(1)) ? state.ReadParameter(2) : state.Index + 3
             };
         }
 
+        /// <summary>
+        /// Compares the first two values using the given comparator.
+        /// Sets the value in the index given by param 3 to either 1 or 0, reflecting the result of the comparison
+        /// </summary>
         public static IntCodeState Compare(this IntCodeState state, Func<int, int, bool> comparator)
         {
             var valueToStore = comparator(state.ReadParameter(1), state.ReadParameter(2)) ? 1 : 0;

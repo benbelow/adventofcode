@@ -43,7 +43,7 @@ namespace AdventOfCode._2019.Common.IntCode
                         break;
                     // INPUT
                     case 3:
-                        state = state.ApplyInput(inputs.Dequeue);
+                        state = state.ApplyInput(inputs.Dequeue());
                         break;
                     // OUTPUT
                     case 4:
@@ -55,11 +55,11 @@ namespace AdventOfCode._2019.Common.IntCode
                         break;
                     // JUMP IF TRUE
                     case 5:
-                        state = state.JumpIf(true);
+                        state = state.JumpIf(x => x != 0);
                         break;
                     // JUMP IF FALSE
                     case 6:
-                        state = state.JumpIf(false);
+                        state = state.JumpIf(x => x == 0);
                         break;
                     // LESS THAN
                     case 7:
