@@ -10,7 +10,7 @@ namespace AdventOfCode._2019.Day5
         public static int Part1()
         {
             var lines = FileReader.ReadInputLines(5).ToList();
-            var output = IntCodeLogic.ParseAndRunIntCodeGenerator(lines.First(), getNextInput: () => 1).ToEnumerable().ToList();
+            var output = IntCodeLogic.ParseAndRunIntCode(lines.First(), getNextInput: () => 1).ToEnumerable().ToList();
             
             if (output.Count(x => !x.IsComplete && x.Output != 0) != 1)
             {
@@ -23,7 +23,7 @@ namespace AdventOfCode._2019.Day5
         public static int Part2()
         {
             var lines = FileReader.ReadInputLines(5).ToList();
-            var output = IntCodeLogic.ParseAndRunIntCodeGenerator(lines.First(), getNextInput: () => 5).ToEnumerable();
+            var output = IntCodeLogic.ParseAndRunIntCode(lines.First(), getNextInput: () => 5).ToEnumerable();
 
             return output.Single(x => !x.IsComplete).Output ?? -1;
         }

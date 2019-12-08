@@ -6,10 +6,12 @@ namespace AdventOfCode._2019.Common.IntCode
 {
     public static class IntCodeLogic
     {
-        public static IEnumerator<IntCodeOutput> ParseAndRunIntCodeGenerator(
+        public static IEnumerator<IntCodeOutput> ParseAndRunIntCode(
             string intCode,
             int? firstInput = null,
-            Func<int> getNextInput = null)
+            Func<int> getNextInput = null,
+            int? noun = null,
+            int? verb = null)
         {
             getNextInput ??= () => 0;
             var initialState = Parser.ParseIntCode(intCode);
@@ -25,21 +27,10 @@ namespace AdventOfCode._2019.Common.IntCode
                 return firstInput.Value;
             }
 
-            return RunIntCodeGenerator(initialState, getInput: GetInput);
+            return RunIntCode(initialState, getInput: GetInput, noun: noun, verb: verb);
         }
 
-
-        public static IntCodeFinalOutput RunIntCode(
-            IList<int> initialState,
-            int? noun = null,
-            int? verb = null,
-            Func<int> getInput = null)
-        {
-            var outputs = RunIntCodeGenerator(initialState, noun, verb, getInput).ToEnumerable().ToList();
-            return new IntCodeFinalOutput{ Outputs = outputs.Where(o => o.Output != null).Select(o => o.Output.Value), FinalState = outputs.Last().CurrentState};
-        }
-        
-        public static IEnumerator<IntCodeOutput> RunIntCodeGenerator(
+        public static IEnumerator<IntCodeOutput> RunIntCode(
             IList<int> initialState,
             int? noun = null,
             int? verb = null,

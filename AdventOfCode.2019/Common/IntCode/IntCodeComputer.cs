@@ -12,7 +12,7 @@ namespace AdventOfCode._2019.Common.IntCode
 
         public IntCodeComputer(string program, int initialInput)
         {
-            _outputs = IntCodeLogic.ParseAndRunIntCodeGenerator(program, initialInput, NextInput);
+            _outputs = IntCodeLogic.ParseAndRunIntCode(program, initialInput, NextInput);
         }
 
         public IntCodeOutput NextOutput(int? newInput)

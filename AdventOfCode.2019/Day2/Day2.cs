@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode._2019.Common;
 using AdventOfCode._2019.Common.IntCode;
@@ -10,25 +9,22 @@ namespace AdventOfCode._2019.Day2
         public static int Part1()
         {
             var intCode = FileReader.ReadInputLines(2).Single();
-            var initialState = Parser.ParseIntCode(intCode);
 
-            var result = IntCodeLogic.RunIntCode(initialState, noun: 12, verb: 2);
-            return result.FinalState.First();
+            var result = IntCodeLogic.ParseAndRunIntCode(intCode, noun: 12, verb: 2).ToEnumerable();
+            return result.Single().CurrentState.First();
         }
 
         public static int Part2Manual(int noun, int verb)
         {
             var intCode = FileReader.ReadInputLines(2).Single();
-            var initialState = Parser.ParseIntCode(intCode);
-            
-            var result = IntCodeLogic.RunIntCode(initialState, noun: noun, verb: verb);
-            return result.FinalState.First();
+
+            var result = IntCodeLogic.ParseAndRunIntCode(intCode, noun: noun, verb: verb).ToEnumerable();
+            return result.Single().CurrentState.First();
         }
 
         public static int Part2(int target)
         {
             var intCode = FileReader.ReadInputLines(2).Single();
-            var initialState = Parser.ParseIntCode(intCode);
 
             var result = 0;
             var noun = 0;
@@ -44,7 +40,13 @@ namespace AdventOfCode._2019.Day2
                 {
                     noun++;
                 }
-                result = IntCodeLogic.RunIntCode(new List<int>(initialState), noun: noun, verb: verb).FinalState.First();
+
+                result = IntCodeLogic
+                    .ParseAndRunIntCode(intCode, noun: noun, verb: verb)
+                    .ToEnumerable()
+                    .Single()
+                    .CurrentState
+                    .First();
             }
 
             return 100 * noun + verb;
