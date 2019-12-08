@@ -3,6 +3,9 @@ using AdventOfCode._2019.Common.IntCode.Models;
 
 namespace AdventOfCode._2019.Common.IntCode
 {
+    /// <summary>
+    /// Responsible for managing input queue, and lazily fetching each output of an int code computer
+    /// </summary>
     public class IntCodeComputer
     {
         private readonly IEnumerator<IntCodeOutput> _outputs;

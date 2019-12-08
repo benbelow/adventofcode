@@ -7,39 +7,41 @@ namespace AdventOfCode._2019.Common.IntCode
 {
     public static class StateOperations
     {
+        /// <summary>
+        /// Applies an arbitrary operation to the next *TWO* values, outputting based on the third parameter.
+        /// Will need extending if it needs to be applied to more than two parameters.
+        /// </summary>
         public static IntCodeState ApplyOperation(this IntCodeState state, Func<int, int, int> operation)
         {
-            var modes = state.ParameterModes;
-            var outputIndex = state.State.ElementAtWrapped(state.Index + 3);
-            var operandX = state.State.GetOperand(state.Index + 1, modes.ElementAtOrDefault(0));
-            var operandY = state.State.GetOperand(state.Index + 2, modes.ElementAtOrDefault(1));
-
-            var output = operation(operandX, operandY);
-            var indexToUpdate = state.State.WrappedIndex(outputIndex);
-            state.State[indexToUpdate] = output;
+            var outputIndex = state.WriteParameter(3);
+            var output = operation(state.ReadParameter(1), state.ReadParameter(2));
+            
             return new IntCodeState
             {
-                State = state.State,
+                State = state.SetAt(outputIndex, output),
                 Index = state.Index + 4
             };
         }
 
+        /// <summary>
+        /// Accepts a single input, applying it to the memory address stored at the single parameter.
+        /// </summary>
         public static IntCodeState ApplyInput(this IntCodeState state, Func<int> getInput)
         {
-            var indexOfInputStore = state.State.ElementAtWrapped(state.Index + 1);
-            var input = getInput();
-            state.State[indexOfInputStore] = input;
             return new IntCodeState
             {
-                State = state.State,
+                State = state.SetAt(state.WriteParameter(1), getInput()),
                 Index = state.Index + 2
             };
         }
 
+        /// <summary>
+        /// Outputs the value of the single parameter.
+        /// Outputs are not tracked within the intCode state, so a callback is used to apply it as necessary  
+        /// </summary>
         public static IntCodeState ApplyOutput(this IntCodeState state, Action<int> applyOutput)
         {
-            var output = state.State.GetOperand(state.Index + 1, state.ParameterModes.SingleOrDefault());
-            applyOutput(output);
+            applyOutput(state.ReadParameter(1));
             return new IntCodeState
             {
                 State = state.State,
@@ -47,14 +49,13 @@ namespace AdventOfCode._2019.Common.IntCode
             };
         }
 
+        /// <summary>
+        /// If the condition is fulfilled, jumps to a new memory address - if not, proceeds as normal through the code.
+        /// </summary>
         public static IntCodeState JumpIf(this IntCodeState state, bool jumpBehaviour)
         {
-            var modes = state.ParameterModes;
-            var param1 = state.State.GetOperand(state.Index + 1, modes.ElementAtOrDefault(0));
-            var param2 = state.State.GetOperand(state.Index + 2, modes.ElementAtOrDefault(1));
-
-            var shouldJump = jumpBehaviour && param1 != 0 || !jumpBehaviour && param1 == 0;
-            var newIndex = shouldJump ? param2 : state.Index + 3;
+            var shouldJump = jumpBehaviour && state.ReadParameter(1) != 0 || !jumpBehaviour && state.ReadParameter(1) == 0;
+            var newIndex = shouldJump ? state.ReadParameter(2) : state.Index + 3;
 
             return new IntCodeState
             {
@@ -65,36 +66,12 @@ namespace AdventOfCode._2019.Common.IntCode
 
         public static IntCodeState Compare(this IntCodeState state, Func<int, int, bool> comparator)
         {
-            var modes = state.ParameterModes;
-            var param1 = state.State.GetOperand(state.Index + 1, modes.ElementAtOrDefault(0));
-            var param2 = state.State.GetOperand(state.Index + 2, modes.ElementAtOrDefault(1));
+            var valueToStore = comparator(state.ReadParameter(1), state.ReadParameter(2)) ? 1 : 0;
 
-            var indexToUpdate = state.State.ElementAtWrapped(state.Index + 3);
-
-            var valueToStore = comparator(param1, param2) ? 1 : 0;
-
-            state.State[indexToUpdate] = valueToStore;
             return new IntCodeState
             {
-                State = state.State,
+                State = state.SetAt(state.WriteParameter(3), valueToStore),
                 Index = state.Index + 4
-            };
-        }
-
-        private static int GetOperand(this IList<int> state, int index, ParameterMode? parameterMode)
-        {
-            var value = state.ElementAtWrapped(index);
-
-            if (parameterMode == null)
-            {
-                parameterMode = ParameterMode.Position;
-            }
-
-            return parameterMode switch
-            {
-                ParameterMode.Position => state.ElementAtWrapped(value),
-                ParameterMode.Immediate => value,
-                _ => throw new ArgumentOutOfRangeException(nameof(parameterMode), parameterMode, null)
             };
         }
     }

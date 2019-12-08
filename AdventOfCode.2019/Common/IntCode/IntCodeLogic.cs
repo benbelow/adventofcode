@@ -5,6 +5,12 @@ using AdventOfCode._2019.Common.IntCode.Models;
 
 namespace AdventOfCode._2019.Common.IntCode
 {
+    /// <summary>
+    /// Repsonsible for *running* intcode.
+    /// - Parses string intcode
+    /// - Applies noun and verb before beginning
+    /// - Runs OpCodes as necessary
+    /// </summary>
     public static class IntCodeLogic
     {
         public static IEnumerator<IntCodeOutput> ParseAndRunIntCode(
@@ -15,15 +21,7 @@ namespace AdventOfCode._2019.Common.IntCode
         {
             inputs ??= new Queue<int>();
             var initialState = Parser.ParseIntCode(intCode);
-            return RunIntCode(initialState, inputs, noun, verb);
-        }
-
-        private static IEnumerator<IntCodeOutput> RunIntCode(
-            IList<int> initialState,
-            Queue<int> inputs,
-            int? noun = null,
-            int? verb = null)
-        {
+            
             var state = new IntCodeState
             {
                 State = initialState.ApplyNounAndVerb(noun, verb),
