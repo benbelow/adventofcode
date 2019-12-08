@@ -2,6 +2,7 @@
 using System.Linq;
 using AdventOfCode._2019.Common;
 using AdventOfCode._2019.Common.IntCode;
+using AdventOfCode._2019.Common.IntCode.Models;
 
 namespace AdventOfCode._2019.Day7
 {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AdventOfCode._2019.Common.IntCode.Models;
 
 namespace AdventOfCode._2019.Common.IntCode
 {

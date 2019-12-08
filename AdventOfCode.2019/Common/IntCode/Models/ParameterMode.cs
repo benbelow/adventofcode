@@ -1,4 +1,4 @@
-namespace AdventOfCode._2019.Common.IntCode
+namespace AdventOfCode._2019.Common.IntCode.Models
 {
     public enum ParameterMode
     {
