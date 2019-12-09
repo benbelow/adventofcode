@@ -100,6 +100,19 @@ namespace AdventOfCode._2019.Common.IntCode.Tests
                 .Output
                 .Should().Be(expectedOutput);
         }
-        
+
+        [TestCase("109, -1, 203, 1, 204, 1, 99")]
+        public void Day9Examples_RelativeInputOutput(string intCode)
+        {
+            const int input = 1;
+            
+            var inputs = new Queue<long>().WithValues(input);
+
+            IntCodeLogic.ParseAndRunIntCode(intCode, inputs)
+                .ToEnumerable()
+                .Single(x => !x.IsComplete)
+                .Output
+                .Should().Be(input);
+        }
     }
 }

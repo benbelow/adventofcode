@@ -91,13 +91,14 @@ namespace AdventOfCode._2019.Common.IntCode.Models
         public int WriteParameter(int parameterNumber)
         {
             var parameterMode = ParameterModes.ElementAtOrDefault(parameterNumber - 1);
-            var newIndex = parameterNumber + Index;
+            var indexOfParameter = parameterNumber + Index;
+            var positionValue = (int) State.ElementAtWrapped(indexOfParameter);
 
             return parameterMode switch
             {
-                ParameterMode.Position => (int) State.ElementAtWrapped(newIndex),
+                ParameterMode.Position => positionValue,
                 ParameterMode.Immediate => throw new Exception(),
-                ParameterMode.Relative => (int) State.ElementAtWrapped((int) (newIndex + RelativeBase)),
+                ParameterMode.Relative => (int) (positionValue + RelativeBase),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
