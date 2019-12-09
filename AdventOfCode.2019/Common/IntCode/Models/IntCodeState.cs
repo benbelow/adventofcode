@@ -9,7 +9,7 @@ namespace AdventOfCode._2019.Common.IntCode.Models
         /// <summary>
         /// The current state of the intCode being run
         /// </summary>
-        public IList<int> State { get; set; }
+        public IList<long> State { get; set; }
 
         /// <summary>
         /// The index of the IntCode to apply next
@@ -19,7 +19,7 @@ namespace AdventOfCode._2019.Common.IntCode.Models
         /// <summary>
         /// The value given by the current index.
         /// </summary>
-        public int Value => State.ElementAtWrapped(Index);
+        public long Value => State.ElementAtWrapped(Index);
 
         /// <summary>
         /// The two-digit Op-Code at the current index.
@@ -46,14 +46,14 @@ namespace AdventOfCode._2019.Common.IntCode.Models
         /// The number of the parameter to fetch.
         /// Param 1 = index + 1, Param 2 = index + 2 etc.
         /// </param>
-        public int ReadParameter(int parameterIndex)
+        public long ReadParameter(int parameterIndex)
         {
             var parameterMode = ParameterModes.ElementAtOrDefault(parameterIndex - 1);
-
+            var parameterValue = State.ElementAtWrapped(Index + parameterIndex);
             return parameterMode switch
             {
-                ParameterMode.Position => State.ElementAtWrapped(State.ElementAtWrapped(Index + parameterIndex)),
-                ParameterMode.Immediate => State.ElementAtWrapped(Index + parameterIndex),
+                ParameterMode.Position => State.ElementAtWrapped((int) parameterValue),
+                ParameterMode.Immediate => parameterValue,
                 _ => throw new ArgumentOutOfRangeException(nameof(parameterMode), parameterMode, null)
             };
         }
@@ -63,17 +63,18 @@ namespace AdventOfCode._2019.Common.IntCode.Models
         /// A position mode input parameter would return the value at the index indicated by the param.
         /// But a write parameter in position mode should return the index, as it will be used as an index by the consumer to write. 
         /// </summary>
-        /// <param name="parameter"></param>
+        /// <param name="parameterNumber"></param>
         /// <returns></returns>
-        public int WriteParameter(int parameter)
+        public int WriteParameter(int parameterNumber)
         {
-            return State.ElementAtWrapped(Index + parameter);
+            var newIndex = parameterNumber + Index;
+            return (int) State.ElementAtWrapped(newIndex);
         }
 
         /// <summary>
         /// Sets the value at the given memory address, returning the new intCode state 
         /// </summary>
-        public IList<int> SetAt(int index, int value)
+        public IList<long> SetAt(int index, long value)
         {
             State[State.WrappedIndex(index)] = value;
             return State;

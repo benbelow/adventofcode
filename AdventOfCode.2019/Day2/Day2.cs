@@ -6,7 +6,7 @@ namespace AdventOfCode._2019.Day2
 {
     public static class Day2
     {
-        public static int Part1()
+        public static long Part1()
         {
             var intCode = FileReader.ReadInputLines(2).Single();
 
@@ -14,7 +14,7 @@ namespace AdventOfCode._2019.Day2
             return result.Single().CurrentState.First();
         }
 
-        public static int Part2Manual(int noun, int verb)
+        public static long Part2Manual(int noun, int verb)
         {
             var intCode = FileReader.ReadInputLines(2).Single();
 
@@ -22,11 +22,11 @@ namespace AdventOfCode._2019.Day2
             return result.Single().CurrentState.First();
         }
 
-        public static int Part2(int target)
+        public static long Part2(int target)
         {
             var intCode = FileReader.ReadInputLines(2).Single();
 
-            var result = 0;
+            long result = 0;
             var noun = 0;
             var verb = 0;
 

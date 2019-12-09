@@ -8,19 +8,19 @@ namespace AdventOfCode._2019.Day7
 {
     public class Day7
     {
-        public static int Part1()
+        public static long Part1()
         {
             var program = FileReader.ReadInputLines(7).Single();
             return GetMaximumThrust(program);
         }
         
-        public static int Part2()
+        public static long Part2()
         {
             var program = FileReader.ReadInputLines(7).Single();
             return GetMaximumThrustWithFeedback(program);
         }
 
-        public static int GetMaximumThrust(string program)
+        public static long GetMaximumThrust(string program)
         {
             var phases = new List<int> {0, 1, 2, 3, 4};
             var outputs = phases.AllPermutations().Select(p => RunPhasePermutation(program, p));
@@ -28,7 +28,7 @@ namespace AdventOfCode._2019.Day7
             return outputs.Max();
         }
 
-        public static int GetMaximumThrustWithFeedback(string program)
+        public static long GetMaximumThrustWithFeedback(string program)
         {
             var phases = new List<int> {5, 6, 7, 8, 9};
             var outputs = phases.AllPermutations().Select(p => RunPhasePermutationWithFeedback(program, p));
@@ -36,19 +36,19 @@ namespace AdventOfCode._2019.Day7
         }
 
         /// <param name="phases">Should contain exactly 5 unique phases (but will work with any number)</param>
-        private static int RunPhasePermutation(string program, IEnumerable<int> phases)
+        private static long RunPhasePermutation(string program, IEnumerable<int> phases)
         {
-            return phases.Aggregate(0, (current, phase) =>
-                IntCodeLogic.ParseAndRunIntCode(program, new Queue<int>().WithValues(phase, current))
+            return phases.Aggregate((long) 0, (current, phase) =>
+                IntCodeLogic.ParseAndRunIntCode(program, new Queue<long>().WithValues(phase, current))
                     .ToEnumerable()
                     .Single(x => !x.IsComplete).Output ?? -1
             );
         }
 
-        private static int RunPhasePermutationWithFeedback(string program, IList<int> phases)
+        private static long RunPhasePermutationWithFeedback(string program, IList<int> phases)
         {
             phases = phases.ToList();
-            var outputs = new List<int?>();
+            var outputs = new List<long?>();
             var outputE = new IntCodeOutput {Output = 0};
 
             var amplifierA = new IntCodeComputer(program, phases[0]);

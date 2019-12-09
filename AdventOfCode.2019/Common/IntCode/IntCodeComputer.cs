@@ -10,7 +10,7 @@ namespace AdventOfCode._2019.Common.IntCode
     {
         private readonly IEnumerator<IntCodeOutput> _outputs;
 
-        private readonly Queue<int> _inputs = new Queue<int>();
+        private readonly Queue<long> _inputs = new Queue<long>();
 
         public IntCodeComputer(string program, int initialInput)
         {
@@ -18,7 +18,7 @@ namespace AdventOfCode._2019.Common.IntCode
             _outputs = IntCodeLogic.ParseAndRunIntCode(program, _inputs);
         }
 
-        public IntCodeOutput NextOutput(int? newInput)
+        public IntCodeOutput NextOutput(long? newInput)
         {
             if (newInput.HasValue)
             {

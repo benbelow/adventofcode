@@ -15,11 +15,11 @@ namespace AdventOfCode._2019.Common.IntCode
     {
         public static IEnumerator<IntCodeOutput> ParseAndRunIntCode(
             string intCode,
-            Queue<int> inputs = null,
-            int? noun = null,
-            int? verb = null)
+            Queue<long> inputs = null,
+            long? noun = null,
+            long? verb = null)
         {
-            inputs ??= new Queue<int>();
+            inputs ??= new Queue<long>();
             var initialState = Parser.ParseIntCode(intCode);
             
             var state = new IntCodeState
@@ -27,7 +27,7 @@ namespace AdventOfCode._2019.Common.IntCode
                 State = initialState.ApplyNounAndVerb(noun, verb),
                 Index = 0
             };
-            var outputs = new List<int>();
+            var outputs = new List<long>();
 
             while (state.OpCode != 99)
             {
@@ -77,7 +77,7 @@ namespace AdventOfCode._2019.Common.IntCode
             yield return new IntCodeOutput {IsComplete = true, CurrentState = state.State};
         }
 
-        private static IList<int> ApplyNounAndVerb(this IList<int> state, int? noun, int? verb)
+        private static IList<long> ApplyNounAndVerb(this IList<long> state, long? noun, long? verb)
         {
             if (!(noun == null || (noun >= 0 && noun <= 99) && verb == null || (verb >= 0 && verb <= 99)))
             {

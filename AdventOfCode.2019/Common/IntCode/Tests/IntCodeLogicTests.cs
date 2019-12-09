@@ -27,7 +27,7 @@ namespace AdventOfCode._2019.Common.IntCode.Tests
         [TestCase("3,3,1108,-1,8,3,4,3,99", 7, 0)]
         public void EqualTo(string intCode, int input, int expectedOutput)
         {
-            var inputs = new Queue<int>().WithValues(input);
+            var inputs = new Queue<long>().WithValues(input);
             IntCodeLogic.ParseAndRunIntCode(intCode, inputs)
                 .ToEnumerable()
                 .Single(x => !x.IsComplete)
@@ -43,7 +43,7 @@ namespace AdventOfCode._2019.Common.IntCode.Tests
         [TestCase("3,3,1107,-1,8,3,4,3,99", 7, 1)]
         public void LessThan(string intCode, int input, int expectedOutput)
         {
-            var inputs = new Queue<int>().WithValues(input);
+            var inputs = new Queue<long>().WithValues(input);
             
             IntCodeLogic.ParseAndRunIntCode(intCode, inputs)
                 .ToEnumerable()
@@ -61,12 +61,48 @@ namespace AdventOfCode._2019.Common.IntCode.Tests
             const string code =
                 "3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31, 1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104, 999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99";
 
-            var inputs = new Queue<int>().WithValues(input);
+            var inputs = new Queue<long>().WithValues(input);
             IntCodeLogic.ParseAndRunIntCode(code, inputs)
                 .ToEnumerable()
                 .Single(x => !x.IsComplete)
                 .Output
                 .Should().Be(expectedOutput);
         }
+
+        [TestCase("109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99", 45, 45)]
+        public void Day9Examples_Copy(string intCode, int input, int expectedOutput)
+        {
+            var inputs = new Queue<long>().WithValues(input);
+
+            IntCodeLogic.ParseAndRunIntCode(intCode, inputs)
+                .ToEnumerable()
+                .Single(x => !x.IsComplete)
+                .Output
+                .Should().Be(expectedOutput);
+        }
+
+        [TestCase("1102,34915192,34915192,7,4,7,99,0")]
+        public void Day9Examples_LargeNumber_1(string intCode)
+        {
+            var inputs = new Queue<long>();
+
+            IntCodeLogic.ParseAndRunIntCode(intCode, inputs)
+                .ToEnumerable()
+                .Single(x => !x.IsComplete)
+                .Output.ToString().Should().HaveLength(16);
+        }
+
+        [TestCase("104,1125899906842624,99", 1125899906842624)]
+        public void Day9Examples_LargeNumber_1(string intCode, long expectedOutput)
+        {
+            var inputs = new Queue<long>();
+
+            IntCodeLogic.ParseAndRunIntCode(intCode, inputs)
+                .ToEnumerable()
+                .Single(x => !x.IsComplete)
+                .Output
+                .Should().Be(expectedOutput);
+        }
+        
     }
 }
