@@ -15,7 +15,7 @@ namespace AdventOfCode._2019.Common.IntCode
         {
             var operationResult = operation(state.ReadParameter(1), state.ReadParameter(2));
             
-            return new IntCodeState
+            return new IntCodeState(state)
             {
                 State = state.SetAt(state.WriteParameter(3), operationResult),
                 Index = state.Index + 4
@@ -27,7 +27,7 @@ namespace AdventOfCode._2019.Common.IntCode
         /// </summary>
         public static IntCodeState ApplyInput(this IntCodeState state, long input)
         {
-            return new IntCodeState
+            return new IntCodeState(state)
             {
                 State = state.SetAt(state.WriteParameter(1), input),
                 Index = state.Index + 2
@@ -41,7 +41,7 @@ namespace AdventOfCode._2019.Common.IntCode
         public static IntCodeState ApplyOutput(this IntCodeState state, Action<long> applyOutput)
         {
             applyOutput(state.ReadParameter(1));
-            return new IntCodeState
+            return new IntCodeState(state)
             {
                 State = state.State,
                 Index = state.Index + 2
@@ -54,7 +54,7 @@ namespace AdventOfCode._2019.Common.IntCode
         /// </summary>
         public static IntCodeState JumpIf(this IntCodeState state, Func<long, bool> shouldJump)
         {
-            return new IntCodeState
+            return new IntCodeState(state)
             {
                 State = state.State,
                 Index = shouldJump(state.ReadParameter(1)) ? (int) state.ReadParameter(2) : state.Index + 3
@@ -69,10 +69,21 @@ namespace AdventOfCode._2019.Common.IntCode
         {
             var valueToStore = comparator(state.ReadParameter(1), state.ReadParameter(2)) ? 1 : 0;
 
-            return new IntCodeState
+            return new IntCodeState(state)
             {
                 State = state.SetAt(state.WriteParameter(3), valueToStore),
                 Index = state.Index + 4
+            };
+        }
+
+        public static IntCodeState AdjustRelativeBase(this IntCodeState state)
+        {
+            var baseChange = state.ReadParameter(1);
+            
+            return new IntCodeState(state)
+            {
+                Index = state.Index + 2,
+                RelativeBase = state.RelativeBase + baseChange
             };
         }
     }

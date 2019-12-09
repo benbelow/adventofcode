@@ -69,16 +69,13 @@ namespace AdventOfCode._2019.Common.IntCode.Tests
                 .Should().Be(expectedOutput);
         }
 
-        [TestCase("109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99", 45, 45)]
-        public void Day9Examples_Copy(string intCode, int input, int expectedOutput)
+        [TestCase("109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99")]
+        public void Day9Examples_Copy(string intCode)
         {
-            var inputs = new Queue<long>().WithValues(input);
+            var inputs = new Queue<long>();
 
-            IntCodeLogic.ParseAndRunIntCode(intCode, inputs)
-                .ToEnumerable()
-                .Single(x => !x.IsComplete)
-                .Output
-                .Should().Be(expectedOutput);
+            var intCodeOutputs = IntCodeLogic.ParseAndRunIntCode(intCode, inputs).ToEnumerable();
+            string.Join(',', intCodeOutputs.Select(o => o.Output.ToString())).Should().Be(intCode + ",");
         }
 
         [TestCase("1102,34915192,34915192,7,4,7,99,0")]

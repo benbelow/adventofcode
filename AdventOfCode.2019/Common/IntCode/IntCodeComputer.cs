@@ -18,7 +18,7 @@ namespace AdventOfCode._2019.Common.IntCode
             _outputs = IntCodeLogic.ParseAndRunIntCode(program, _inputs);
         }
 
-        public IntCodeOutput NextOutput(long? newInput)
+        public IntCodeOutput NextOutput(long? newInput = null)
         {
             if (newInput.HasValue)
             {
@@ -26,6 +26,11 @@ namespace AdventOfCode._2019.Common.IntCode
             }
             _outputs.MoveNext();
             return _outputs.Current;
+        }
+
+        public IEnumerable<IntCodeOutput> RunToCompletion()
+        {
+            return _outputs.ToEnumerable();
         }
     }
 }

@@ -69,6 +69,10 @@ namespace AdventOfCode._2019.Common.IntCode
                     case 8:
                         state = state.Compare((x, y) => x == y);
                         break;
+                    // EQUALS
+                    case 9:
+                        state = state.AdjustRelativeBase();
+                        break;
                     default:
                         throw new Exception($"Unrecognised instruction: {state.Value}");
                 }

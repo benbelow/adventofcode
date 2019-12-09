@@ -6,6 +6,17 @@ namespace AdventOfCode._2019.Common.IntCode.Models
 {
     public class IntCodeState
     {
+        public IntCodeState()
+        {
+        }
+
+        public IntCodeState(IntCodeState previousState)
+        {
+            State = previousState.State;
+            Index = previousState.Index;
+            RelativeBase = previousState.RelativeBase;
+        }
+
         /// <summary>
         /// The current state of the intCode being run
         /// </summary>
@@ -19,7 +30,16 @@ namespace AdventOfCode._2019.Common.IntCode.Models
         /// <summary>
         /// The value given by the current index.
         /// </summary>
-        public long Value => State.ElementAtWrapped(Index);
+        public long Value
+        {
+            get
+            {
+                LazilyAddMemory(Index);
+                return State.ElementAt(Index);
+            }
+        }
+
+        public long RelativeBase { get; set; } = 0;
 
         /// <summary>
         /// The two-digit Op-Code at the current index.
@@ -42,18 +62,21 @@ namespace AdventOfCode._2019.Common.IntCode.Models
         /// - The value at a memory address
         /// - The value at the location indicated by the memory address (using index as a pointer)
         /// </summary>
-        /// <param name="parameterIndex">
+        /// <param name="parameterNumber">
         /// The number of the parameter to fetch.
         /// Param 1 = index + 1, Param 2 = index + 2 etc.
         /// </param>
-        public long ReadParameter(int parameterIndex)
+        public long ReadParameter(int parameterNumber)
         {
-            var parameterMode = ParameterModes.ElementAtOrDefault(parameterIndex - 1);
-            var parameterValue = State.ElementAtWrapped(Index + parameterIndex);
+            var parameterMode = ParameterModes.ElementAtOrDefault(parameterNumber - 1);
+            var parameterValue = State.ElementAt(Index + parameterNumber);
+            var relativeParameterValue = parameterValue + RelativeBase;
+            LazilyAddMemory((int) Math.Max(parameterValue, relativeParameterValue));
             return parameterMode switch
             {
-                ParameterMode.Position => State.ElementAtWrapped((int) parameterValue),
+                ParameterMode.Position => State.ElementAt((int) parameterValue),
                 ParameterMode.Immediate => parameterValue,
+                ParameterMode.Relative => State.ElementAt((int) relativeParameterValue),
                 _ => throw new ArgumentOutOfRangeException(nameof(parameterMode), parameterMode, null)
             };
         }
@@ -67,8 +90,16 @@ namespace AdventOfCode._2019.Common.IntCode.Models
         /// <returns></returns>
         public int WriteParameter(int parameterNumber)
         {
+            var parameterMode = ParameterModes.ElementAtOrDefault(parameterNumber - 1);
             var newIndex = parameterNumber + Index;
-            return (int) State.ElementAtWrapped(newIndex);
+
+            return parameterMode switch
+            {
+                ParameterMode.Position => (int) State.ElementAtWrapped(newIndex),
+                ParameterMode.Immediate => throw new Exception(),
+                ParameterMode.Relative => (int) State.ElementAtWrapped((int) (newIndex + RelativeBase)),
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
 
         /// <summary>
@@ -76,8 +107,20 @@ namespace AdventOfCode._2019.Common.IntCode.Models
         /// </summary>
         public IList<long> SetAt(int index, long value)
         {
-            State[State.WrappedIndex(index)] = value;
+            LazilyAddMemory(index);
+            State[index] = value;
             return State;
+        }
+
+        private void LazilyAddMemory(int newSize)
+        {
+            if (State.Count <= newSize)
+            {
+                for (var i = State.Count; i <= newSize; i++)
+                {
+                    State.Add(0);
+                }
+            }
         }
     }
 }
