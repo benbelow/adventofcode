@@ -35,7 +35,7 @@ namespace AdventOfCode._2019.Common.IntCode.Models
             get
             {
                 LazilyAddMemory(Index);
-                return State.ElementAt(Index);
+                return State[Index];
             }
         }
 
@@ -69,14 +69,14 @@ namespace AdventOfCode._2019.Common.IntCode.Models
         public long ReadParameter(int parameterNumber)
         {
             var parameterMode = ParameterModes.ElementAtOrDefault(parameterNumber - 1);
-            var parameterValue = State.ElementAt(Index + parameterNumber);
+            var parameterValue = State[Index + parameterNumber];
             var relativeParameterValue = parameterValue + RelativeBase;
             LazilyAddMemory((int) Math.Max(parameterValue, relativeParameterValue));
             return parameterMode switch
             {
-                ParameterMode.Position => State.ElementAt((int) parameterValue),
+                ParameterMode.Position => State[(int) parameterValue],
                 ParameterMode.Immediate => parameterValue,
-                ParameterMode.Relative => State.ElementAt((int) relativeParameterValue),
+                ParameterMode.Relative => State[(int) relativeParameterValue],
                 _ => throw new ArgumentOutOfRangeException(nameof(parameterMode), parameterMode, null)
             };
         }
@@ -92,7 +92,7 @@ namespace AdventOfCode._2019.Common.IntCode.Models
         {
             var parameterMode = ParameterModes.ElementAtOrDefault(parameterNumber - 1);
             var indexOfParameter = parameterNumber + Index;
-            var positionValue = (int) State.ElementAtWrapped(indexOfParameter);
+            var positionValue = (int) State[indexOfParameter];
 
             return parameterMode switch
             {
