@@ -31,5 +31,17 @@ namespace AdventOfCode._2019.Common
 
             return queue;
         }
+
+        public static TV FirstMatchingValue<TK, TV>(this IDictionary<TK, TV> dictionary, IEnumerable<TK> potentialKeys)
+        {
+            foreach (var potentialKey in potentialKeys)
+            {
+                if (dictionary.ContainsKey(potentialKey))
+                {
+                    return dictionary[potentialKey];
+                }
+            }
+            throw new KeyNotFoundException("none of the provided keys have values in the dictionary");
+        }
     }
 }
