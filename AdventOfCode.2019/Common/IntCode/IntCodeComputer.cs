@@ -12,10 +12,19 @@ namespace AdventOfCode._2019.Common.IntCode
 
         private readonly Queue<long> _inputs = new Queue<long>();
 
-        public IntCodeComputer(string program, int initialInput)
+        public IntCodeComputer(string program, int? initialInput = null)
         {
-            _inputs.Enqueue(initialInput);
+            if (initialInput.HasValue)
+            {
+                _inputs.Enqueue(initialInput.Value);
+            }
+
             _outputs = IntCodeLogic.ParseAndRunIntCode(program, _inputs);
+        }
+
+        public void QueueInput(long input)
+        {
+            _inputs.Enqueue(input);
         }
 
         public IntCodeOutput NextOutput(long? newInput = null)
