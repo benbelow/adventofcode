@@ -14,6 +14,20 @@ namespace AdventOfCode._2019.Day10
             return NumberOfAsteroidsFromBestLocation(lines);
         }
         
+        public static int Part2()
+        {
+            var lines = FileReader.ReadInputLines(10);
+            var nthVaporisedAsteroid = GetNthVaporisedAsteroid(lines, 200);
+            return (nthVaporisedAsteroid.X * 100) + nthVaporisedAsteroid.Y;
+        }
+
+        public static Coordinate GetNthVaporisedAsteroid(IEnumerable<string> lines, int n = 200)
+        {
+            var asteroids = ParseAsteroids(lines.ToList());
+            var bestAsteroid = asteroids.Values.OrderByDescending(a => a.LinesOfSight(asteroids)).First();
+            return bestAsteroid.OrderedDestruction(asteroids.Values)[n-1].Coordinate;
+        }
+
         public static int NumberOfAsteroidsFromBestLocation(IEnumerable<string> lines)
         {
             var asteroids = ParseAsteroids(lines.ToList());
@@ -113,7 +127,7 @@ namespace AdventOfCode._2019.Day10
             {
                 const double halfPi = (Math.PI / 2);
                 var xDiff = target.X - X;
-                var yDiff = target.Y - Y;
+                var yDiff = Y - target.Y;
                 var atan = xDiff == 0 ? halfPi : Math.Atan((double) (Math.Abs(target.X - X)) / (Math.Abs(target.Y - Y)));
                 return (xDiff, yDiff) switch
                 {
@@ -126,6 +140,11 @@ namespace AdventOfCode._2019.Day10
                 };
             }
 
+            public double DistanceTo(Coordinate target)
+            {
+                return Math.Abs(X - target.X) + Math.Abs(Y - target.Y);
+            }
+            
             public bool IsBlockedBy(Asteroid target, Asteroid potentialBlock) => IsBlockedBy(target.Coordinate, potentialBlock.Coordinate);
 
             public bool IsBlockedBy(Coordinate target, Coordinate potentialBlock)
@@ -170,6 +189,26 @@ namespace AdventOfCode._2019.Day10
 //                LineOfSightCount = lineOfSightAsteroids.Count();
 
                 return otherAsteroids.Values.Select(o => AngleTo(o.Coordinate)).Distinct().Count();
+            }
+
+            public Dictionary<double, IOrderedEnumerable<Asteroid>> AsteroidsByAngle(IEnumerable<Asteroid> asteroids)
+            {
+                var otherAsteroids = asteroids.Where(a => a != this);
+                return otherAsteroids
+                    .GroupBy(o => AngleTo(o.Coordinate))
+                    .ToDictionary(o => o.Key, o => o.OrderBy(x => DistanceTo(x.Coordinate)));
+            }
+
+            public IList<Asteroid> OrderedDestruction(IEnumerable<Asteroid> asteroids)
+            {
+                var lookup = AsteroidsByAngle(asteroids).OrderBy(l => l.Key).ToDictionary(x => x.Key, x => x.Value);
+                var max = lookup.Values.Select(l => l.Count()).Max();
+
+                return lookup.Select(l => l.Value.First()).ToList();
+                
+//                return Enumerable.Range(0, max).Aggregate<int, IEnumerable<Asteroid>>(new List<Asteroid>(), (roids, i) =>
+//                        roids.Concat(lookup.Select(l => l.Value.ElementAtOrDefault(i)).Where(x => x != null))
+//                ).ToList();
             }
         }
     }
