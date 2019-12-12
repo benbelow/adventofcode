@@ -67,7 +67,7 @@ namespace AdventOfCode._2019.Day12
         [Test]
         public void Part2()
         {
-            Day12.Part2().Should().Be(9743);
+            Day12.Part2().Should().Be(288684633706728);
         }
     }
 }
