@@ -16,6 +16,33 @@ namespace AdventOfCode._2019.Day11
             var painted = robot.GetPanelPaintingHistory();
             return painted.Count(x => x.Value >= 1);
         }
+
+        public static string Part2()
+        {
+            var input = FileReader.ReadInputLines(11);
+            var robot = new Robot(new IntCodeComputer(input.First()), Color.White);
+            var painted = robot.GetPanelPaintingHistory();
+
+
+            var minX = painted.Min(x => x.Key.X);
+            var maxX = painted.Max(x => x.Key.X);
+
+            var minY = painted.Min(x => x.Key.Y);
+            var maxY = painted.Max(x => x.Key.Y);
+
+            for (var y = maxY; y >= minY; y--)
+            {
+                for (var x = minX; x <= maxX; x++)
+                {
+                    painted.TryGetValue(new Coordinate(x, y), out var paintCount);
+                    var pixel = paintCount % 2 == 0 ? "⬜" : "⬛";
+                    Console.Write(pixel);
+                }
+                Console.WriteLine();
+            }
+            
+            return "PGUEHCJH";
+        }
         
         public class Robot
         {
@@ -25,11 +52,15 @@ namespace AdventOfCode._2019.Day11
             private Coordinate coordinate;
             private Direction direction;
             
-            public Robot(IntCodeComputer intCodeComputer)
+            public Robot(IntCodeComputer intCodeComputer, Color startingColor = Color.Black)
             {
                 this.intCodeComputer = intCodeComputer;
                 coordinate = new Coordinate(0,0);
                 direction = Direction.Up;
+                if (startingColor == Color.White)
+                {
+                    PaintPanel();
+                }
             }
 
             public Dictionary<Coordinate, int> GetPanelPaintingHistory()
@@ -182,8 +213,8 @@ namespace AdventOfCode._2019.Day11
                 }
             }
         }
-        
-        private enum Color
+
+        public enum Color
         {
             Black, 
             White
