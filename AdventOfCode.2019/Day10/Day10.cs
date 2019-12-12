@@ -125,90 +125,33 @@ namespace AdventOfCode._2019.Day10
 
             public double AngleTo(Coordinate target)
             {
-                const double halfPi = (Math.PI / 2);
                 var xDiff = target.X - X;
-                var yDiff = Y - target.Y;
-                var atan = xDiff == 0 ? halfPi : Math.Atan((double) (Math.Abs(target.X - X)) / (Math.Abs(target.Y - Y)));
-                return (xDiff, yDiff) switch
-                {
-                    (0, _) when yDiff > 0 => 0,
-                    (0, _) when yDiff < 0 => halfPi * 2,
-                    (_, _) when yDiff >= 0 && xDiff >= 0 => atan,
-                    (_, _) when yDiff < 0 && xDiff >= 0 => atan + halfPi,
-                    (_, _) when yDiff >= 0 && xDiff < 0 => atan + 3 * halfPi,
-                    (_, _) when yDiff < 0 && xDiff < 0 => atan + 2 * halfPi,
-                };
+                var yDiff = target.Y - Y;
+                
+                var relativeX = yDiff;
+                var relativeY = xDiff;
+                
+                // between -pi and pi
+                var angle = Math.Atan2(relativeY, relativeX);
+                return -angle;
             }
 
-            public double DistanceTo(Coordinate target)
+            public double ManhattanDistanceTo(Coordinate target)
             {
                 return Math.Abs(X - target.X) + Math.Abs(Y - target.Y);
             }
             
-            public bool IsBlockedBy(Asteroid target, Asteroid potentialBlock) => IsBlockedBy(target.Coordinate, potentialBlock.Coordinate);
-
-            public bool IsBlockedBy(Coordinate target, Coordinate potentialBlock)
-            {
-                var xDiffTarget = (target.X - X);
-                var xDiffBlock = (potentialBlock.X - X);
-                var yDiffTarget = (target.Y - Y);
-                var yDiffBlock = (potentialBlock.Y - Y);
-
-                var isFurtherAway = Math.Abs(xDiffTarget) >= Math.Abs(xDiffBlock) && Math.Abs(yDiffTarget) >= Math.Abs(yDiffBlock);
-
-                var isSameDirection = Math.Sign(xDiffTarget) == Math.Sign(xDiffBlock) && Math.Sign(yDiffTarget) == Math.Sign(yDiffBlock);
-
-                var targetXAligned = X == target.X;
-                var blockXAligned = X == potentialBlock.X;
-                var targetYAligned = Y == target.Y;
-                var blockYAligned = Y == potentialBlock.Y;
-
-                var isAlignedAlongAxis = (targetXAligned && blockXAligned) || (targetYAligned && blockYAligned);
-                var isMisaligned = xDiffBlock == 0 ^ xDiffTarget == 0 || yDiffBlock == 0 ^ yDiffTarget == 0;
-                var isAlignedNotAlongAxis = !isMisaligned && !isAlignedAlongAxis && xDiffTarget % xDiffBlock == 0 && yDiffTarget % yDiffBlock == 0
-                                            && xDiffTarget / xDiffBlock == yDiffTarget / yDiffBlock;
-
-                return isSameDirection && isFurtherAway && !isMisaligned && (isAlignedAlongAxis || isAlignedNotAlongAxis);
-            }
-
             public int LinesOfSight(Dictionary<Coordinate, Asteroid> asteroids)
             {
                 var otherAsteroids = asteroids.Where(a => a.Value != this).ToDictionary(x => x.Key, x => x.Value);
-
-//                var lineOfSightAsteroids = otherAsteroids
-//                    .Values
-//                    .OrderBy(a => Math.Abs(X - a.X) + Math.Abs(Y - a.Y))
-//                    .Aggregate<Asteroid, IEnumerable<Asteroid>>(new List<Asteroid>(), (blocks, asteroid) =>
-//                    {
-//                        blocks = blocks.ToList();
-//                        return blocks.Any(b => IsBlockedBy(asteroid, b))
-//                            ? blocks
-//                            : blocks.Concat(new List<Asteroid> {asteroid});
-//                    });
-
-//                LineOfSightCount = lineOfSightAsteroids.Count();
-
                 return otherAsteroids.Values.Select(o => AngleTo(o.Coordinate)).Distinct().Count();
-            }
-
-            public Dictionary<double, IOrderedEnumerable<Asteroid>> AsteroidsByAngle(IEnumerable<Asteroid> asteroids)
-            {
-                var otherAsteroids = asteroids.Where(a => a != this);
-                return otherAsteroids
-                    .GroupBy(o => AngleTo(o.Coordinate))
-                    .ToDictionary(o => o.Key, o => o.OrderBy(x => DistanceTo(x.Coordinate)));
             }
 
             public IList<Asteroid> OrderedDestruction(IEnumerable<Asteroid> asteroids)
             {
-                var lookup = AsteroidsByAngle(asteroids).OrderBy(l => l.Key).ToDictionary(x => x.Key, x => x.Value);
-                var max = lookup.Values.Select(l => l.Count()).Max();
-
-                return lookup.Select(l => l.Value.First()).ToList();
-                
-//                return Enumerable.Range(0, max).Aggregate<int, IEnumerable<Asteroid>>(new List<Asteroid>(), (roids, i) =>
-//                        roids.Concat(lookup.Select(l => l.Value.ElementAtOrDefault(i)).Where(x => x != null))
-//                ).ToList();
+                var otherAsteroids = asteroids.Where(a => a != this);
+                var angles = otherAsteroids.GroupBy(o => AngleTo(o.Coordinate)).OrderBy(g => g.Key);
+                return angles.Select(a => a.First()).ToList();
             }
         }
     }
