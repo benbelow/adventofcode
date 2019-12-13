@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using AdventOfCode._2019.Common;
 using AdventOfCode._2019.Common.IntCode;
 using AdventOfCode._2019.Common.Models;
@@ -16,6 +17,17 @@ namespace AdventOfCode._2019.Day13
             cabinet.Start();
             return cabinet.CountTiles(TileType.Block);
         }
+        
+        public static long Part2()
+        {
+            var intCode = FileReader.ReadInputLines(13).Single();
+            var sb = new StringBuilder();
+            sb.Append("2");
+            sb.Append(intCode.Substring(1));
+            var cabinet = new ArcadeCabinet(sb.ToString());
+            cabinet.Start();
+            return cabinet.CurrentScore;
+        }
     }
 
     public class ArcadeCabinet
@@ -23,11 +35,16 @@ namespace AdventOfCode._2019.Day13
         private readonly IntCodeComputer computer;
         
         private readonly Dictionary<Coordinate, TileType> tiles;
+
+        private JoystickPosition joystickPosition;
+
+        public long CurrentScore;
         
         public ArcadeCabinet(string intCode)
         {
-            computer = new IntCodeComputer(intCode);
+            computer = new IntCodeComputer(intCode, getInput: GetInput);
             tiles = new Dictionary<Coordinate, TileType>();
+            CurrentScore = 0;
         }
 
         public void Start()
@@ -44,6 +61,14 @@ namespace AdventOfCode._2019.Day13
                 }
                 
                 var coordinate = new Coordinate((int) output1.Output.Value, (int) output2.Output.Value);
+
+                // special case for scoring
+                if (coordinate.X == -1 && coordinate.Y == 0)
+                {
+                    CurrentScore = output3.Output.Value;
+                    continue;
+                }
+                
                 var tileType = ParseTile(output3.Output.Value);
                 
                 tiles[coordinate] = tileType;
@@ -67,6 +92,17 @@ namespace AdventOfCode._2019.Day13
                 _ => throw new Exception("Tile Type not recognised")
             };
         }
+
+        private long GetInput()
+        {
+            return joystickPosition switch
+            {
+                JoystickPosition.Left => -1,
+                JoystickPosition.Center => 0,
+                JoystickPosition.Right => 1,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
     }
 
     public enum TileType
@@ -76,5 +112,12 @@ namespace AdventOfCode._2019.Day13
         Block,
         Paddle,
         Ball
+    }
+
+    public enum JoystickPosition
+    {
+        Left,
+        Center,
+        Right
     }
 }

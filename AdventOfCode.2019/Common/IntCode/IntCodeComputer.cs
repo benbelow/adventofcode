@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AdventOfCode._2019.Common.IntCode.Models;
 
 namespace AdventOfCode._2019.Common.IntCode
@@ -8,38 +9,42 @@ namespace AdventOfCode._2019.Common.IntCode
     /// </summary>
     public class IntCodeComputer
     {
-        private readonly IEnumerator<IntCodeOutput> _outputs;
+        private readonly IEnumerator<IntCodeOutput> outputs;
 
-        private readonly Queue<long> _inputs = new Queue<long>();
+        private readonly Queue<long> inputs = new Queue<long>();
 
-        public IntCodeComputer(string program, int? initialInput = null)
+        /// <param name="program"></param>
+        /// <param name="initialInput"></param>
+        /// <param name="getInput">Function for defining inputs when they need to be evaluated only when required, rather than queued upfront</param>
+        public IntCodeComputer(string program, int? initialInput = null, Func<long> getInput = null)
         {
             if (initialInput.HasValue)
             {
-                _inputs.Enqueue(initialInput.Value);
+                inputs.Enqueue(initialInput.Value);
             }
 
-            _outputs = IntCodeLogic.ParseAndRunIntCode(program, _inputs);
+            outputs = IntCodeLogic.ParseAndRunIntCode(program, inputs, getInput: getInput);
         }
 
         public void QueueInput(long input)
         {
-            _inputs.Enqueue(input);
+            inputs.Enqueue(input);
         }
 
         public IntCodeOutput NextOutput(long? newInput = null)
         {
             if (newInput.HasValue)
             {
-                _inputs.Enqueue(newInput.Value);
+                inputs.Enqueue(newInput.Value);
             }
-            _outputs.MoveNext();
-            return _outputs.Current;
+            
+            outputs.MoveNext();
+            return outputs.Current;
         }
 
         public IEnumerable<IntCodeOutput> RunToCompletion()
         {
-            return _outputs.ToEnumerable();
+            return outputs.ToEnumerable();
         }
     }
 }

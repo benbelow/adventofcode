@@ -11,14 +11,34 @@ namespace AdventOfCode._2019.Common.IntCode
     /// - Applies noun and verb before beginning
     /// - Runs OpCodes as necessary
     /// </summary>
+    /// <param name="getInput">
+    /// Allows int code to pull inputs only when necessary, rather than rely on them being queued
+    /// Input queue takes priority
+    /// </param>>
     public static class IntCodeLogic
     {
         public static IEnumerator<IntCodeOutput> ParseAndRunIntCode(
             string intCode,
             Queue<long> inputs = null,
             long? noun = null,
-            long? verb = null)
+            long? verb = null,
+            Func<long> getInput = null)
         {
+            long GetNextInput()
+            {
+                if (inputs.Any())
+                {
+                    return inputs.Dequeue();
+                }
+
+                if (getInput != null)
+                {
+                    return getInput();
+                }
+                
+                throw new Exception("Cannot fetch new input - queue empty and no input provider present.");
+            }
+            
             inputs ??= new Queue<long>();
             var initialState = Parser.ParseIntCode(intCode);
             
@@ -43,7 +63,7 @@ namespace AdventOfCode._2019.Common.IntCode
                         break;
                     // INPUT
                     case 3:
-                        state = state.ApplyInput(inputs.Dequeue());
+                        state = state.ApplyInput(GetNextInput());
                         break;
                     // OUTPUT
                     case 4:
