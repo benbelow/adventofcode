@@ -120,8 +120,8 @@ namespace AdventOfCode._2019.Day10
 
             public Coordinate Coordinate { get; private set; }
 
-            public int X => Coordinate.X;
-            public int Y => Coordinate.Y;
+            public long X => Coordinate.X;
+            public long Y => Coordinate.Y;
 
             public double AngleTo(Coordinate target)
             {
