@@ -227,9 +227,9 @@ namespace AdventOfCode._2019.Day13
                     {
                         TileType.Empty => " ",
                         TileType.Wall => "x",
-                        TileType.Block => "*",
-                        TileType.Paddle => "_",
-                        TileType.Ball => "O",
+                        TileType.Block => "@",
+                        TileType.Paddle => "🚕",
+                        TileType.Ball => "⚽",
                         _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
                     };
                 });
