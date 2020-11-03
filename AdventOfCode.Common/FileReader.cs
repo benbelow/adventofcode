@@ -1,0 +1,23 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+
+namespace AdventOfCode.Common
+{
+    public static class FileReader
+    {
+        public static IEnumerable<string> ReadInputLines(int day)
+        {
+            var dayPath = $"Day{day}";
+            var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), dayPath, "input.txt");
+            return File.ReadAllLines(path);
+        }
+
+        public static string ReadSingleLine(int day)
+        {
+            var lines = ReadInputLines(day);
+            return lines.Single();
+        }
+    }
+}
