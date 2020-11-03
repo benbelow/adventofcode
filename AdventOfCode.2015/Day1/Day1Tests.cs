@@ -1,21 +1,21 @@
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace AdventOfCode.Common.Template.DayX
+namespace AdventOfCode._2015.Day1
 {
     [TestFixture]
-    public class DayXTests
+    public class Day1Tests
     {
         [Test]
         public void Part1()
         {
-            DayX.Part1().Should().Be(0);
+            Day1.Part1().Should().Be(0);
         }
         
         [Test]
         public void Part2()
         {
-            DayX.Part2().Should().Be(0);
+            Day1.Part2().Should().Be(0);
         }
     }
 }
