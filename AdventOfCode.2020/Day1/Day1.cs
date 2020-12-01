@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Common;
 
@@ -9,10 +8,11 @@ namespace AdventOfCode._2020.Day1
         public static int Part1()
         {
             var lines = FileReader.ReadInputLines(1);
-            var ints = lines.Select(int.Parse).ToList();
+            var ints = lines.Select(int.Parse).ToHashSet();
 
             foreach (var i in ints)
             {
+                
                 var other = 2020 - i;
                 if (ints.Contains(other))
                 {
@@ -20,13 +20,13 @@ namespace AdventOfCode._2020.Day1
                 }
             }
 
-            return 0;
+            return -1;
         }
 
         public static int Part2()
         {
             var lines = FileReader.ReadInputLines(1);
-            var ints = lines.Select(int.Parse).ToList();
+            var ints = lines.Select(int.Parse).OrderBy(x => x).ToList();
 
             foreach (var i in ints)
             {
@@ -42,20 +42,6 @@ namespace AdventOfCode._2020.Day1
                     {
                         return i * j * other2;
                     }
-                }
-            }
-
-            return -1;
-        }
-
-        public static int GetOther(IList<int> ints, int target)
-        {
-            foreach (var i in ints)
-            {
-                var other = target - i;
-                if (ints.Contains(other))
-                {
-                    return i * other;
                 }
             }
 
