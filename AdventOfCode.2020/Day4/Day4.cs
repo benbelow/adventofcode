@@ -10,6 +10,7 @@ namespace AdventOfCode._2020.Day4
         private const string hclAllowed = "qwertyuiopasdfghjklzxcvbnm1234567890";
         private static string[] AllowedEyes = new[] {"amb", "blu", "brn", "gry", "grn", "hzl", "oth"};
 
+        // TODO: Break out + clean up passport class - in case of re-use later
         public static Dictionary<string, Func<string, bool>> Required = new Dictionary<string, Func<string, bool>>
         {
             {"byr", s => s.Count() == 4 && int.Parse(s) >= 1920 && int.Parse(s) <= 2020},
