@@ -9,13 +9,17 @@ namespace AdventOfCode.Common.Template.DayX
         [Test]
         public void Part1()
         {
-            DayX.Part1().Should().Be(0);
+            var answer = DayX.Part1();
+            answer.Should().NotBe(-1);
+            answer.Should().Be(0);
         }
         
         [Test]
         public void Part2()
         {
-            DayX.Part2().Should().Be(0);
+            var answer = DayX.Part2();
+            answer.Should().NotBe(-2);
+            answer.Should().Be(0);
         }
     }
 }
