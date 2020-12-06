@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -41,14 +42,22 @@ namespace AdventOfCode._2015.Day4
             return sb.ToString();
         }
 
-        public static long Part2()
+        public static byte[] Hash2(IEnumerable<byte> rawInputBytes, long seed)
+        {
+            var seedBytes = Encoding.ASCII.GetBytes(seed.ToString());
+            var inputBytes = rawInputBytes.Concat(seedBytes).ToArray();
+            var hashBytes = md5.ComputeHash(inputBytes);
+            return hashBytes;
+        }
+
+        public static long Part2(int seed = 0)
         {
             var input = FileReader.ReadInputLines(Day).ToList().Single();
-            var seed = 0;
+            var inputBytes = Encoding.ASCII.GetBytes(input);
             while (true)
             {
-                var hash = Hash(input, seed);
-                if (hash.StartsWith("000000"))
+                var hashBytes = Hash2(inputBytes, seed);
+                if (hashBytes[0] == 0 && hashBytes[1] == 0 && hashBytes[2] == 0)
                 {
                     return seed;
                 }

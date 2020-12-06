@@ -17,7 +17,9 @@ namespace AdventOfCode._2015.Day4
         [Test]
         public void Part2()
         {
-            var answer = Day4.Part2();
+            // To complete this puzzle from scratch, use a seed of 0. This takes ~5s even with optimisations, so I don't want to run it with the full test suite. 
+            // A pre-computed seed can be used if we already know that the answer is not found < this seed.
+            var answer = Day4.Part2(9958000);
             answer.Should().NotBe(-2);
             answer.Should().Be(9958218L);
         }
