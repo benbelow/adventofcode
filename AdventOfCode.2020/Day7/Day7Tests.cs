@@ -12,7 +12,7 @@ namespace AdventOfCode._2020.Day7
             var answer = Day7.Part1();
             answer.Should().NotBe(350);
             answer.Should().NotBe(351);
-            answer.Should().Be(0);
+            answer.Should().Be(278);
         }
         
         [Test]
@@ -20,7 +20,7 @@ namespace AdventOfCode._2020.Day7
         {
             var answer = Day7.Part2();
             answer.Should().NotBe(130);
-            answer.Should().Be(0);
+            answer.Should().Be(45157);
         }
     }
 }
