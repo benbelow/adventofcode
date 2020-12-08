@@ -10,14 +10,13 @@
     &lt;/TestAncestor&gt;&#xD;
   &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6b650340_002Df649_002D4847_002D87e0_002De13051782fc0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Part2 #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::64D51DB1-9FF7-4C9E-9B42-2FEB7BB7A622::.NETCoreApp,Version=v3.1::AdventOfCode._2020.Day8.Day8Tests.Part2&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6b650340_002Df649_002D4847_002D87e0_002De13051782fc0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Part2 #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;ProjectFile&gt;64D51DB1-9FF7-4C9E-9B42-2FEB7BB7A622/d:Day8/f:Day8Tests.cs&lt;/ProjectFile&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ab689ded_002D4817_002D4939_002Da95e_002Df583136cf209/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Part2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ab689ded_002D4817_002D4939_002Da95e_002Df583136cf209/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Part2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::64D51DB1-9FF7-4C9E-9B42-2FEB7BB7A622::.NETCoreApp,Version=v3.1::AdventOfCode._2020.Day8.Day8Tests.Part2&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::64D51DB1-9FF7-4C9E-9B42-2FEB7BB7A622::.NETCoreApp,Version=v3.1::AdventOfCode._2020.Day8.Day8Tests.Part1&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	

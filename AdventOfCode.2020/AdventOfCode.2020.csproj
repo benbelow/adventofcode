@@ -76,7 +76,15 @@
       </None>
     </ItemGroup>
 
+
+    <ItemGroup>
+      <None Update="Day9\input.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
+
 
 
 

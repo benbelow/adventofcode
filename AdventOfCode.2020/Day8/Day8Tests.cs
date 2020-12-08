@@ -21,7 +21,7 @@ namespace AdventOfCode._2020.Day8
         {
             var answer = await Day8.Part2();
             answer.Should().NotBe(-2);
-            answer.Should().Be(0);
+            answer.Should().Be(1703);
         }
     }
 }
