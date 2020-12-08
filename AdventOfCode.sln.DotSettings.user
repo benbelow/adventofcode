@@ -1,9 +1,24 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=51de9833_002D4e94_002D480e_002Db228_002D5bbd77cbda35/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;And&gt;&#xD;
-    &lt;Project Location="C:\Work\adventofcode\AdventOfCode.2020" Presentation="&amp;lt;AdventOfCode.2020&amp;gt;" /&gt;&#xD;
-    &lt;Namespace&gt;AdventOfCode._2020.Day7&lt;/Namespace&gt;&#xD;
-  &lt;/And&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=51de9833_002D4e94_002D480e_002Db228_002D5bbd77cbda35/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Or&gt;&#xD;
+    &lt;And&gt;&#xD;
+      &lt;Project Location="C:\Work\adventofcode\AdventOfCode.2020" Presentation="&amp;lt;AdventOfCode.2020&amp;gt;" /&gt;&#xD;
+      &lt;Namespace&gt;AdventOfCode._2020.Day7&lt;/Namespace&gt;&#xD;
+    &lt;/And&gt;&#xD;
+    &lt;TestAncestor&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::64D51DB1-9FF7-4C9E-9B42-2FEB7BB7A622::.NETCoreApp,Version=v3.1::AdventOfCode._2020.Day8.Day8Tests&lt;/TestId&gt;&#xD;
+    &lt;/TestAncestor&gt;&#xD;
+  &lt;/Or&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6b650340_002Df649_002D4847_002D87e0_002De13051782fc0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Part2 #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::64D51DB1-9FF7-4C9E-9B42-2FEB7BB7A622::.NETCoreApp,Version=v3.1::AdventOfCode._2020.Day8.Day8Tests.Part2&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ab689ded_002D4817_002D4939_002Da95e_002Df583136cf209/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Part2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::64D51DB1-9FF7-4C9E-9B42-2FEB7BB7A622::.NETCoreApp,Version=v3.1::AdventOfCode._2020.Day8.Day8Tests.Part2&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	
 	

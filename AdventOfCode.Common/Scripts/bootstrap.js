@@ -1,7 +1,7 @@
 var fs = require('fs');
 
 const year = "2020";
-const day = "7";
+const day = "8";
 
 function replaceInFile(fileName, findReplacePairs) {
     const data = fs.readFileSync(fileName, 'utf8');
