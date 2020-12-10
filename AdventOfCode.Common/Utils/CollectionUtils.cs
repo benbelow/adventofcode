@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace AdventOfCode.Common.Utils
 {
@@ -25,6 +26,40 @@ namespace AdventOfCode.Common.Utils
             }
 
             yield return current;
+        }
+        
+        public static IEnumerable<IEnumerable<IEnumerable<T>>> DoubleSplit<T>(this IList<T> collection, T splitOn)
+        {
+            var currentOuter = new List<T>();
+            var skipOne = false;
+            for (int i = 0; i < collection.Count; i++)
+            {
+                if (skipOne)
+                {
+                    skipOne = false;
+                    continue;
+                }
+                
+                var current = collection[i];
+                var last = i + 1 == collection.Count;
+                if (last)
+                {
+                    currentOuter.Add(current);
+                    continue;
+                }
+
+                var next = collection[i + 1];
+                if (current.Equals(splitOn) && next.Equals(splitOn))
+                {
+                    yield return currentOuter.Split(splitOn);
+                    currentOuter = new List<T>();
+                    skipOne = true;
+                    continue;
+                }
+                
+                currentOuter.Add(current);
+            }
+            yield return currentOuter.Split(splitOn);
         }
     }
 }
