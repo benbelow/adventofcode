@@ -11,15 +11,15 @@ namespace AdventOfCode._2015.Day07
         {
             var answer = Day07.Part1();
             answer.Should().NotBe(-1);
-            answer.Should().Be(0);
+            answer.Should().Be(3176);
         }
-        
+
         [Test]
         public void Part2()
         {
             var answer = Day07.Part2();
             answer.Should().NotBe(-2);
-            answer.Should().Be(0);
+            answer.Should().Be(14710L);
         }
     }
 }

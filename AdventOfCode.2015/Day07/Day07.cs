@@ -13,8 +13,13 @@ namespace AdventOfCode._2015.Day07
 
         public static long Part1()
         {
-            var wires = FileReader
-                .ReadInputLines(Day)
+            var lines = FileReader.ReadInputLines(Day);
+            return RunWires(lines);
+        }
+
+        private static long RunWires(IEnumerable<string> lines)
+        {
+            var wires = lines
                 .Select(x => new ParsedInstruction(x))
                 .ToDictionary(x => x.TargetKey, x => x);
 
@@ -31,6 +36,7 @@ namespace AdventOfCode._2015.Day07
                 {
                     return memo[instruction.TargetKey];
                 }
+
                 var val1 = GetValue(instruction.Input1Key);
                 var val2 = instruction.Input2Key == null ? 0 : GetValue(instruction.Input2Key);
                 var result = instruction.Operation switch
@@ -137,7 +143,21 @@ namespace AdventOfCode._2015.Day07
         public static long Part2()
         {
             var lines = FileReader.ReadInputLines(Day).ToList();
-            return -1;
+            var part1Result = Part1();
+            var lines2 = lines.Select(l =>
+            {
+                if (l.EndsWith("-> b"))
+                {
+                    return $"{part1Result} -> b";
+                }
+
+                else
+                {
+                    return l;
+                }
+            }).ToList();
+
+            return RunWires(lines2);
         }
     }
 }
