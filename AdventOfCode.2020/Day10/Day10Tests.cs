@@ -20,7 +20,7 @@ namespace AdventOfCode._2020.Day10
         {
             var answer = Day10.Part2();
             answer.Should().NotBe(1776893001870606336L);
-            answer.Should().Be(0);
+            answer.Should().Be(48358655787008L);
         }
         
         [Test]
