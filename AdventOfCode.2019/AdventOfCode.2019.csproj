@@ -26,31 +26,31 @@
       <None Update="Inputs\Day1\Day1">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Inputs\Day1">
+      <None Update="Inputs\Day01">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Inputs\Day2">
+      <None Update="Inputs\Day02">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Inputs\Day3">
+      <None Update="Inputs\Day03">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Inputs\Day4">
+      <None Update="Inputs\Day04">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Inputs\Day5">
+      <None Update="Inputs\Day05">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Inputs\Day6">
+      <None Update="Inputs\Day06">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Inputs\Day7">
+      <None Update="Inputs\Day07">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Inputs\Day8">
+      <None Update="Inputs\Day08">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Inputs\Day9">
+      <None Update="Inputs\Day09">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Inputs\Day10">

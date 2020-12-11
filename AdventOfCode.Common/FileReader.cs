@@ -9,7 +9,8 @@ namespace AdventOfCode.Common
     {
         public static IEnumerable<string> ReadInputLines(int day)
         {
-            var dayPath = $"Day{day}";
+            var dayString = day < 10 ? $"0{day}" : day.ToString(); 
+            var dayPath = $"Day{dayString}";
             var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), dayPath, "input.txt");
             return File.ReadAllLines(path);
         }

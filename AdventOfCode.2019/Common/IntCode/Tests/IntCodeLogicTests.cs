@@ -70,7 +70,7 @@ namespace AdventOfCode._2019.Common.IntCode.Tests
         }
 
         [TestCase("109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99")]
-        public void Day9Examples_Copy(string intCode)
+        public void Day09Examples_Copy(string intCode)
         {
             var inputs = new Queue<long>();
 
@@ -79,7 +79,7 @@ namespace AdventOfCode._2019.Common.IntCode.Tests
         }
 
         [TestCase("1102,34915192,34915192,7,4,7,99,0")]
-        public void Day9Examples_LargeNumber_1(string intCode)
+        public void Day09Examples_LargeNumber_1(string intCode)
         {
             var inputs = new Queue<long>();
 
@@ -90,7 +90,7 @@ namespace AdventOfCode._2019.Common.IntCode.Tests
         }
 
         [TestCase("104,1125899906842624,99", 1125899906842624)]
-        public void Day9Examples_LargeNumber_1(string intCode, long expectedOutput)
+        public void Day09Examples_LargeNumber_1(string intCode, long expectedOutput)
         {
             var inputs = new Queue<long>();
 
@@ -102,7 +102,7 @@ namespace AdventOfCode._2019.Common.IntCode.Tests
         }
 
         [TestCase("109, -1, 203, 1, 204, 1, 99")]
-        public void Day9Examples_RelativeInputOutput(string intCode)
+        public void Day09Examples_RelativeInputOutput(string intCode)
         {
             const int input = 1;
             
