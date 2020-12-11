@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Common;
+using AdventOfCode.Common.Utils;
 
 namespace AdventOfCode._2015.Day06
 {
@@ -86,12 +87,12 @@ namespace AdventOfCode._2015.Day06
                 DoubleUp
             }
 
-            private readonly List<List<int>> lights;
+            private readonly IList<IList<int>> lights;
 
             public DimmableLightGrid()
             {
                 var row = Enumerable.Range(0, 1000).Select(_ => 0).ToList();
-                lights = Enumerable.Range(0, 1000).Select(_ => row.Select(x => x).ToList()).ToList();
+                lights = Enumerable.Range(0, 1000).Select(_ => row.Clone()).ToList();
             }
 
             public void ApplyInstruction(string instruction)

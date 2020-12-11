@@ -27,7 +27,7 @@ namespace AdventOfCode.Common.Utils
 
             yield return current;
         }
-        
+
         public static IEnumerable<IEnumerable<IEnumerable<T>>> DoubleSplit<T>(this IList<T> collection, T splitOn)
         {
             var currentOuter = new List<T>();
@@ -39,7 +39,7 @@ namespace AdventOfCode.Common.Utils
                     skipOne = false;
                     continue;
                 }
-                
+
                 var current = collection[i];
                 var last = i + 1 == collection.Count;
                 if (last)
@@ -56,10 +56,13 @@ namespace AdventOfCode.Common.Utils
                     skipOne = true;
                     continue;
                 }
-                
+
                 currentOuter.Add(current);
             }
+
             yield return currentOuter.Split(splitOn);
         }
+
+        public static IList<T> Clone<T>(this IEnumerable<T> listToClone) where T : struct => listToClone.Select(item => item).ToList();
     }
 }
