@@ -22,7 +22,7 @@ namespace AdventOfCode._2015.Day06
             var answer = Day06.Part1();
             answer.Should().NotBe(224000L);
             answer.Should().NotBe(322000L);
-            answer.Should().Be(0);
+            answer.Should().Be(400410L);
         }
         
         [Test]
@@ -30,7 +30,7 @@ namespace AdventOfCode._2015.Day06
         {
             var answer = Day06.Part2();
             answer.Should().NotBe(-2);
-            answer.Should().Be(0);
+            answer.Should().Be(15343601L);
         }
     }
 }
