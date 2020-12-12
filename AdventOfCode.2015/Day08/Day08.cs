@@ -1,9 +1,6 @@
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using AdventOfCode.Common;
-using AdventOfCode.Common.Utils;
 
 namespace AdventOfCode._2015.Day08
 {
@@ -16,13 +13,6 @@ namespace AdventOfCode._2015.Day08
             var lines = FileReader.ReadInputLines(Day).ToList();
             return lines.Sum(s => NumberOfCharactersInCode(s) - NumberOfCharactersInMemory(s));
         }
-
-        public static Dictionary<string, int> ExpectedEscapes = new Dictionary<string, int>
-        {
-            {"\\\"", 1}, 
-            {"\\\\\\\\", 1},
-            {"\\x", 3}
-        };
 
         public static int NumberOfCharactersInDoubleEscaped(string s)
         {
