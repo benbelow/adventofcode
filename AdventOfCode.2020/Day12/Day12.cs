@@ -27,133 +27,118 @@ namespace AdventOfCode._2020.Day12
             };
         }
 
-        public static Direction Left(Direction x)
+        public static Direction Left(Direction x) => Right(Right(Right(x)));
+        
+        public static (int, int) Translate((int, int) original, int value, Direction direction)
         {
-            return x switch
+            var (x, y) = original;
+            return direction switch
             {
-                Direction.North => Direction.West,
-                Direction.South => Direction.East,
-                Direction.East => Direction.North,
-                Direction.West => Direction.South,
+                Direction.North => (x, y + value),
+                Direction.South => (x, y - value),
+                Direction.East => (x + value, y),
+                Direction.West => (x - value, y),
             };
         }
-
+        
         public static long Part1()
         {
             var lines = FileReader.ReadInputLines(Day).ToList();
-            var deets = lines.Select(l => (l.First(), int.Parse(new string(l.Skip(1).ToArray()))));
+            var instructions = lines.Select(l => (l.First(), int.Parse(new string(l.Skip(1).ToArray()))));
 
-            var coord = (0, 0);
-            var direction = Direction.East;
-            foreach (var i in deets)
+            var ship = (0, 0);
+            var shipDirection = Direction.East;
+
+            foreach (var (instruction, value) in instructions)
             {
-                switch (i.Item1)
+                void MoveShip(Direction dir)
+                {
+                    ship = Translate(ship, value, dir);
+                }
+
+                switch (instruction)
                 {
                     case 'N':
-                        coord = (coord.Item1, coord.Item2 + i.Item2);
+                        MoveShip(Direction.North);
                         break;
-
                     case 'S':
-                        coord = (coord.Item1, coord.Item2 - i.Item2);
+                        MoveShip(Direction.South);
                         break;
-
                     case 'E':
-                        coord = (coord.Item1 + i.Item2, coord.Item2);
+                        MoveShip(Direction.East);
                         break;
-
                     case 'W':
-                        coord = (coord.Item1 - i.Item2, coord.Item2);
+                        MoveShip(Direction.West);
                         break;
-
                     case 'R':
-                        for (int j = 0; j < i.Item2; j += 90)
+                        for (int j = 0; j < value; j += 90)
                         {
-                            direction = Right(direction);
+                            shipDirection = Right(shipDirection);
                         }
-
                         break;
                     case 'L':
-                        for (int j = 0; j < i.Item2; j += 90)
+                        for (int j = 0; j < value; j += 90)
                         {
-                            direction = Left(direction);
+                            shipDirection = Left(shipDirection);
                         }
-
                         break;
 
                     case 'F':
-                        switch (direction)
-                        {
-                            case Direction.North:
-                                coord = (coord.Item1, coord.Item2 + i.Item2);
-                                break;
-                            case Direction.South:
-                                coord = (coord.Item1, coord.Item2 - i.Item2);
-                                break;
-                            case Direction.East:
-                                coord = (coord.Item1 + i.Item2, coord.Item2);
-                                break;
-                            case Direction.West:
-                                coord = (coord.Item1 - i.Item2, coord.Item2);
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
-
+                        MoveShip(shipDirection);
                         break;
                 }
             }
 
-            return Math.Abs(coord.Item1) + Math.Abs(coord.Item2);
+            return Math.Abs(ship.Item1) + Math.Abs(ship.Item2);
         }
 
         public static long Part2()
         {
             var lines = FileReader.ReadInputLines(Day).ToList();
-            var deets = lines.Select(l => (l.First(), int.Parse(new string(l.Skip(1).ToArray()))));
+            var instructions = lines.Select(l => (l.First(), int.Parse(new string(l.Skip(1).ToArray()))));
 
             var ship = (0, 0);
             var waypoint = (10, 1);
-            foreach (var i in deets)
+            
+            foreach (var (instruction, value) in instructions)
             {
-                switch (i.Item1)
+                void MoveWaypoint(Direction dir)
+                {
+                    waypoint = Translate(waypoint, value, dir);
+                }
+                
+                switch (instruction)
                 {
                     case 'N':
-                        waypoint = (waypoint.Item1, waypoint.Item2 + i.Item2);
+                        MoveWaypoint(Direction.North);
                         break;
-
                     case 'S':
-                        waypoint = (waypoint.Item1, waypoint.Item2 - i.Item2);
+                        MoveWaypoint(Direction.South);
                         break;
-
                     case 'E':
-                        waypoint = (waypoint.Item1 + i.Item2, waypoint.Item2);
+                        MoveWaypoint(Direction.East);
                         break;
-
                     case 'W':
-                        waypoint = (waypoint.Item1 - i.Item2, waypoint.Item2);
+                        MoveWaypoint(Direction.West);
                         break;
-
                     case 'R':
-                        for (int j = 0; j < i.Item2; j += 90)
+                        for (int j = 0; j < value; j += 90)
                         {
                             waypoint = Right2(waypoint);
                         }
-
                         break;
                     case 'L':
-                        for (int j = 0; j < i.Item2; j += 90)
+                        for (int j = 0; j < value; j += 90)
                         {
                             waypoint = Left2(waypoint);
                         }
-
                         break;
 
                     case 'F':
-                        for (int j = 0; j < i.Item2; j++)
+                        for (int j = 0; j < value; j++)
                         {
                             ship = (ship.Item1 + waypoint.Item1, ship.Item2 + waypoint.Item2);
                         }
-
                         break;
                 }
             }
