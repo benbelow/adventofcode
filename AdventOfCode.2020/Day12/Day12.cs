@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using AdventOfCode.Common;
+using AdventOfCode.Common.Utils;
 
 namespace AdventOfCode._2020.Day12
 {
@@ -44,7 +45,7 @@ namespace AdventOfCode._2020.Day12
         public static long Part1()
         {
             var lines = FileReader.ReadInputLines(Day).ToList();
-            var instructions = lines.Select(l => (l.First(), int.Parse(new string(l.Skip(1).ToArray()))));
+            var instructions = lines.Select(l => (l.First(), int.Parse(l.Skip(1).CharsToString())));
 
             var ship = (0, 0);
             var shipDirection = Direction.East;
