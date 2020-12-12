@@ -1,17 +1,11 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4d6f6f0f_002Dc7e0_002D4ee1_002Da5a7_002D31a7405bfbfe/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Part1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b51c1897_002Db1c7_002D4cfb_002D90d1_002D74d489ac38b6/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day12Tests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::15692890-999A-4DBA-A5A1-AEF161DADD9E::.NETCoreApp,Version=v3.1::AdventOfCode._2015.Day07.Day07Tests.Part1&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::15692890-999A-4DBA-A5A1-AEF161DADD9E::.NETCoreApp,Version=v3.1::AdventOfCode._2015.Day07.Day07Tests.Part2&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::64D51DB1-9FF7-4C9E-9B42-2FEB7BB7A622::.NETCoreApp,Version=v3.1::AdventOfCode._2020.Day12.Day12Tests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7e9ec19d_002Debff_002D40b0_002D847d_002D10168e85cb49/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;AdventOfCode.2020&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Or&gt;&#xD;
-    &lt;Project Location="C:\Work\adventofcode\AdventOfCode.2020" Presentation="&amp;lt;AdventOfCode.2020&amp;gt;" /&gt;&#xD;
-    &lt;Project Location="C:\Work\adventofcode\AdventOfCode.2015" Presentation="&amp;lt;AdventOfCode.2015&amp;gt;" /&gt;&#xD;
-    &lt;Project Location="C:\Work\adventofcode\AdventOfCode.2019" Presentation="&amp;lt;AdventOfCode.2019&amp;gt;" /&gt;&#xD;
-  &lt;/Or&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
+	
+	
 	
 	
 	
