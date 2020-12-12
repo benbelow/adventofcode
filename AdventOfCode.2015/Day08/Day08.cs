@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using AdventOfCode.Common;
+using AdventOfCode.Common.Utils;
 
 namespace AdventOfCode._2015.Day08
 {
@@ -21,6 +23,12 @@ namespace AdventOfCode._2015.Day08
             {"\\\\\\\\", 1},
             {"\\x", 3}
         };
+
+        public static int NumberOfCharactersInDoubleEscaped(string s)
+        {
+            var matches = Regex.Matches(s, "[0-9a-zA-Z]");
+            return s.Length + (s.Length -  matches.Count) + 2;
+        } 
         
         public static int NumberOfCharactersInMemory(string s)
         {
@@ -36,8 +44,8 @@ namespace AdventOfCode._2015.Day08
 
         public static long Part2()
         {
-            var lines = FileReader.ReadInputLines(Day).ToList();
-            return -1;
+            var lines = FileReader.ReadInputLines(Day).ToList();            
+            return lines.Sum(s => NumberOfCharactersInDoubleEscaped(s) - NumberOfCharactersInCode(s));
         }
     }
 }

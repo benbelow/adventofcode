@@ -66,5 +66,6 @@ namespace AdventOfCode.Common.Utils
         public static IList<T> Clone<T>(this IEnumerable<T> listToClone) where T : struct => listToClone.Select(item => item).ToList();
 
         public static string CharsToString(this IEnumerable<char> chars) => new string(chars.ToArray());
+        public static string StringsToString(this IEnumerable<string> strings) => strings.Aggregate((s2, s) => s2 + s);
     }
 }
