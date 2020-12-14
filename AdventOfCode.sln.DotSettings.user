@@ -2,6 +2,10 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=525dd7c6_002Df29c_002D48e3_002Dae64_002Df13c2620767c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day13Tests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::64D51DB1-9FF7-4C9E-9B42-2FEB7BB7A622::.NETCoreApp,Version=v3.1::AdventOfCode._2020.Day13.Day13Tests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::64D51DB1-9FF7-4C9E-9B42-2FEB7BB7A622::.NETCoreApp,Version=v3.1::AdventOfCode._2020.Day14.Day14Tests.Part1Example&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::64D51DB1-9FF7-4C9E-9B42-2FEB7BB7A622::.NETCoreApp,Version=v3.1::AdventOfCode._2020.Day14.Day14Tests.Part1&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::64D51DB1-9FF7-4C9E-9B42-2FEB7BB7A622::.NETCoreApp,Version=v3.1::AdventOfCode._2020.Day14.Day14Tests.Part2Example&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::64D51DB1-9FF7-4C9E-9B42-2FEB7BB7A622::.NETCoreApp,Version=v3.1::AdventOfCode._2020.Day14.Day14Tests.Part2&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b51c1897_002Db1c7_002D4cfb_002D90d1_002D74d489ac38b6/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day12Tests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;

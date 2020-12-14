@@ -30,6 +30,7 @@ namespace AdventOfCode._2020.Day13
             return -1;
         }
 
+        // TODO: Write actual code for this one day? 
         public static long Part2(string line = null)
         {
             var myLine = line ?? FileReader.ReadInputLines(Day).ToList().Last();
@@ -47,62 +48,12 @@ namespace AdventOfCode._2020.Day13
                 targets.Add((int.Parse(busId), i));
             }
 
-            var generatorFactories = targets.Select<(int, int), Func<IEnumerable<long>>>(t =>
-                () => Multiples(t.Item1)
-            ).ToList();
-
-            var generators = generatorFactories.Select(f => f()).ToList();
-
-            var enumerators = generators.Select(g => g.GetEnumerator()).ToList();
-
-            List<long> values = null;
-
-            var biggestGenerator = targets.OrderByDescending(t => t.Item1).First();
-            
-            
-            
-            foreach (var multiple in Multiples(biggestGenerator.Item1))
+            foreach (var target in targets)
             {
-                if (multiple < 100000000000000)
-                {
-                    continue;
-                }
-                var offset = biggestGenerator.Item2;
-                var x = multiple - offset; 
-                if (targets.All(t => { return (x + t.Item2) % t.Item1 == 0;}))
-                {
-                    return x;
-                }
-            }
-            
-            while (true)
-            {
-                if (values == null)
-                {
-                    values = enumerators.Select(g =>
-                    {
-                        using var enumerator = g;
-                        enumerator.MoveNext();
-                        return enumerator.Current;
-                    }).ToList();
-                }
-
-                if (Enumerable.Range(0, targets.Count).All(i => { return values[i] == targets[i].Item1 - targets[i].Item2; }))
-                {
-                    return values.First();
-                }
-                
-                
-                var min = values.Min();
-                var minIndex = values.IndexOf(min);
-                var enumeratorMin = enumerators[minIndex];
-                enumeratorMin.MoveNext();
-                values[minIndex] = enumeratorMin.Current;
-                
-                
+                Console.Write($"(t + {target.Item2}) mod {target.Item1} = 0,");
             }
 
-            return -2;
+            return 0;
         }
 
         public static IEnumerable<long> Multiples(long x)
