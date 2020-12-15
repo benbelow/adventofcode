@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Common;
+using AdventOfCode.Common.Utils;
 
 namespace AdventOfCode._2020.Day15
 {
@@ -24,13 +25,15 @@ namespace AdventOfCode._2020.Day15
 
         public static IEnumerable<long> SpeakNumbers(IList<long> seed)
         {
-            var history = new Dictionary<long, IList<long>> {{0, new List<long>()}};
+            var history = new Dictionary<long, Queue<long>> {{0, new Queue<long>(2)}};
             var index = 1L;
             long lastSpoken = -1;
 
             foreach (var original in seed)
             {
-                history[original] = new List<long> {index};
+                var newQueue = new Queue<long>(2);
+                newQueue.Enqueue(index);
+                history[original] = newQueue;
                 index++;
                 lastSpoken = original;
                 yield return lastSpoken;
@@ -46,21 +49,36 @@ namespace AdventOfCode._2020.Day15
                 }
                 else
                 {
-                    var diff = historyOfLastSpoken[^1] - historyOfLastSpoken[^2];
+                    var earliest = historyOfLastSpoken.Dequeue();
+                    var later = historyOfLastSpoken.Peek();
+                    var diff = later - earliest;
                     toSpeak = diff;
                 }
 
                 lastSpoken = toSpeak;
-                history[toSpeak] = history.ContainsKey(toSpeak) ? history[toSpeak].Concat(new[] {index}).ToList() : new List<long> {index};
+                if (!history.ContainsKey(toSpeak))
+                {
+                    var newQueue = new Queue<long>(2);
+                    newQueue.Enqueue(index);
+                    history[toSpeak] = newQueue;
+                }
+                else
+                {
+                    var oldQueue = history[toSpeak];
+                    oldQueue.Enqueue(index);
+                    history[toSpeak] = oldQueue;
+                }
                 yield return lastSpoken;
                 index++;
             }
         }
 
-        public static long Part2()
+        public static long Part2(string line = null)
         {
             var lines = FileReader.ReadInputLines(Day).ToList();
-            return -1;
+            line ??= lines.Single();
+            var seed = line.Split(",").Select(long.Parse).ToList();
+            return XThNumber(seed, 30000000);
         }
     }
 }
