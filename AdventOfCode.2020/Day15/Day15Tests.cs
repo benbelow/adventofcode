@@ -18,6 +18,7 @@ namespace AdventOfCode._2020.Day15
             Day15.Part1(seed).Should().Be(expected);
         }
 
+        [Ignore("Very slow, don't bother.")]
         [TestCase("0,3,6", 175594)]
         [TestCase("1,3,2", 2578)]
         [TestCase("2,1,3", 3544142)]
