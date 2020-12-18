@@ -1,6 +1,9 @@
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using AdventOfCode.Common;
+using Microsoft.AspNetCore.DataProtection.Repositories;
+using Microsoft.AspNetCore.Server.HttpSys;
 
 namespace AdventOfCode._2020.Day18
 {
@@ -133,12 +136,79 @@ namespace AdventOfCode._2020.Day18
                 return new EvaluationState {NestingLevel = nestingLevel, CurrentState = state, IsFinished = true};
             }
         }
-
-
+        
         public static long Part2()
         {
             var lines = FileReader.ReadInputLines(Day).ToList();
-            return -1;
+            var results = lines.Select(EvaluateExpression2);
+            return results.Sum();
+        }
+
+        public static long EvaluateExpression2(string expression)
+        {
+            while (GetNextBrackets(expression) != (null, null))
+            {
+                var (start1, end1) = GetNextBrackets(expression);
+
+                var start = start1.Value;
+                var end = end1.Value;
+                var diff = end - start;
+
+                var substring = expression.Substring(start + 1, diff - 1);
+                var evaluated = EvaluateExpression2(substring);
+
+                expression = expression.Remove(start, diff + 1).Insert(start, evaluated.ToString());
+            }
+
+            var plusRegex = new Regex( @"(\d+) \+ (\d+)");
+            while (plusRegex.IsMatch(expression))
+            {
+                var match = plusRegex.Match(expression);
+                var p1 = long.Parse(match.Groups[1].Value);
+                var p2 = long.Parse(match.Groups[2].Value);
+                expression = expression.Replace($"{p1} + {p2}", (p1 + p2).ToString());
+            }
+
+            return expression.Split('*').Select(x => x.Trim()).Aggregate(1L, (a, x) => a * long.Parse(x));
+        }
+
+        private static (int? innermostOpenBracketIndex, int? matchingCloseBracketIndex) GetNextBrackets(string expression)
+        {
+            int? innermostOpenBracketIndex = null;
+            int? matchingCloseBracketIndex = null;
+            int innermostNestingOpenBracketLevel = 0;
+            int innermostNestingClosedBracketLevel = 0;
+            int nestingBracketLevel = 0;
+
+            for (int i = 0; i < expression.Length; i++)
+            {
+                var c = expression[i];
+                switch (c)
+                {
+                    case '(':
+                        nestingBracketLevel++;
+                        if (innermostOpenBracketIndex == null || nestingBracketLevel > innermostNestingOpenBracketLevel)
+                        {
+                            innermostOpenBracketIndex = i;
+                            innermostNestingOpenBracketLevel = nestingBracketLevel;
+                        }
+
+                        break;
+                    case ')':
+                        var firstTimeAtNestingLevel = nestingBracketLevel == innermostNestingClosedBracketLevel && matchingCloseBracketIndex == null;
+                        var greaterNestingLevel = nestingBracketLevel > innermostNestingClosedBracketLevel;
+                        if (firstTimeAtNestingLevel || greaterNestingLevel)
+                        {
+                            matchingCloseBracketIndex = i;
+                            innermostNestingClosedBracketLevel = nestingBracketLevel;
+                        }
+
+                        nestingBracketLevel--;
+                        break;
+                }
+            }
+
+            return (innermostOpenBracketIndex, matchingCloseBracketIndex);
         }
     }
 }
