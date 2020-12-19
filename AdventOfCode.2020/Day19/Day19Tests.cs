@@ -53,7 +53,7 @@ namespace AdventOfCode._2020.Day19
             answer.Should().NotBe(-2);
             answer.Should().BeGreaterThan(139);
             answer.Should().BeLessThan(401);
-            answer.Should().Be(0);
+            answer.Should().Be(289);
         }
         
         [Test]
