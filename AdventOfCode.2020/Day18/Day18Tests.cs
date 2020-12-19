@@ -42,7 +42,7 @@ namespace AdventOfCode._2020.Day18
         {
             var answer = Day18.Part2();
             answer.Should().NotBe(-2);
-            answer.Should().Be(0);
+            answer.Should().Be(472171581333710);
         }
     }
 }
