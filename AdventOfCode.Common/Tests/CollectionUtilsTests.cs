@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using AdventOfCode.Common.Utils;
 using FluentAssertions;
 using NUnit.Framework;
@@ -45,6 +46,22 @@ namespace AdventOfCode.Common.Tests
             batches[0].Select(x => x.Count()).Should().BeEquivalentTo(new [] {2, 3});
             batches[1].Count().Should().Be(2);
             batches[1].Select(x => x.Count()).Should().BeEquivalentTo(new [] {3, 2});
+        }
+
+        [Test]
+        public void CombosTest()
+        {
+            var input = new List<List<string>>
+            {
+                new List<string>{"a", "b"},
+                new List<string>{"c", "d"},
+                new List<string>{"e", "f", "g"},
+            };
+
+            var combos = input.AllCombos();
+
+            combos.Count().Should().Be(12);
+            combos.First().Should().Be("ace");
         }
     }
 }

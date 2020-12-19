@@ -67,5 +67,34 @@ namespace AdventOfCode.Common.Utils
 
         public static string CharsToString(this IEnumerable<char> chars) => new string(chars.ToArray());
         public static string StringsToString(this IEnumerable<string> strings) => strings.Aggregate((s2, s) => s2 + s);
+
+        public static IEnumerable<string> AllCombos(this IEnumerable<IEnumerable<string>> options)
+        {
+            options = options.ToList();
+            if (options.Count() == 1)
+            {
+                return options.Single();
+            }
+
+            if (options.Count() == 2)
+            {
+                var toReturn = new List<string>();
+                foreach (var option in options.First())
+                {
+                    foreach (var option2 in options.Last())
+                    {
+                        toReturn.Add(option + option2);
+                    }
+                }
+
+                return toReturn;
+            }
+
+            var firstPair = options.Take(2);
+
+            var firstPairCombined = firstPair.AllCombos();
+            
+            return new [] {firstPairCombined}.Concat(options.Skip(2)).AllCombos();
+        } 
     }
 }

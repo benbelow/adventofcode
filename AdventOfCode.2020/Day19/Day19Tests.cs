@@ -1,4 +1,7 @@
+using System;
 using System.Linq;
+using AdventOfCode.Common;
+using AdventOfCode.Common.Utils;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -40,7 +43,7 @@ namespace AdventOfCode._2020.Day19
         {
             var answer = Day19.Part1();
             answer.Should().NotBe(-1);
-            answer.Should().Be(0);
+            answer.Should().Be(139);
         }
         
         [Test]
@@ -48,7 +51,25 @@ namespace AdventOfCode._2020.Day19
         {
             var answer = Day19.Part2();
             answer.Should().NotBe(-2);
+            answer.Should().BeGreaterThan(139);
+            answer.Should().BeLessThan(401);
             answer.Should().Be(0);
+        }
+        
+        [Test]
+        public void Part2Help()
+        {
+            var lines = FileReader.ReadInputLines(Day19.Day).ToList();
+            var split = lines.Split("").ToList();
+            
+            var ruleCollection = new Day19.RuleSet(split.First(), true);
+
+            var values = ruleCollection.AllowedValues(31);
+
+            foreach (var value in values)
+            {
+                Console.WriteLine(value);
+            }
         }
     }
 }
