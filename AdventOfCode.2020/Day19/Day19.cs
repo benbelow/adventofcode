@@ -42,10 +42,40 @@ namespace AdventOfCode._2020.Day19
 
             private List<List<int>> nestedRuleIds;
 
-            // don't access until we're sure all rules are in dict!
-            private List<List<Rule>> nestedRules => nestedRuleIds
+            /// <summary>
+            /// don't access until we're sure all rules are in dict!
+            /// </summary>
+            private List<List<Rule>> nestedRules => nestedRuleIds?
                 .Select(ruleIds => ruleIds.Select(fetchOtherRule).ToList())
                 .ToList();
+
+            private int? ruleLength;
+
+            public int RuleLength
+            {
+                get
+                {
+                    if (ruleLength.HasValue)
+                    {
+                        return ruleLength.Value;
+                    }
+
+                    if (nestedRules == null && ruleChar != null)
+                    {
+                        return 1;
+                    }
+                    
+                    var nestedLengths = nestedRules.Select(r => r.Sum(r2 => r2.RuleLength)).ToList();
+
+                    if (nestedLengths.Distinct().Count() != 1)
+                    {
+                        throw new Exception("Assumption broken - not all options for a rule are the same length!");
+                    }
+
+                    ruleLength = nestedLengths.Distinct().Single();
+                    return ruleLength.Value;
+                }
+            }
 
             public static int ParseRuleId(string rawRule) => int.Parse(rawRule.Split(":")[0]);
 
@@ -101,31 +131,42 @@ namespace AdventOfCode._2020.Day19
                     return target.Length == 1 && target.Single() == ruleChar;
                 }
 
-                var allowedValues = AllowedValues();
-                if (target.Length != allowedValues.Count)
+                return nestedRules.Any(nestedRuleCollection =>
                 {
-                    return false;
-                }
-
-                for (int i = 0; i < target.Length; i++)
-                {
-                    var allowedAtIndex = allowedValues[i];
-                    var charAtIndex = target[i];
-
-                    if (!allowedAtIndex.Contains(charAtIndex))
+                    var ruleLengths = nestedRuleCollection.Select(r => r.RuleLength).ToList();
+                    if (target.Length != ruleLengths.Sum())
                     {
                         return false;
                     }
-                }
 
-                return true;
+                    var processedTargetIndexes = 0;
+
+                    for (var i = 0; i < ruleLengths.Count(); i++)
+                    {
+                        var length = ruleLengths[i];
+                        var rule = nestedRuleCollection[i];
+                        var subTarget = target.Skip(processedTargetIndexes).Take(length).CharsToString();
+
+                        processedTargetIndexes += length;
+                        if (!rule.ApplyRule(subTarget))
+                        {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                });
             }
         }
 
         public static long Part1()
         {
             var lines = FileReader.ReadInputLines(Day).ToList();
-            return -1;
+            var split = lines.Split("").ToList();
+            
+            var ruleCollection = new RuleSet(split.First());
+            var targets = split.Last();
+            return targets.Count(t => ruleCollection.ApplyRule(t, 0));
         }
 
         public static long Part2()

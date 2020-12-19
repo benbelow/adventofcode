@@ -19,7 +19,11 @@ namespace AdventOfCode._2020.Day19
 
             var ruleSet = new Day19.RuleSet(rules.Split('\n').Select(x => x.Trim()));
 
-            ruleSet.ApplyRule("ab", 3).Should().Be(true);
+            ruleSet.ApplyRule("a", 4).Should().Be(true);
+            ruleSet.ApplyRule("b", 4).Should().Be(false);
+            ruleSet.ApplyRule("a", 5).Should().Be(false);
+            ruleSet.ApplyRule("b", 5).Should().Be(true);
+
             ruleSet.ApplyRule("ba", 3).Should().Be(true);
             ruleSet.ApplyRule("aa", 3).Should().Be(false);
             ruleSet.ApplyRule("bb", 3).Should().Be(false);
