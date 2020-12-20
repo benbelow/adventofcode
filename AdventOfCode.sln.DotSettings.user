@@ -22,6 +22,7 @@
     &lt;TestId&gt;NUnit3x::CE6698DD-2716-4298-A9F8-A7E1A33ED79E::.NETCoreApp,Version=v3.1::AdventOfCode.Common.Tests.CollectionUtilsTests.CombosTest&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::64D51DB1-9FF7-4C9E-9B42-2FEB7BB7A622::.NETCoreApp,Version=v3.1::AdventOfCode._2020.Day20.Day20Tests.Part1&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::64D51DB1-9FF7-4C9E-9B42-2FEB7BB7A622::.NETCoreApp,Version=v3.1::AdventOfCode._2020.Day20.Day20Tests.Part2&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::64D51DB1-9FF7-4C9E-9B42-2FEB7BB7A622::.NETCoreApp,Version=v3.1::AdventOfCode._2020.Day20.Day20Tests.TransformTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b51c1897_002Db1c7_002D4cfb_002D90d1_002D74d489ac38b6/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Day12Tests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
