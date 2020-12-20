@@ -35,20 +35,87 @@ namespace AdventOfCode._2020.Day20
             return corners.Aggregate(1L, (a, x) => a * x.Id);
         }
 
-        public class Tile
+        public enum Side
         {
-            public enum Side
+            Top,
+            Bottom,
+            Left,
+            Right
+        }
+
+        public enum Rotation
+        {
+            None,
+            Right90,
+            Right180,
+            Left90
+        }
+
+        public static Side Rotate(this Side side, Rotation rotation) => rotation switch
+        {
+            Rotation.None => side,
+            Rotation.Right90 => side switch
             {
-                Top,
-                Bottom,
-                Left,
-                Right
+                Side.Top => Side.Right,
+                Side.Bottom => Side.Left,
+                Side.Left => Side.Bottom,
+                Side.Right => Side.Top,
+            },
+            Rotation.Right180 => side.Rotate(Rotation.Right90),
+            Rotation.Left90 => side.Rotate(Rotation.Right180).Rotate(Rotation.Right90),
+        };
+
+        public enum Flipped2D
+        {
+            None, Horizontal, Vertical, Both
+        }
+        
+        public class Oriented<T>
+        {
+            public T Top { get; set; }
+            public T Bottom { get; set; }
+            public T Left { get; set; }
+            public T Right { get; set; }
+
+            public Oriented(Func<Side, T> factory)
+            {
+                Top = factory(Side.Top);
+                Bottom = factory(Side.Bottom);
+                Left = factory(Side.Left);
+                Right = factory(Side.Right);
             }
 
+            public T Get(Side side) => side switch
+            {
+                Side.Top => Top,
+                Side.Bottom => Bottom,
+                Side.Left => Left,
+                Side.Right => Right,
+            };
+
+            public Oriented<T> Rotate(Rotation rotation) => new Oriented<T>(side => Get(side.Rotate(rotation)));
+
+            public List<T> ToList()
+            {
+                return new List<T> {Top, Bottom, Left, Right};
+            }
+        }
+
+        public class Tile
+        {
             public long Id { get; set; }
+
+            public Rotation Rotation { get; set; } = Rotation.None;
 
             public List<List<bool>> spaces = Enumerable.Range(0, 10)
                 .Select(_ => Enumerable.Range(0, 10).Select(_ => false).ToList()).ToList();
+
+            public int Count => spaces.Sum(row => row.Count(c => c));
+
+            public int CountExceptBorders()
+            {
+                return spaces.Skip(1).Take(8).Sum(row => row.Skip(1).Take(8).Count(x => x));
+            }
 
             public Tile(List<string> inputLines)
             {
@@ -121,7 +188,12 @@ namespace AdventOfCode._2020.Day20
                     .Sum();
             }
 
-            public (int, int, int, int) PotentialNeighbours(List<Tile> others)
+            /// <summary>
+            /// Top, Bottom, Left, Right
+            /// </summary>
+            /// <param name="others"></param>
+            /// <returns></returns>
+            public Oriented<int> PotentialNeighbours(List<Tile> others)
             {
                 others = others.Where(o => o.Id != Id).ToList();
 
@@ -130,14 +202,96 @@ namespace AdventOfCode._2020.Day20
                     return others.Sum(o => MatchesInAnyOrientation(o, side));
                 }
 
-                return (CountMatches(Side.Top), CountMatches(Side.Bottom), CountMatches(Side.Left), CountMatches(Side.Right));
+                return new Oriented<int>(CountMatches);
+            }
+
+            public Oriented<List<long>> IdsOfPotentialNeighbours(List<Tile> others)
+            {
+                others = others.Where(o => o.Id != Id).ToList();
+
+                List<long> NeighbourIds(Side side)
+                {
+                    return others.Where(o => MatchesInAnyOrientation(o, side) != 0).Select(o => o.Id).ToList();
+                }
+                
+                return new Oriented<List<long>>(NeighbourIds);
             }
         }
 
         public static long Part2()
         {
             var lines = FileReader.ReadInputLines(Day).ToList();
-            return -1;
+            var blocks = SplitExtension.Split(lines, "");
+            var tiles = blocks.Select(b => new Tile(b.ToList())).ToList();
+
+            var allEdges = tiles.SelectMany(t => t.Edges);
+
+            var grouped = allEdges.GroupBy(e => e).OrderBy(x => x.Count()).ToList();
+
+            var neighbours = tiles.Select(t => t.PotentialNeighbours(tiles));
+            var edges = tiles.Where(t => t.PotentialNeighbours(tiles).ToList().Count(x => x == 0) >= 1);
+
+            // edges.Count().Should().Be(44);
+
+            var megaTile = new MegaTile(tiles);
+            
+            return -100;
+        }
+
+        public class MegaTile
+        {
+            public List<List<Tile>> grid = Enumerable.Range(0, 10)
+                .Select(_ => Enumerable.Range(0, 10).Select(_ => null as Tile).ToList()).ToList();
+
+            public List<Tile> PlacedPieces => grid.SelectMany(y => y.Select(x => x).ToList())
+                .Where(p => p != null)
+                .ToList();
+
+            public List<long> PlacedIds => PlacedPieces.Select(p => p.Id).ToList();
+
+            public MegaTile(List<Tile> tiles)
+            {
+                // tiles.Count().Should().Be(144);
+                var corners = tiles.Where(t => t.PotentialNeighbours(tiles).ToList().Count(x => x == 0) == 2).ToList();
+                var edges = tiles.Where(t => t.PotentialNeighbours(tiles).ToList().Count(x => x == 0) == 1).ToList();
+                
+                var maxCount = tiles.Sum(t => t.CountExceptBorders());
+
+                var monsterCount = 15;
+
+                for (int i = 32; i < 40; i++)
+                {
+                    Console.WriteLine($"Monsters: {i}, Answer: {maxCount - (monsterCount * i)}");
+                }
+                
+                for (int y = 0; y < 10; y++)
+                {
+                    for (int x = 0; x < 10; x++)
+                    {
+                        // first corner
+                        if ((x, y) == (0, 0))
+                        {
+                            var topLeft = corners.First();
+                            var neighbours = topLeft.PotentialNeighbours(tiles);
+
+                            switch ((neighbours.Top, neighbours.Left))
+                            {
+                                case (0,0):
+                                    topLeft.Rotation = Rotation.None;
+                                    break;
+                            }
+                            
+                                grid[y][x] = topLeft;
+                        }
+
+                        // top row
+                        else if (y == 0)
+                        {
+                            grid[y][x] = edges.Single(e => !PlacedIds.Contains(e.Id));
+                        }
+                    }
+                }
+            }
         }
     }
 }
