@@ -5,13 +5,14 @@ using System.Text;
 using AdventOfCode.Common.Utils;
 using FluentAssertions;
 using Microsoft.Extensions.Primitives;
+using MoreLinq.Extensions;
 
 namespace AdventOfCode._2020.Day20
 {
     internal class Tile
     {
         // hardcoded for ease, could generalise later...
-        private int Size;
+        public int Size;
         public long Id { get; set; }
 
         public Rotation Rotation { get; set; } = Rotation.None;
@@ -117,7 +118,6 @@ namespace AdventOfCode._2020.Day20
             return rotated;
         }
 
-
         public List<List<bool>> FlipHorizontal(List<List<bool>> original)
         {
             var rotated = BuildEmptyGrid(Size);
@@ -175,7 +175,7 @@ namespace AdventOfCode._2020.Day20
         public long Reverse(long edge)
         {
             var sRep = Convert.ToString(edge, 2);
-            sRep = sRep.PadLeft(10, '0');
+            sRep = sRep.PadLeft(Size, '0');
             var reversed = sRep.Reverse().CharsToString();
             return Convert.ToInt64(reversed, 2);
         }
@@ -260,6 +260,26 @@ namespace AdventOfCode._2020.Day20
             }
 
             return sb.ToString().Trim();
+        }
+
+        public bool GetCell(int x, int y)
+        {
+            return Spaces[y][x];
+        }
+
+        public Tile TrimEdges()
+        {
+            var newSpaces = BuildEmptyGrid(Size - 2);
+            
+            for (int x = 1; x < Size - 1; x++)
+            {
+                for (int y = 1; y < Size -1; y++)
+                {
+                    var cell = GetCell(x, y);
+                    newSpaces[y - 1][x - 1] = cell;
+                }
+            }
+            return new Tile(Id, newSpaces);
         }
     }
 }

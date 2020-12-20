@@ -13,9 +13,9 @@ namespace AdventOfCode._2020.Day20
     {
         private const int Day = 20;
 
-        public static long Part1()
+        public static long Part1(string input = null)
         {
-            var lines = FileReader.ReadInputLines(Day).ToList();
+            var lines = input == null ? FileReader.ReadInputLines(Day).ToList() : input.Split(Environment.NewLine).ToList();
             var blocks = SplitExtension.Split(lines, "");
             var tiles = blocks.Select(b => new Tile(b.ToList())).ToList();
 
@@ -26,9 +26,9 @@ namespace AdventOfCode._2020.Day20
             return corners.Aggregate(1L, (a, x) => a * x.Id);
         }
 
-        public static long Part2()
+        public static long Part2(string input = null)
         {
-            var lines = FileReader.ReadInputLines(Day).ToList();
+            var lines = input == null ? FileReader.ReadInputLines(Day).ToList() : input.Split(Environment.NewLine).ToList();
             var blocks = SplitExtension.Split(lines, "");
             var tiles = blocks.Select(b => new Tile(b.ToList())).ToList();
 
@@ -39,7 +39,40 @@ namespace AdventOfCode._2020.Day20
 
             var megaTile = new MegaTile(tiles);
             
-            return -100;
+            return IterateMegaTilePart2(megaTile);
+        }
+
+        internal static long IterateMegaTilePart2(MegaTile megaTile)
+        {
+            var operationOrder = new[]
+            {
+                (Rotation.None, Flip2D.None),                
+                
+                (Rotation.Right90, Flip2D.Vertical),
+
+                (Rotation.Left90, Flip2D.None),
+                (Rotation.Right180, Flip2D.None),
+                (Rotation.Right90, Flip2D.None),
+                (Rotation.None, Flip2D.Horizontal),
+                (Rotation.Left90, Flip2D.Horizontal),
+                (Rotation.Right180, Flip2D.Horizontal),
+                (Rotation.Right90, Flip2D.Horizontal),
+                (Rotation.None, Flip2D.Vertical),
+                (Rotation.Left90, Flip2D.Vertical),
+                (Rotation.Right180, Flip2D.Vertical),
+            };
+
+            foreach (var (rotate, flip) in operationOrder)
+            {
+                var toTest = megaTile.Rotate(rotate).Flip(flip);
+                var monsters = toTest.NumberOfMonsters();
+                if (monsters != 0)
+                {
+                    return toTest.CountOfNonMonsterTiles();
+                }
+            }
+
+            return -1;
         }
     }
 }
