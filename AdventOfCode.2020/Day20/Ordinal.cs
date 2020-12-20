@@ -10,7 +10,11 @@ namespace AdventOfCode._2020.Day20
         North,
         South,
         West,
-        East
+        East,
+        Up = North,
+        Down = South,
+        Left = West,
+        Right = East
     }
 
     public enum RotationDirection

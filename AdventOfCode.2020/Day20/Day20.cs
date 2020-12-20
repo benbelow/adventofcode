@@ -20,7 +20,7 @@ namespace AdventOfCode._2020.Day20
             var tiles = blocks.Select(b => new Tile(b.ToList())).ToList();
 
             var neighbours = tiles.Select(t => t.PotentialNeighbours(tiles));
-            var corners = tiles.Where(t => t.PotentialNeighbours(tiles).ToList().Count(x => x == 0) == 2);
+            var corners = tiles.Where(t => t.NumberOfNeighbours(tiles) == 2);
 
             corners.Count().Should().Be(4);
             return corners.Aggregate(1L, (a, x) => a * x.Id);

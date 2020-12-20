@@ -11,29 +11,26 @@ namespace AdventOfCode._2020.Day20
     internal class Tile
     {
         // hardcoded for ease, could generalise later...
-        private readonly int Size;
+        private int Size;
         public long Id { get; set; }
 
         public Rotation Rotation { get; set; } = Rotation.None;
 
-        public readonly List<List<bool>> Spaces;
+        public List<List<bool>> Spaces;
 
         #region PreCalculatedForPerformance
 
-        public readonly Oriented<long> EdgesAsLongs;
-
+        public Oriented<long> EdgesAsLongs;
 
         // options arise from flipping each side
-        public readonly Oriented<(long, long)> EdgeOptions;
+        public Oriented<(long, long)> EdgeOptions;
 
         #endregion
 
         public Tile(IReadOnlyList<string> inputLines)
         {
-            Size = inputLines.Last().Length;
             Id = long.Parse(inputLines[0].Split()[1].Replace(":", ""));
-
-            Spaces = Init();
+            InitBeforeTiles(inputLines.Last().Length);
             for (var y = 0; y < Size; y++)
             {
                 for (var x = 0; x < Size; x++)
@@ -42,6 +39,19 @@ namespace AdventOfCode._2020.Day20
                 }
             }
 
+            InitAfterTiles();
+        }
+
+        private Tile(long id, List<List<bool>> spaces)
+        {
+            Id = id;
+            InitBeforeTiles(spaces.Count());
+            Spaces = spaces;
+            InitAfterTiles();
+        }
+
+        private void InitAfterTiles()
+        {
             EdgesAsLongs = new Oriented<long>(ordinal => ordinal switch
             {
                 Ordinal.North => EdgeAsLong(Row(0)),
@@ -63,25 +73,6 @@ namespace AdventOfCode._2020.Day20
                     _ => throw new ArgumentOutOfRangeException(nameof(ordinal))
                 };
             });
-        }
-
-        private Tile(Tile original, Rotation rotation)
-        {
-            Id = original.Id;
-            Spaces = rotation switch
-            {
-                Rotation.None => original.Spaces,
-                Rotation.Right90 => Right90(original.Spaces),
-                Rotation.Right180 => Right90(Right90(original.Spaces)),
-                Rotation.Left90 => Right90(Right90(Right90(original.Spaces))),
-                _ => throw new ArgumentOutOfRangeException(nameof(rotation), rotation, null)
-            };
-        }
-
-        private Tile(long id, List<List<bool>> spaces)
-        {
-            Id = id;
-            Spaces = spaces;
         }
 
         public Tile Rotate(Rotation rotation)
@@ -113,7 +104,7 @@ namespace AdventOfCode._2020.Day20
 
         public List<List<bool>> Right90(List<List<bool>> original)
         {
-            var rotated = Init();
+            var rotated = BuildEmptyGrid(Size);
 
             for (var y = 0; y < Size; y++)
             {
@@ -129,7 +120,7 @@ namespace AdventOfCode._2020.Day20
 
         public List<List<bool>> FlipHorizontal(List<List<bool>> original)
         {
-            var rotated = Init();
+            var rotated = BuildEmptyGrid(Size);
 
             for (var y = 0; y < Size; y++)
             {
@@ -144,7 +135,7 @@ namespace AdventOfCode._2020.Day20
 
         public List<List<bool>> FlipVertical(List<List<bool>> original)
         {
-            var rotated = Init();
+            var rotated = BuildEmptyGrid(Size);
             for (var y = 0; y < Size; y++)
             {
                 for (var x = 0; x < Size; x++)
@@ -156,10 +147,16 @@ namespace AdventOfCode._2020.Day20
             return rotated;
         }
 
-        private List<List<bool>> Init()
+        private void InitBeforeTiles(int size)
         {
-            return Enumerable.Range(0, Size)
-                .Select(_ => Enumerable.Range(0, Size).Select(_ => false).ToList()).ToList();
+            Size = size;
+            Spaces = BuildEmptyGrid(size);
+        }
+
+        private static List<List<bool>> BuildEmptyGrid(int size)
+        {
+            return Enumerable.Range(0, size)
+                .Select(_ => Enumerable.Range(0, size).Select(_ => false).ToList()).ToList();
         }
 
         public int Count => Spaces.Sum(row => row.Count(c => c));
@@ -189,12 +186,18 @@ namespace AdventOfCode._2020.Day20
         public static bool AnyPairwiseMatch((long, long) one, (long, long) two) =>
             one.Item1 == two.Item1 || one.Item1 == two.Item2 || one.Item2 == two.Item1 || one.Item2 == two.Item2;
 
-        public int MatchesInAnyOrientation(Tile other, Ordinal ordinal)
+        public int MatchesInAnyOrientation(Tile other, Ordinal thisOrdinal)
         {
-            var sides = EdgeOptions.Get(ordinal);
+            var sides = EdgeOptions.Get(thisOrdinal);
             return other.EdgeOptions.Map((otherOptions, _) => AnyPairwiseMatch(sides, otherOptions) ? 1 : 0)
                 .ToList()
                 .Sum();
+        }
+        public bool MatchesInSpecifiedOrientation(Tile other, Ordinal thisOrdinal, Ordinal otherOrdinal)
+        {
+            var sides = EdgeOptions.Get(thisOrdinal);
+            var otherSides = other.EdgeOptions.Get(otherOrdinal);
+            return AnyPairwiseMatch(sides, otherSides);
         }
 
         /// <summary>
@@ -214,6 +217,16 @@ namespace AdventOfCode._2020.Day20
             return new Oriented<int>(CountMatches);
         }
 
+        public int NumberOfNeighbours(List<Tile> others)
+        {
+            return PotentialNeighbours(others).ToList().Count(x => x != 0);
+        }
+        
+        public int NumberOfNeighbours(List<Tile> others, Ordinal ordinal)
+        {
+            return PotentialNeighbours(others).Get(ordinal);
+        }
+        
         public Oriented<List<long>> IdsOfPotentialNeighbours(List<Tile> others)
         {
             others = others.Where(o => o.Id != Id).ToList();
@@ -224,6 +237,13 @@ namespace AdventOfCode._2020.Day20
             }
 
             return new Oriented<List<long>>(NeighbourIds);
+        }
+
+        public bool IsAdjacentTo(List<Tile> allOthers, long id)
+        {
+            return IdsOfPotentialNeighbours(allOthers)
+                .ToList()
+                .Any(potentialNeighbours => potentialNeighbours.Contains(id));
         }
 
         public string ToString()
