@@ -16,15 +16,14 @@ namespace AdventOfCode._2020.Day21
             answer.Should().NotBe(2416);
             answer.Should().NotBe(2180);
             answer.Should().BeLessThan(2417);
-            answer.Should().Be(-1);
+            answer.Should().Be(2150);
         }
         
         [Test]
         public void Part2()
         {
             var answer = Day21.Part2();
-            answer.Should().NotBe(-2);
-            answer.Should().Be(0);
+            answer.Should().Be("vpzxk,bkgmcsx,qfzv,tjtgbf,rjdqt,hbnf,jspkl,hdcj");
         }
     }
 }
