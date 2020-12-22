@@ -7,6 +7,20 @@ namespace AdventOfCode._2020.Day22
     public class Day22Tests
     {
         [Test]
+        public void Part1_Example()
+        {
+            var answer = Day22.Part1(true);
+            answer.Should().Be(306);
+        }
+        
+        [Test]
+        public void Part2_Example()
+        {
+            var answer = Day22.Part2(true);
+            answer.Should().Be(291);
+        }
+
+        [Test]
         public void Part1()
         {
             var answer = Day22.Part1();

@@ -1,11 +1,11 @@
 using System.Linq;
 using AdventOfCode.Common;
 
-namespace AdventOfCode.Common.Template.DayX
+namespace AdventOfCode._2020.Day23
 {
-    public static class DayX
+    public static class Day23
     {
-        private const int Day = -1;
+        private const int Day = 23;
         
         public static long Part1(bool isExample = false)
         {

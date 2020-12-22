@@ -1,29 +1,29 @@
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace AdventOfCode.Common.Template.DayX
+namespace AdventOfCode._2020.Day23
 {
     [TestFixture]
-    public class DayXTests
+    public class Day23Tests
     {
         [Test]
         public void Part1_Example()
         {
-            var answer = DayX.Part1(true);
+            var answer = Day23.Part1(true);
             answer.Should().Be(-1);
         }
         
         [Test]
         public void Part2_Example()
         {
-            var answer = DayX.Part2(true);
+            var answer = Day23.Part2(true);
             answer.Should().Be(-1);
         }
         
         [Test]
         public void Part1()
         {
-            var answer = DayX.Part1();
+            var answer = Day23.Part1();
             answer.Should().NotBe(-1);
             answer.Should().Be(0);
         }
@@ -31,7 +31,7 @@ namespace AdventOfCode.Common.Template.DayX
         [Test]
         public void Part2()
         {
-            var answer = DayX.Part2();
+            var answer = Day23.Part2();
             answer.Should().NotBe(-2);
             answer.Should().Be(0);
         }

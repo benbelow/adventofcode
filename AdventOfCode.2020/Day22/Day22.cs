@@ -10,9 +10,9 @@ namespace AdventOfCode._2020.Day22
     {
         private const int Day = 22;
 
-        public static long Part1()
+        public static long Part1(bool isExample = false)
         {
-            var lines = FileReader.ReadInputLines(Day).ToList();
+            var lines = FileReader.ReadInputLines(Day, isExample).ToList();
             var decks = lines.Split("");
             var player1 = decks.First().Skip(1).Select(int.Parse).ToList();
             var player2 = decks.Last().Skip(1).Select(int.Parse).ToList();
@@ -60,9 +60,9 @@ namespace AdventOfCode._2020.Day22
             return deck.Aggregate("", (a, x) => a + x);
         }
         
-        public static long Part2()
+        public static long Part2(bool isExample = false)
         {
-            var lines = FileReader.ReadInputLines(Day).ToList();
+            var lines = FileReader.ReadInputLines(Day, isExample).ToList();
             var decks = lines.Split("").ToList();
             var p1Deck = decks.First().Skip(1).Select(int.Parse).ToList();
             var p2Deck = decks.Last().Skip(1).Select(int.Parse).ToList();

@@ -1,7 +1,7 @@
 var fs = require('fs');
 
 const year = 2020;
-const rawDay = 22;
+const rawDay = 23;
 const day = rawDay < 10 ? `0${rawDay}` : rawDay; 
 
 function replaceInFile(fileName, findReplacePairs) {
@@ -25,6 +25,7 @@ async function bootstrapDay() {
     fs.copyFileSync("../Template/DayX/DayX.cs", filePath);
     fs.copyFileSync("../Template/DayX/DayXTests.cs", testFilePath);
     fs.copyFileSync("../Template/DayX/input.txt", `${dir}/input.txt`);
+    fs.copyFileSync("../Template/DayX/example.txt", `${dir}/example.txt`);
     
     replaceInFile(filePath, [["DayX", `Day${day}`], ['Common.Template', `_${year}`]]);
     replaceInFile(filePath, [["Day = -1", `Day = ${day}`], ['Common.Template', `_${year}`]]);
@@ -33,6 +34,12 @@ async function bootstrapDay() {
     const csProjAddition = `
     <ItemGroup>
       <None Update="Day${day}\\input.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <None Update="Day${day}\\example.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
