@@ -38,6 +38,7 @@ namespace AdventOfCode._2020.Day23
         }
 
         [Test]
+        [Ignore("Slow, example")]
         public void Part2_Example()
         {
             var answer = Day23.Part2(true);
