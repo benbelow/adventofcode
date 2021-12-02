@@ -32,7 +32,21 @@
       <ProjectReference Include="..\AdventOfCode.Common\AdventOfCode.Common.csproj" />
     </ItemGroup>
 
+
+    <ItemGroup>
+      <None Update="Day02\input.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <None Update="Day02\example.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
+
 
 
 
