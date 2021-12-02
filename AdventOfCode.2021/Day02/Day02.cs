@@ -12,11 +12,7 @@ namespace AdventOfCode._2021.Day02
         {
             var lines = FileReader.ReadInputLines(Day, isExample).ToList();
             var commands = lines.Select(ParseCommand);
-            var deets = (0, 0);
-            foreach (var command in commands)
-            {
-                deets = ApplyCommand(deets, command);
-            }
+            var deets = commands.Aggregate((0,0), ApplyCommand);
 
             return deets.Item1 * deets.Item2;
         }
@@ -69,12 +65,7 @@ namespace AdventOfCode._2021.Day02
         {
             var lines = FileReader.ReadInputLines(Day, isExample).ToList();
             var commands = lines.Select(ParseCommand);
-            var deets = (0, 0, 0);
-            foreach (var command in commands)
-            {
-                deets = ApplyCommand2(deets, command);
-            }
-
+            var deets = commands.Aggregate((0,0,0), ApplyCommand2);
             return deets.Item1 * deets.Item2;
         }
 
