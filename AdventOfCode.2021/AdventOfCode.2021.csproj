@@ -58,7 +58,21 @@
       </None>
     </ItemGroup>
 
+
+    <ItemGroup>
+      <None Update="Day04\input.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <None Update="Day04\example.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
+
 
 
 
