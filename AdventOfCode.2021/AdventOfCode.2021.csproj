@@ -29,6 +29,7 @@
     </ItemGroup>
     
     <ItemGroup>
+      <ProjectReference Include="..\AdventOfCode.CommonLegacy\AdventOfCode.Common.csproj" />
       <ProjectReference Include="..\AdventOfCode.Common\AdventOfCode.Common.csproj" />
     </ItemGroup>
 
@@ -71,7 +72,21 @@
       </None>
     </ItemGroup>
 
+
+    <ItemGroup>
+      <None Update="Day05\input.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <None Update="Day05\example.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
+
 
 
 

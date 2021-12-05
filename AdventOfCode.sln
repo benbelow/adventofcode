@@ -4,13 +4,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode.2019", "Advent
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Breakout", "Breakout\Breakout.csproj", "{3FCF16E0-C805-4CD7-89FB-1B6B9E9D9238}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode.Common", "AdventOfCode.Common\AdventOfCode.Common.csproj", "{CE6698DD-2716-4298-A9F8-A7E1A33ED79E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode.Common.Legacy", "AdventOfCode.Common.Legacy\AdventOfCode.Common.Legacy.csproj", "{CE6698DD-2716-4298-A9F8-A7E1A33ED79E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode.2015", "AdventOfCode.2015\AdventOfCode.2015.csproj", "{15692890-999A-4DBA-A5A1-AEF161DADD9E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode.2020", "AdventOfCode.2020\AdventOfCode.2020.csproj", "{64D51DB1-9FF7-4C9E-9B42-2FEB7BB7A622}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode.2021", "AdventOfCode.2021\AdventOfCode.2021.csproj", "{DC497D96-BE51-4825-94FF-E2A4305E0E93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode.Common", "AdventOfCode.Common\AdventOfCode.Common.csproj", "{A1F1AB45-EA77-4B11-9308-601C55E62A81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,5 +44,9 @@ Global
 		{DC497D96-BE51-4825-94FF-E2A4305E0E93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC497D96-BE51-4825-94FF-E2A4305E0E93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC497D96-BE51-4825-94FF-E2A4305E0E93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1F1AB45-EA77-4B11-9308-601C55E62A81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1F1AB45-EA77-4B11-9308-601C55E62A81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1F1AB45-EA77-4B11-9308-601C55E62A81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1F1AB45-EA77-4B11-9308-601C55E62A81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

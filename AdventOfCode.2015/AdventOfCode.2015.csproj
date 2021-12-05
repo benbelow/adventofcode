@@ -1,41 +1,1 @@
-<Project Sdk="Microsoft.NET.Sdk">    <PropertyGroup>        <TargetFramework>netcoreapp3.1</TargetFramework>        <RootNamespace>AdventOfCode._2015</RootNamespace>    </PropertyGroup>    <ItemGroup>      <PackageReference Include="FluentAssertions" Version="5.9.0" />      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />      <PackageReference Include="Microsoft.NETCore.App" Version="2.2.8" />      <PackageReference Include="nunit" Version="3.12.0" />      <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />    </ItemGroup>    <ItemGroup>      <ProjectReference Include="..\AdventOfCode.Common\AdventOfCode.Common.csproj" />    </ItemGroup>    <ItemGroup>      <None Update="Day01\input.txt">        <CopyToOutputDirectory>Always</CopyToOutputDirectory>      </None>    </ItemGroup>    <ItemGroup>      <None Update="Day02\input.txt">        <CopyToOutputDirectory>Always</CopyToOutputDirectory>      </None>    </ItemGroup>    <ItemGroup>      <None Update="Day03\input.txt">        <CopyToOutputDirectory>Always</CopyToOutputDirectory>      </None>    </ItemGroup>    <ItemGroup>      <None Update="Day04\input.txt">        <CopyToOutputDirectory>Always</CopyToOutputDirectory>      </None>    </ItemGroup>
-    <ItemGroup>
-      <None Update="Day05\input.txt">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
-
-
-    <ItemGroup>
-      <None Update="Day06\input.txt">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
-
-
-    <ItemGroup>
-      <None Update="Day07\input.txt">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
-
-
-    <ItemGroup>
-      <None Update="Day07\input.txt">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
-
-
-    <ItemGroup>
-      <None Update="Day08\input.txt">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
-
-</Project>
-
-
-
-
-
+<Project Sdk="Microsoft.NET.Sdk">    <PropertyGroup>        <TargetFramework>netcoreapp3.1</TargetFramework>        <RootNamespace>AdventOfCode._2015</RootNamespace>    </PropertyGroup>    <ItemGroup>      <PackageReference Include="FluentAssertions" Version="5.9.0" />      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />      <PackageReference Include="Microsoft.NETCore.App" Version="2.2.8" />      <PackageReference Include="nunit" Version="3.12.0" />      <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />    </ItemGroup>    <ItemGroup>      <ProjectReference Include="..\AdventOfCode.Common.Legacy\AdventOfCode.Common.Legacy.csproj" />    </ItemGroup>    <ItemGroup>      <None Update="Day01\input.txt">        <CopyToOutputDirectory>Always</CopyToOutputDirectory>      </None>    </ItemGroup>    <ItemGroup>      <None Update="Day02\input.txt">        <CopyToOutputDirectory>Always</CopyToOutputDirectory>      </None>    </ItemGroup>    <ItemGroup>      <None Update="Day03\input.txt">        <CopyToOutputDirectory>Always</CopyToOutputDirectory>      </None>    </ItemGroup>    <ItemGroup>      <None Update="Day04\input.txt">        <CopyToOutputDirectory>Always</CopyToOutputDirectory>      </None>    </ItemGroup>    <ItemGroup>      <None Update="Day05\input.txt">        <CopyToOutputDirectory>Always</CopyToOutputDirectory>      </None>    </ItemGroup>    <ItemGroup>      <None Update="Day06\input.txt">        <CopyToOutputDirectory>Always</CopyToOutputDirectory>      </None>    </ItemGroup>    <ItemGroup>      <None Update="Day07\input.txt">        <CopyToOutputDirectory>Always</CopyToOutputDirectory>      </None>    </ItemGroup>    <ItemGroup>      <None Update="Day07\input.txt">        <CopyToOutputDirectory>Always</CopyToOutputDirectory>      </None>    </ItemGroup>    <ItemGroup>      <None Update="Day08\input.txt">        <CopyToOutputDirectory>Always</CopyToOutputDirectory>      </None>    </ItemGroup></Project>
