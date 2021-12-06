@@ -6,18 +6,23 @@ namespace AdventOfCode._2021.Day06
     [TestFixture]
     public class Day06Tests
     {
-        [Test]
-        public void Part1_Example()
+        [TestCase(1, 5)]
+        [TestCase(2, 6)]
+        [TestCase(8, 10)]
+        [TestCase(10, 12)]
+        [TestCase(16, 21)]
+        [TestCase(80, 5934)]
+        public void Part1_Example(int iterations, int expected)
         {
-            var answer = Day06.Part1(true);
-            answer.Should().Be(5934);
+            var answer = Day06.Part1(true, iterations);
+            answer.Should().Be(expected);
         }
         
         [Test]
         public void Part2_Example()
         {
             var answer = Day06.Part2(true);
-            answer.Should().Be(-1);
+            answer.Should().Be(256);
         }
         
         [Test]
@@ -25,7 +30,7 @@ namespace AdventOfCode._2021.Day06
         {
             var answer = Day06.Part1();
             answer.Should().NotBe(-1);
-            answer.Should().Be(0);
+            answer.Should().Be(359344L);
         }
         
         [Test]
