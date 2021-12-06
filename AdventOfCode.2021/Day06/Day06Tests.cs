@@ -11,6 +11,7 @@ namespace AdventOfCode._2021.Day06
         [TestCase(8, 10)]
         [TestCase(10, 12)]
         [TestCase(16, 21)]
+        [TestCase(18, 26)]
         [TestCase(80, 5934)]
         public void Part1_Example(int iterations, int expected)
         {
@@ -22,7 +23,7 @@ namespace AdventOfCode._2021.Day06
         public void Part2_Example()
         {
             var answer = Day06.Part2(true);
-            answer.Should().Be(256);
+            answer.Should().Be(26984457539);
         }
         
         [Test]
@@ -38,7 +39,7 @@ namespace AdventOfCode._2021.Day06
         {
             var answer = Day06.Part2();
             answer.Should().NotBe(-2);
-            answer.Should().Be(0);
+            answer.Should().Be(1629570219571L);
         }
     }
 }
