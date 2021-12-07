@@ -27,7 +27,28 @@ namespace AdventOfCode._2021.Day07
         public static long Part2(bool isExample = false)
         {
             var lines = FileReader.ReadInputLines(Day, isExample).ToList();
-            return -1;
+            var positions = lines.Single().Split(",").Select(int.Parse).ToList();
+
+            var orderedPositions = positions.OrderBy(x => x).ToList();
+
+            var fuelCostsToAlign = Enumerable.Range(0, orderedPositions.Max()).Select(pos =>
+            {
+                return orderedPositions.Sum(o => SumTo(Math.Abs(pos - o)));
+            });
+
+            return fuelCostsToAlign.Min();
         }
+
+        private static int SumTo(int x)
+        {
+            var sum = 0;
+            while (x > 0)
+            {
+                sum += x;
+                x--;
+            }
+
+            return sum;
+        } 
     }
 }
