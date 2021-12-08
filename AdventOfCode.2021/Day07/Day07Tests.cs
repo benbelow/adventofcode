@@ -33,7 +33,7 @@ namespace AdventOfCode._2021.Day07
         {
             var answer = Day07.Part2();
             answer.Should().NotBe(-2);
-            answer.Should().Be(0);
+            answer.Should().Be(97038163L);
         }
     }
 }
