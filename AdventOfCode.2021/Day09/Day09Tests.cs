@@ -17,7 +17,7 @@ namespace AdventOfCode._2021.Day09
         public void Part2_Example()
         {
             var answer = Day09.Part2(true);
-            answer.Should().Be(-1);
+            answer.Should().Be(1134);
         }
         
         [Test]
@@ -25,7 +25,7 @@ namespace AdventOfCode._2021.Day09
         {
             var answer = Day09.Part1();
             answer.Should().NotBe(-1);
-            answer.Should().Be(0);
+            answer.Should().Be(570);
         }
         
         [Test]
@@ -33,7 +33,7 @@ namespace AdventOfCode._2021.Day09
         {
             var answer = Day09.Part2();
             answer.Should().NotBe(-2);
-            answer.Should().Be(0);
+            answer.Should().Be(899392L);
         }
     }
 }
