@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,19 +13,10 @@ namespace AdventOfCode._2021.Day10
         public static long Part1(bool isExample = false)
         {
             var lines = FileReader.ReadInputLines(Day, isExample).ToList();
-
-            var score1 = 0L;
-            
-            foreach (var line in lines)
-            {
-                var score = GetScore(line);
-                score1 += score;
-            }
-            
-            return score1;
+            return lines.Sum(GetInvalidScore);
         }
 
-        private static long GetScore(string line)
+        private static long GetInvalidScore(string line)
         {
             var queue = new List<char>();
 
@@ -66,10 +58,67 @@ namespace AdventOfCode._2021.Day10
             return 0;
         }
 
+        private static long GetIncompleteScore(string line)
+        {
+            var queue = new List<char>();
+
+            var dict = new Dictionary<char, char>()
+            {
+                {'(', ')'},
+                {'<', '>'},
+                {'[', ']'},
+                {'{', '}'},
+            };
+
+            var scores = new Dictionary<char, long>
+            {
+                {')', 1},
+                {']', 2},
+                {'}', 3},
+                {'>', 4},
+            };
+
+            var score = 0L;
+            
+            foreach (var c in line)
+            {
+                if (dict.Keys.Contains(c))
+                {
+                    queue.Add(c);
+                }
+                else
+                {
+                    var pair = queue.Last();
+                    queue.RemoveAt(queue.Count - 1);
+                    var expected = dict[pair];
+
+                    if (expected != c)
+                    {
+                        return scores[c];
+                    }
+                }
+            }
+
+            queue.Reverse();
+            foreach (var c in queue)
+            {
+                score *= 5L;
+                score += scores[dict[c]];
+            }
+
+            return score;
+        }
+
+        
         public static long Part2(bool isExample = false)
         {
             var lines = FileReader.ReadInputLines(Day, isExample).ToList();
-            return -1;
+
+            var valid = lines.Where(l => GetInvalidScore(l) == 0);
+            var scores = valid.Select(GetIncompleteScore).ToList();
+
+            var midIndex = scores.Count / 2;
+            return scores.OrderBy(x => x).ToList()[midIndex];
         }
     }
 }
