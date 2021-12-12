@@ -163,7 +163,21 @@
       </None>
     </ItemGroup>
 
+
+    <ItemGroup>
+      <None Update="Day12\input.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <None Update="Day12\example.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
+
 
 
 
