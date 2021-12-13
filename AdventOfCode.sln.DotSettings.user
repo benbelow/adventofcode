@@ -2,23 +2,11 @@
 	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c912d0ba_002D69d8_002D416a_002D9e83_002D94bbfff9fc27/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Concudurr" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::DC497D96-BE51-4825-94FF-E2A4305E0E93::net6.0::AdventOfCode._2021.Day01.Day01Tests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::DC497D96-BE51-4825-94FF-E2A4305E0E93::net6.0::AdventOfCode._2021.Day02.Day02Tests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::DC497D96-BE51-4825-94FF-E2A4305E0E93::net6.0::AdventOfCode._2021.Day03.Day03Tests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::DC497D96-BE51-4825-94FF-E2A4305E0E93::net6.0::AdventOfCode._2021.Day04.Day04Tests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::DC497D96-BE51-4825-94FF-E2A4305E0E93::net6.0::AdventOfCode._2021.Day05.Day05Tests.Part1_Example&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::DC497D96-BE51-4825-94FF-E2A4305E0E93::net6.0::AdventOfCode._2021.Day05.Day05Tests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::DC497D96-BE51-4825-94FF-E2A4305E0E93::net6.0::AdventOfCode._2021.Day06.Day06Tests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::DC497D96-BE51-4825-94FF-E2A4305E0E93::net6.0::AdventOfCode._2021.Day07.Day07Tests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::DC497D96-BE51-4825-94FF-E2A4305E0E93::net6.0::AdventOfCode._2021.Day08.Day08Tests.Part1_Example&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::DC497D96-BE51-4825-94FF-E2A4305E0E93::net6.0::AdventOfCode._2021.Day08.Day08Tests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::DC497D96-BE51-4825-94FF-E2A4305E0E93::net6.0::AdventOfCode._2021.Day09.Day09Tests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::DC497D96-BE51-4825-94FF-E2A4305E0E93::net6.0::AdventOfCode._2021.Day10.Day10Tests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::DC497D96-BE51-4825-94FF-E2A4305E0E93::net6.0::AdventOfCode._2021.Day11.Day11Tests&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::DC497D96-BE51-4825-94FF-E2A4305E0E93::net6.0::AdventOfCode._2021.Day12.Day12Tests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::DC497D96-BE51-4825-94FF-E2A4305E0E93::net6.0::AdventOfCode._2021.Day13.Day13Tests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/UnloadedProject/UnloadedProjects/=64d51db1_002D9ff7_002D4c9e_002D9b42_002D2feb7bb7a622_0023AdventOfCode_002E2020/@EntryIndexedValue">True</s:Boolean>
+	
 	
 	
 	
