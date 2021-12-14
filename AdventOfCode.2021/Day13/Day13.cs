@@ -208,6 +208,8 @@ namespace AdventOfCode._2021.Day13
 
             void Draw()
             {
+                var printChar = "*";
+
                 CalculateMinMax();
                 var l = "";
                 var lines = new List<string>();
@@ -217,13 +219,13 @@ namespace AdventOfCode._2021.Day13
                     for (int y = minY; y <= maxY; y++)
                     {
                         var c = GetAtC((x, y));
-                        l += c ? "#" : ".";
+                        l += c ? printChar : " ";
                     }
 
                     lines.Add(l);
                 }
 
-                foreach (var goodL in lines.Where(l=> l.Contains("#")))
+                foreach (var goodL in lines.Where(l=> l.Contains(printChar)))
                 {
                     Console.WriteLine(goodL);
                 }
