@@ -18,11 +18,18 @@ namespace AdventOfCode._2021.Day16
             answer.Should().Be(expected);
         }
         
-        [Test]
-        public void Part2_Example()
+        [TestCase("C200B40A82", 3)]
+        [TestCase("04005AC33890", 54)]
+        [TestCase("880086C3E88112", 7)]
+        [TestCase("CE00C43D881120", 9)]
+        [TestCase("D8005AC2A8F0", 1)]
+        [TestCase("F600BC2D8F", 0)]
+        [TestCase("9C005AC2F8F0", 0)]
+        [TestCase("9C0141080250320F1802104A08", 1)]
+        public void Part2_Example(string input, long expected)
         {
-            var answer = Day16.Part2(true);
-            answer.Should().Be(-1);
+            var answer = Day16.Part2(true, input);
+            answer.Should().Be(expected);
         }
         
         [Test]
@@ -30,7 +37,7 @@ namespace AdventOfCode._2021.Day16
         {
             var answer = Day16.Part1();
             answer.Should().NotBe(-1);
-            answer.Should().Be(0);
+            answer.Should().Be(945);
         }
         
         [Test]
@@ -38,7 +45,7 @@ namespace AdventOfCode._2021.Day16
         {
             var answer = Day16.Part2();
             answer.Should().NotBe(-2);
-            answer.Should().Be(0);
+            answer.Should().Be(10637009915279L);
         }
     }
 }
