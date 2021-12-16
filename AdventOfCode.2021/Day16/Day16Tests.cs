@@ -7,6 +7,7 @@ namespace AdventOfCode._2021.Day16
     public class Day16Tests
     {
         [TestCase("D2FE28", 6)]
+        [TestCase("38006F45291200", 9)]
         [TestCase("8A004A801A8002F478", 16)]
         [TestCase("620080001611562C8802118E34", 12)]
         [TestCase("C0015000016115A2E0802F182340", 23)]
