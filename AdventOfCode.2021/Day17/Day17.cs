@@ -76,9 +76,9 @@ namespace AdventOfCode._2021.Day17
                 }
             }
             var totalMax = 0;
-            foreach (var x in XRange(x1,x2).Distinct())
+            foreach (var x in Enumerable.Range(0, x2).Distinct())
             {
-                foreach (var y in YRange(y1,y2).Distinct())
+                foreach (var y in Enumerable.Range(0, y1 * -1).Distinct())
                 {
                     Console.WriteLine((x, y));
                     var max = GetMaxIfValid((x, y));
