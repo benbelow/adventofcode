@@ -65,6 +65,12 @@ namespace AdventOfCode._2021.Day18
             sn.Split().ToString().Should().Be(expected);
         }
 
+        [TestCase("[[[[[4,3],4],4],[7,[[8,4],9]]],[1,1]]", "[[[[0,7],4],[[7,8],[6,0]]],[8,1]]")]
+        public void Reduce(string start, string expected)
+        {
+            var sn = new Day18.SnailNumber(start);
+            sn.Reduce().ToString().Should().Be(expected);
+        }
         
         [Test]
         public void Part1_Example()

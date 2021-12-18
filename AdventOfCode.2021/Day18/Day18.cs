@@ -146,19 +146,15 @@ namespace AdventOfCode._2021.Day18
             public SnailNumber Reduce()
             {
                 var result = this;
-                var periodicityShouldExplode = true;
-
-                while (result.ShouldExplode() || result.ShouldSplit())
+                
+                while (true)
                 {
-                    if (periodicityShouldExplode)
+                    var prevResult = result.ToString();
+                    result = result.Explode();
+                    result = result.Split();
+                    if (result.ToString() == prevResult.ToString())
                     {
-                        result = result.Explode();
-                        periodicityShouldExplode = periodicityShouldExplode;
-                    }
-                    else
-                    {
-                        result = result.Split();
-                        periodicityShouldExplode = !periodicityShouldExplode;
+                        return result;
                     }
                 }
 
@@ -169,7 +165,12 @@ namespace AdventOfCode._2021.Day18
             {
                 var regularNumbers = RegularNumbersList();
 
-                var toSplit = regularNumbers.First(r => r.RegularNumberValue >= SplitMaxValueCutoff);
+                var toSplit = regularNumbers.FirstOrDefault(r => r.RegularNumberValue >= SplitMaxValueCutoff);
+
+                if (toSplit == null)
+                {
+                    return this;
+                }
 
                 var val1 = toSplit.RegularNumberValue.Value / 2;
                 var val2 = (toSplit.RegularNumberValue.Value + 1) / 2;
@@ -186,7 +187,12 @@ namespace AdventOfCode._2021.Day18
                 var nonRegularNumbersList = NonRegularNumbersList();
                 var regularNumbers = RegularNumbersList();
 
-                var toExplode = nonRegularNumbersList.First(x => x.NestingLvl >= ExplosionCutoffNestingLevel);
+                var toExplode = nonRegularNumbersList.FirstOrDefault(x => x.NestingLvl >= ExplosionCutoffNestingLevel);
+
+                if (toExplode == null)
+                {
+                    return this;
+                }
 
                 var explodeIndex = nonRegularNumbersList.IndexOf(toExplode);
                 var regularExplodeIndexes = new[] { regularNumbers.IndexOf(toExplode.Item1), regularNumbers.IndexOf(toExplode.Item2) };
