@@ -165,17 +165,27 @@ namespace AdventOfCode._2021.Day18
                 return result;
             }
 
-            private SnailNumber Split()
+            public SnailNumber Split()
             {
-                throw new NotImplementedException();
-            }
+                var regularNumbers = RegularNumbersList();
 
+                var toSplit = regularNumbers.First(r => r.RegularNumberValue >= SplitMaxValueCutoff);
+
+                var val1 = toSplit.RegularNumberValue.Value / 2;
+                var val2 = (toSplit.RegularNumberValue.Value + 1) / 2;
+
+                toSplit.Item1 = new SnailNumber(val1.ToString(), toSplit.NestingLvl, toSplit.Parent);
+                toSplit.Item2 = new SnailNumber(val2.ToString(), toSplit.NestingLvl, toSplit.Parent);
+                toSplit.RegularNumberValue = null;
+
+                return this;
+            }
 
             public SnailNumber Explode()
             {
                 var nonRegularNumbersList = NonRegularNumbersList();
                 var regularNumbers = RegularNumbersList();
-                
+
                 var toExplode = nonRegularNumbersList.First(x => x.NestingLvl >= ExplosionCutoffNestingLevel);
 
                 var explodeIndex = nonRegularNumbersList.IndexOf(toExplode);
@@ -206,7 +216,7 @@ namespace AdventOfCode._2021.Day18
                     toExplode.Parent.Item1.RegularNumbersList().Last().RegularNumberValue += val1;
 
                     // right
-                    var prev = regularExplodeIndexRight < regularNumbers.Count -1 ? regularNumbers[regularExplodeIndexRight + 1] : null;
+                    var prev = regularExplodeIndexRight < regularNumbers.Count - 1 ? regularNumbers[regularExplodeIndexRight + 1] : null;
                     if (prev != null)
                     {
                         prev.RegularNumberValue += val2;
@@ -216,7 +226,7 @@ namespace AdventOfCode._2021.Day18
                 toExplode.Item1 = null;
                 toExplode.Item2 = null;
                 toExplode.RegularNumberValue = 0;
-                
+
                 return this;
             }
         }
