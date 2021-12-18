@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +15,16 @@ namespace AdventOfCode._2021.Day18
             public SnailNumber Item1 { get; set; }
             public SnailNumber Item2 { get; set; }
 
-            public int? RawValue { get; set; }
+            public int? RegularNumberValue { get; set; }
+            public string RawData { get; set; }
 
             public SnailNumber(string rawData)
             {
+                RawData = rawData;
+                
                 if (int.TryParse(rawData, out var actualNumber))
                 {
-                    RawValue = actualNumber;
+                    RegularNumberValue = actualNumber;
                     return;
                 }
                 
@@ -50,6 +54,24 @@ namespace AdventOfCode._2021.Day18
                 var rawItem2 = rawData.Substring(commaIndex + 1, rawData.Length - rawItem1.Length - 3);
                 Item1 = new SnailNumber(rawItem1);
                 Item2 = new SnailNumber(rawItem2);
+            }
+
+            public long Magnitude()
+            {
+                if (RegularNumberValue != null)
+                {
+                    return RegularNumberValue.Value;
+                }
+
+                else
+                {
+                    var item1Magnitude = Item1.Magnitude();
+                    var item2Magnitude = Item2.Magnitude();
+                    // Console.WriteLine(RawData);
+                    // Console.WriteLine("" + item1Magnitude + " | " + item2Magnitude);
+                    
+                    return item1Magnitude * 3 + item2Magnitude * 2;
+                }
             }
         }
 
