@@ -151,6 +151,10 @@ namespace AdventOfCode._2021.Day18
                 {
                     var prevResult = result.ToString();
                     result = result.Explode();
+                    if (result.ToString() != prevResult.ToString())
+                    {
+                        continue;
+                    }
                     result = result.Split();
                     if (result.ToString() == prevResult.ToString())
                     {
@@ -187,7 +191,8 @@ namespace AdventOfCode._2021.Day18
                 var nonRegularNumbersList = NonRegularNumbersList();
                 var regularNumbers = RegularNumbersList();
 
-                var toExplode = nonRegularNumbersList.FirstOrDefault(x => x.NestingLvl >= ExplosionCutoffNestingLevel);
+                var toExplode = nonRegularNumbersList
+                    .FirstOrDefault(x => x.NestingLvl >= ExplosionCutoffNestingLevel && x.Item1.IsRegular && x.Item2.IsRegular);
 
                 if (toExplode == null)
                 {
@@ -235,13 +240,21 @@ namespace AdventOfCode._2021.Day18
 
                 return this;
             }
+
+            public SnailNumber Add(SnailNumber other)
+            {
+                return new SnailNumber($"[{this.ToString()},{other.ToString()}]").Reduce();
+            }
         }
 
         public static long Part1(bool isExample = false)
         {
             var lines = FileReader.ReadInputLines(Day, isExample).ToList();
             var snailNumbers = lines.Select(l => new SnailNumber(l)).ToList();
-            return -1;
+
+            var initialSn = snailNumbers.First();
+            var final = snailNumbers.Skip(1).Aggregate(initialSn, (combined, snailNumber) => combined.Add(snailNumber));
+            return final.Magnitude();
         }
 
         public static long Part2(bool isExample = false)
