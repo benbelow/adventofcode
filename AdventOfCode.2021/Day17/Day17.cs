@@ -11,14 +11,14 @@ namespace AdventOfCode._2021.Day17
         private const int Day = 17;
 
         private static Dictionary<int, int> triangles = new Dictionary<int, int>();
-        
+
         public static int Trianglise(int q)
         {
             if (q == 0)
             {
                 return 0;
             }
-            
+
             if (triangles.ContainsKey(q))
             {
                 return triangles[q];
@@ -28,24 +28,24 @@ namespace AdventOfCode._2021.Day17
             {
                 triangles[q] = 1;
             }
-            
+
             triangles[q] = q + Trianglise(q - 1);
 
             return triangles[q];
         }
-        
+
         public static long Part1(int x1, int x2, int y1, int y2)
         {
             bool TooFar((int, int) pos)
             {
                 return pos.Item1 > x2 || pos.Item2 < y1;
             }
-            
+
             bool OnTarget((int, int) pos)
             {
                 return pos.Item1 <= x2 && pos.Item1 >= x1 || pos.Item2 <= y1 && pos.Item1 >= y2;
             }
-            
+
             int? GetMaxIfValid((int, int) vel)
             {
                 var initialVel = vel;
@@ -60,7 +60,7 @@ namespace AdventOfCode._2021.Day17
                     {
                         max = pos.Item2;
                     }
-                    
+
                     if (OnTarget(pos))
                     {
                         Console.WriteLine(pos);
@@ -68,13 +68,14 @@ namespace AdventOfCode._2021.Day17
                         Console.WriteLine("________________");
                         everOnTarget = true;
                     }
-                    
+
                     if (TooFar(pos))
                     {
                         return everOnTarget ? max : null;
                     }
                 }
             }
+
             var totalMax = 0;
             foreach (var x in Enumerable.Range(0, x2).Distinct())
             {
@@ -121,7 +122,6 @@ namespace AdventOfCode._2021.Day17
                         tooFast = true;
                         break;
                     }
-                    
                 }
             }
         }
@@ -130,7 +130,7 @@ namespace AdventOfCode._2021.Day17
         {
             bool tooFast = false;
             var initialMom = 0;
-            while(!tooFast)
+            while (!tooFast)
             {
                 initialMom++;
                 var yTrack = 0;
@@ -151,14 +151,58 @@ namespace AdventOfCode._2021.Day17
                         break;
                     }
                 }
-
             }
         }
-        
-        public static long Part2(bool isExample = false)
+
+        public static long Part2(int x1, int x2, int y1, int y2)
         {
-            var lines = FileReader.ReadInputLines(Day, isExample).ToList();
-            return -1;
+            bool TooFar((int, int) pos)
+            {
+                return pos.Item1 > x2 || pos.Item2 < y1;
+            }
+
+            bool OnTarget((int, int) pos)
+            {
+                return pos.Item1 <= x2 && pos.Item1 >= x1 && pos.Item2 >= y1 && pos.Item2 <= y2;
+            }
+
+            int? GetMaxIfValid((int, int) vel)
+            {
+                var initialVel = vel;
+                var pos = (0, 0);
+                var everOnTarget = false;
+                while (true)
+                {
+                    pos = (pos.Item1 + vel.Item1, pos.Item2 + vel.Item2);
+                    vel = (Math.Max(vel.Item1 - 1, 0), vel.Item2 - 1);
+
+                    if (OnTarget(pos))
+                    {
+                        return 1;
+                    }
+
+                    if (TooFar(pos))
+                    {
+                        return null;
+                    }
+                }
+            }
+
+            var totalMax = 0;
+            foreach (var x in Enumerable.Range(0, x2 + 1).Distinct())
+            {
+                for (int y = y1; y <= -1 * y1; y++)
+                {
+                    Console.WriteLine((x, y));
+                    var max = GetMaxIfValid((x, y));
+                    if (max != null)
+                    {
+                        totalMax++;
+                    }
+                }
+            }
+
+            return totalMax;
         }
     }
 }
