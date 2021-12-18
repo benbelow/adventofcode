@@ -248,7 +248,25 @@ namespace AdventOfCode._2021.Day18
         public static long Part2(bool isExample = false)
         {
             var lines = FileReader.ReadInputLines(Day, isExample).ToList();
-            return -1;
+            var snailNumbers = lines.Select(l => new SnailNumber(l)).ToList();
+
+            var maxMag = 0L;
+
+            for (int i = 0; i < snailNumbers.Count; i++)
+            {
+                for (int j = 0; j < snailNumbers.Count; j++)
+                {
+                    if (i == j)
+                    {
+                        continue;
+                    }
+
+                    var mag = snailNumbers[i].Add(snailNumbers[j]).Magnitude();
+                    maxMag = Math.Max(mag, maxMag);
+                }
+            }
+
+            return maxMag;
         }
     }
 }
