@@ -146,7 +146,7 @@ namespace AdventOfCode._2021.Day18
             public SnailNumber Reduce()
             {
                 var result = this;
-                
+
                 while (true)
                 {
                     var prevResult = result.ToString();
@@ -155,6 +155,7 @@ namespace AdventOfCode._2021.Day18
                     {
                         continue;
                     }
+
                     result = result.Split();
                     if (result.ToString() == prevResult.ToString())
                     {
@@ -179,8 +180,8 @@ namespace AdventOfCode._2021.Day18
                 var val1 = toSplit.RegularNumberValue.Value / 2;
                 var val2 = (toSplit.RegularNumberValue.Value + 1) / 2;
 
-                toSplit.Item1 = new SnailNumber(val1.ToString(), toSplit.NestingLvl, toSplit.Parent);
-                toSplit.Item2 = new SnailNumber(val2.ToString(), toSplit.NestingLvl, toSplit.Parent);
+                toSplit.Item1 = new SnailNumber(val1.ToString(), toSplit.NestingLvl + 1, toSplit.Parent);
+                toSplit.Item2 = new SnailNumber(val2.ToString(), toSplit.NestingLvl + 1, toSplit.Parent);
                 toSplit.RegularNumberValue = null;
 
                 return this;
@@ -199,7 +200,6 @@ namespace AdventOfCode._2021.Day18
                     return this;
                 }
 
-                var explodeIndex = nonRegularNumbersList.IndexOf(toExplode);
                 var regularExplodeIndexes = new[] { regularNumbers.IndexOf(toExplode.Item1), regularNumbers.IndexOf(toExplode.Item2) };
                 var regularExplodeIndexLeft = regularExplodeIndexes.Min();
                 var regularExplodeIndexRight = regularExplodeIndexes.Max();
@@ -208,30 +208,18 @@ namespace AdventOfCode._2021.Day18
                 var val1 = toExplode.Item1.RegularNumberValue.Value;
                 var val2 = toExplode.Item2.RegularNumberValue.Value;
 
-                if (toExplode.IsItem1)
+                // left
+                var prev = regularExplodeIndexLeft != 0 ? regularNumbers[regularExplodeIndexLeft - 1] : null;
+                if (prev != null)
                 {
-                    // right
-                    toExplode.Parent.Item2.RegularNumbersList().First().RegularNumberValue += val2;
-
-                    // left
-                    var prev = regularExplodeIndexLeft != 0 ? regularNumbers[regularExplodeIndexLeft - 1] : null;
-                    if (prev != null)
-                    {
-                        prev.RegularNumberValue += val1;
-                    }
+                    prev.RegularNumberValue += val1;
                 }
 
-                if (toExplode.IsItem2)
+                // right
+                var next = regularExplodeIndexRight < regularNumbers.Count - 1 ? regularNumbers[regularExplodeIndexRight + 1] : null;
+                if (next != null)
                 {
-                    // left
-                    toExplode.Parent.Item1.RegularNumbersList().Last().RegularNumberValue += val1;
-
-                    // right
-                    var prev = regularExplodeIndexRight < regularNumbers.Count - 1 ? regularNumbers[regularExplodeIndexRight + 1] : null;
-                    if (prev != null)
-                    {
-                        prev.RegularNumberValue += val2;
-                    }
+                    next.RegularNumberValue += val2;
                 }
 
                 toExplode.Item1 = null;
