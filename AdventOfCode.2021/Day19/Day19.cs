@@ -15,57 +15,35 @@ namespace AdventOfCode._2021.Day19
         // 24 different orientations 
         public enum Orientation
         {
-            // Z-UP
-            // 0 Neg
-            ZUp_XPos_YPos_ZPos,
-
-            // 1 Neg
-            ZUp_XPos_YPos_ZNeg,
-            ZUp_XPos_YNeg_ZPos,
-            ZUp_XNeg_YPos_ZPos,
-
-            // 2 Neg
-            ZUp_XPos_YNeg_ZNeg,
-            ZUp_XNeg_YPos_ZNeg,
-            ZUp_XNeg_YNeg_ZPos,
-
-            // 3 Neg
-            ZUp_XNeg_YNeg_ZNeg,
-
-            // Y-UP
-            // 0 Neg
-            YUp_XPos_YPos_ZPos,
-
-            // 1 Neg
-            YUp_XPos_YPos_ZNeg,
-            YUp_XPos_YNeg_ZPos,
-            YUp_XNeg_YPos_ZPos,
-
-            // 2 Neg
-            YUp_XPos_YNeg_ZNeg,
-            YUp_XNeg_YPos_ZNeg,
-            YUp_XNeg_YNeg_ZPos,
-
-            // 3 Neg
-            YUp_XNeg_YNeg_ZNeg,
-
-            // X-UP
-            // 0 Neg
-            XUp_XPos_YPos_ZPos,
-
-            // 1 Neg
-            XUp_XPos_YPos_ZNeg,
-            XUp_XPos_YNeg_ZPos,
-            XUp_XNeg_YPos_ZPos,
-
-            // 2 Neg
-            XUp_XPos_YNeg_ZNeg,
-            XUp_XNeg_YPos_ZNeg,
-            XUp_XNeg_YNeg_ZPos,
-
-            // 3 Neg
-            XUp_XNeg_YNeg_ZNeg,
+            FacePosX_UpPosY,
+            FacePosX_UpNegY,
+            FacePosX_UpPosZ,
+            FacePosX_UpNegZ,
             
+            FaceNegX_UpPosY,
+            FaceNegX_UpNegY,
+            FaceNegX_UpPosZ,
+            FaceNegX_UpNegZ,
+            
+            FacePosY_UpPosX,
+            FacePosY_UpNegX,
+            FacePosY_UpPosZ,
+            FacePosY_UpNegZ,
+            
+            FaceNegY_UpPosX,
+            FaceNegY_UpNegX,
+            FaceNegY_UpPosZ,
+            FaceNegY_UpNegZ,
+            
+            FacePosZ_UpPosY,
+            FacePosZ_UpNegY,
+            FacePosZ_UpPosX,
+            FacePosZ_UpNegX,
+            
+            FaceNegZ_UpPosY,
+            FaceNegZ_UpNegY,
+            FaceNegZ_UpPosX,
+            FaceNegZ_UpNegX,
         }
 
         public class Scanner
@@ -127,32 +105,32 @@ namespace AdventOfCode._2021.Day19
                 var (x, y, z) = original;
                 return orientation switch
                 {
-                    Orientation.ZUp_XPos_YPos_ZPos => Multiply((x,y,z), (1,1,1)),
-                    Orientation.ZUp_XPos_YPos_ZNeg => Multiply((x,y,z), (1,1,-1)),
-                    Orientation.ZUp_XPos_YNeg_ZPos => Multiply((x,y,z), (1,-1,1)),
-                    Orientation.ZUp_XNeg_YPos_ZPos => Multiply((x,y,z), (-1,1,1)),
-                    Orientation.ZUp_XPos_YNeg_ZNeg => Multiply((x,y,z), (1,-1,-1)),
-                    Orientation.ZUp_XNeg_YPos_ZNeg => Multiply((x,y,z), (-1,1,-1)),
-                    Orientation.ZUp_XNeg_YNeg_ZPos => Multiply((x,y,z), (-1,-1,1)),
-                    Orientation.ZUp_XNeg_YNeg_ZNeg => Multiply((x,y,z), (-1,-1,-1)),
-
-                    Orientation.XUp_XPos_YPos_ZPos => Multiply((z,y,x), (1,1,1)),
-                    Orientation.XUp_XPos_YPos_ZNeg => Multiply((z,y,x), (1,1,-1)),
-                    Orientation.XUp_XPos_YNeg_ZPos => Multiply((z,y,x), (1,-1,1)),
-                    Orientation.XUp_XNeg_YPos_ZPos => Multiply((z,y,x), (-1,1,1)),
-                    Orientation.XUp_XPos_YNeg_ZNeg => Multiply((z,y,x), (1,-1,-1)),
-                    Orientation.XUp_XNeg_YPos_ZNeg => Multiply((z,y,x), (-1,1,-1)),
-                    Orientation.XUp_XNeg_YNeg_ZPos => Multiply((z,y,x), (-1,-1,1)),
-                    Orientation.XUp_XNeg_YNeg_ZNeg => Multiply((z,y,x), (-1,-1,-1)),
+                    Orientation.FacePosX_UpPosY => Multiply((z, y, x), (-1, +1, +1)),
+                    Orientation.FacePosX_UpNegY => Multiply((z, y, x), (+1, -1, +1)),
+                    Orientation.FaceNegX_UpPosY => Multiply((z, y, x), (+1, +1, -1)),
+                    Orientation.FaceNegX_UpNegY => Multiply((z, y, x), (-1, -1, -1)),
+                    Orientation.FacePosX_UpPosZ => Multiply((y, z, x), (+1, +1, +1)),
+                    Orientation.FacePosX_UpNegZ => Multiply((y, z, x), (-1, -1, +1)),
+                    Orientation.FaceNegX_UpPosZ => Multiply((y, z, x), (-1, +1, -1)),
+                    Orientation.FaceNegX_UpNegZ => Multiply((y, z, x), (+1, -1, -1)),
                     
-                    Orientation.YUp_XPos_YPos_ZPos => Multiply((x,z,y), (1,1,1)),
-                    Orientation.YUp_XPos_YPos_ZNeg => Multiply((x,z,y), (1,1,-1)),
-                    Orientation.YUp_XPos_YNeg_ZPos => Multiply((x,z,y), (1,-1,1)),
-                    Orientation.YUp_XNeg_YPos_ZPos => Multiply((x,z,y), (-1,1,1)),
-                    Orientation.YUp_XPos_YNeg_ZNeg => Multiply((x,z,y), (1,-1,-1)),
-                    Orientation.YUp_XNeg_YPos_ZNeg => Multiply((x,z,y), (-1,1,-1)),
-                    Orientation.YUp_XNeg_YNeg_ZPos => Multiply((x,z,y), (-1,-1,1)),
-                    Orientation.YUp_XNeg_YNeg_ZNeg => Multiply((x,z,y), (-1,-1,-1)),
+                    Orientation.FacePosY_UpPosX => Multiply((z, x, y), (+1, +1, +1)),
+                    Orientation.FacePosY_UpNegX => Multiply((z, x, y), (-1, -1, +1)),
+                    Orientation.FaceNegY_UpPosX => Multiply((z, x, y), (-1, +1, -1)),
+                    Orientation.FaceNegY_UpNegX => Multiply((z, x, y), (+1, -1, -1)),
+                    Orientation.FacePosY_UpPosZ => Multiply((x, z, y), (-1, +1, +1)),
+                    Orientation.FacePosY_UpNegZ => Multiply((x, z, y), (+1, -1, +1)),
+                    Orientation.FaceNegY_UpPosZ => Multiply((x, z, y), (+1, +1, -1)),
+                    Orientation.FaceNegY_UpNegZ => Multiply((x, z, y), (-1, -1, -1)),
+                    
+                    Orientation.FacePosZ_UpPosY => Multiply((x, y, z), (+1, +1, +1)),
+                    Orientation.FacePosZ_UpNegY => Multiply((x, y, z), (-1, -1, +1)),
+                    Orientation.FaceNegZ_UpPosY => Multiply((x, y, z), (-1, +1, -1)),
+                    Orientation.FaceNegZ_UpNegY => Multiply((x, y, z), (+1, -1, -1)),
+                    Orientation.FacePosZ_UpPosX => Multiply((y, x, z), (-1, +1, +1)),
+                    Orientation.FacePosZ_UpNegX => Multiply((y, x, z), (+1, -1, +1)),
+                    Orientation.FaceNegZ_UpPosX => Multiply((y, x, z), (+1, +1, -1)),
+                    Orientation.FaceNegZ_UpNegX => Multiply((y, x, z), (-1, -1, -1)),
                     _ => throw new ArgumentOutOfRangeException(nameof(orientation), orientation, null)
                 };
             }
@@ -172,7 +150,7 @@ namespace AdventOfCode._2021.Day19
             }
 
 
-            public bool DoesOverlap(Scanner other, int overlapNeeded = 12)
+            public bool DoesOverlap(Scanner other, int overlapNeeded = +12)
             {
                 var possibleOverlaps = PossibleOverlaps(other).Where(o => o >= overlapNeeded -1).ToList();
                 // Console.WriteLine($"{Id} vs {other.Id}: OVERLAPS: {string.Join(",", possibleOverlaps)}");
