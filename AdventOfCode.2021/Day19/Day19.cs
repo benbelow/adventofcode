@@ -60,6 +60,8 @@ namespace AdventOfCode._2021.Day19
             // Manhattan distances from this beacon to all others in scanner  
             public Dictionary<(int, int, int), List<int>> DistancesPerBeacon = new Dictionary<(int, int, int), List<int>>();
 
+            public bool HasOriented { get; set; }
+            
             public Scanner(List<string> rawData)
             {
                 Id = int.Parse(rawData.First().Split("scanner ").Last().Split(" -").First());
@@ -213,11 +215,6 @@ namespace AdventOfCode._2021.Day19
 
                     // Console.WriteLine(pairDiffs.Distinct().Count());
 
-                    if (pairDiffs.Distinct().Count() < 3)
-                    {
-                        Console.WriteLine($"!!!!!!!!!!!!!!!!!!!!!!!!");
-                    }
-                    
                     if (pairDiffs.Distinct().Count() == 1)
                     {
                         newPossible.Add(orientation);
@@ -234,6 +231,7 @@ namespace AdventOfCode._2021.Day19
                     Beacons = Beacons.Select(b => TransformCoord(b, PossibleOrientations.Single())).ToList();
                     CalculateDistancesPerBeacon();
                     Console.WriteLine($"Oriented {Id} to {origin.Id}: New orientation: {PossibleOrientations.Single()}");
+                    HasOriented = true;
                 }
             }
         }
@@ -253,14 +251,12 @@ namespace AdventOfCode._2021.Day19
                     var overlaps = scanner.DoesOverlap(otherScanner);
                     var emoji = overlaps ? "✔" : "❌";
                     Console.WriteLine($"{scanner.Id} vs {otherScanner.Id}: {emoji}");
-                    if (!scannerPairs.Contains((otherScanner, scanner)) && overlaps)
-                    {
-                        scannerPairs.Add((scanner, otherScanner));
-                    }
+                    scannerPairs.Add((scanner, otherScanner));
                 }
             }
 
             var originScanner = scannerPairs.First().Item1;
+            originScanner.HasOriented = true;
             foreach (var g in scannerPairs.GroupBy(p => p.Item1))
             {
                 g.Key.PairedScanners = g.Select(q => q.Item2).ToList();
@@ -268,9 +264,22 @@ namespace AdventOfCode._2021.Day19
 
             foreach (var scannerPair in scannerPairs)
             {
-                scannerPair.Item2.OrientTo(scannerPair.Item1);
+                var (s1, s2) = scannerPair;
+                var both = new[] { s1, s2 };
+                if (s1.HasOriented ^ s2.HasOriented)
+                {
+                    var origin = both.Single(s => s.HasOriented);
+                    var other = both.Single(s => !s.HasOriented);
+                    other.OrientTo(origin);
+                }
             }
 
+            foreach (var scanner in scanners)
+            {
+                var emoji = scanner.HasOriented ? "✔" : "❌";
+                Console.WriteLine($"{scanner.Id}: {emoji}");
+            }
+            
             return scanners.Sum(s => s.Beacons.Count);
         }
 
