@@ -61,6 +61,9 @@ namespace AdventOfCode._2021.Day19
             public Dictionary<(int, int, int), List<int>> DistancesPerBeacon = new Dictionary<(int, int, int), List<int>>();
 
             public bool HasOriented { get; set; }
+            public bool HasNormalised { get; set; }
+            
+            public (int, int, int) ScannerPosition { get; set; }
             
             public Scanner(List<string> rawData)
             {
@@ -101,7 +104,9 @@ namespace AdventOfCode._2021.Day19
             {
                 return (c1.Item1 * c2.Item1, c1.Item2 * c2.Item2, c1.Item3 * c2.Item3);
             }
-            
+            public (int, int, int) Add((int, int, int) c1, (int, int, int) c2) => (c1.Item1 + c2.Item1, c1.Item2 + c2.Item2, c1.Item3 + c2.Item3);
+            public (int, int, int) Subtract((int, int, int) c1, (int, int, int) c2) => (c1.Item1 - c2.Item1, c1.Item2 - c2.Item2, c1.Item3 - c2.Item3);
+
             public (int, int, int) TransformCoord((int, int, int) original, Orientation orientation)
             {
                 var (x, y, z) = original;
@@ -234,6 +239,50 @@ namespace AdventOfCode._2021.Day19
                     HasOriented = true;
                 }
             }
+
+            public void NormaliseTo(Scanner origin, (int, int, int) originCoord)
+            {
+                Console.WriteLine($"Normalising {Id} to {origin.Id}...");
+
+                if (this == origin)
+                {
+                    // Beacons = Beacons.Select(b => NormaliseCoord(b, originCoord)).ToList();
+                    HasNormalised = true;
+                    ScannerPosition = (0, 0, 0);
+                }
+                else
+                {
+                    var beaconPairs = DistancesPerBeacon.SelectMany(kvp =>
+                    {
+                        var myDistances = kvp.Value;
+                        var theirKvp = origin.DistancesPerBeacon
+                            .SingleOrDefault(d => d.Value.Intersect(myDistances).Count() >= 11);
+                        if (theirKvp.Key != (0, 0, 0))
+                        {
+                            return new[] { (kvp.Key, theirKvp.Key) }.ToList();
+                        }
+                        else return new List<((int, int, int), (int, int, int))>();
+                    }).ToList();
+                    
+                    
+                    var pairDiffs = beaconPairs.Select(p => Minus(p.Item1, p.Item2)).ToList();
+
+                    var diff = pairDiffs.Distinct().Single();
+
+                    Console.WriteLine(diff);
+
+                    var invert = Multiply(diff, (-1, -1, -1));
+                    ScannerPosition = invert;
+                    
+                    Beacons = Beacons
+                        .Select(b => Subtract(b, diff))
+                        // .Select(b => Subtract(b, origin.ScannerPosition))
+                        .ToList();
+                    HasNormalised = true;
+                }
+                
+                CalculateDistancesPerBeacon();
+            }
         }
 
         public static long Part1(bool isExample = false)
@@ -251,26 +300,33 @@ namespace AdventOfCode._2021.Day19
                     var overlaps = scanner.DoesOverlap(otherScanner);
                     var emoji = overlaps ? "✔" : "❌";
                     Console.WriteLine($"{scanner.Id} vs {otherScanner.Id}: {emoji}");
-                    scannerPairs.Add((scanner, otherScanner));
+                    if (overlaps)
+                    {
+                        scannerPairs.Add((scanner, otherScanner));
+                    }
                 }
             }
 
             var originScanner = scannerPairs.First().Item1;
             originScanner.HasOriented = true;
+            var originCoord = originScanner.Beacons.First();
             foreach (var g in scannerPairs.GroupBy(p => p.Item1))
             {
                 g.Key.PairedScanners = g.Select(q => q.Item2).ToList();
             }
 
-            foreach (var scannerPair in scannerPairs)
+            while (scanners.Any(s => !s.HasOriented))
             {
-                var (s1, s2) = scannerPair;
-                var both = new[] { s1, s2 };
-                if (s1.HasOriented ^ s2.HasOriented)
+                foreach (var scannerPair in scannerPairs)
                 {
-                    var origin = both.Single(s => s.HasOriented);
-                    var other = both.Single(s => !s.HasOriented);
-                    other.OrientTo(origin);
+                    var (s1, s2) = scannerPair;
+                    var both = new[] { s1, s2 };
+                    if (s1.HasOriented ^ s2.HasOriented)
+                    {
+                        var origin = both.Single(s => s.HasOriented);
+                        var other = both.Single(s => !s.HasOriented);
+                        other.OrientTo(origin);
+                    }
                 }
             }
 
@@ -279,8 +335,34 @@ namespace AdventOfCode._2021.Day19
                 var emoji = scanner.HasOriented ? "✔" : "❌";
                 Console.WriteLine($"{scanner.Id}: {emoji}");
             }
+
+            originScanner.NormaliseTo(originScanner, originCoord);
+
+            while (scanners.Any(s => !s.HasNormalised))
+            {
+                foreach (var scannerPair in scannerPairs)
+                {
+                    var (s1, s2) = scannerPair;
+                    var both = new[] { s1, s2 };
+                    if (s1.HasNormalised ^ s2.HasNormalised)
+                    {
+                        var origin = both.Single(s => s.HasNormalised);
+                        var other = both.Single(s => !s.HasNormalised);
+                        other.NormaliseTo(origin, originCoord);
+                    }
+                }
+            }
+
+            foreach (var scanner in scanners)
+            {
+                var emoji = scanner.HasNormalised ? "✔" : "❌";
+                Console.WriteLine($"{scanner.Id}: {emoji}");
+                Console.WriteLine(scanner.ScannerPosition);
+            }
             
-            return scanners.Sum(s => s.Beacons.Count);
+            var allBeacons = scanners.SelectMany(s => s.Beacons);
+
+            return allBeacons.Distinct().Count();
         }
 
         public static long Part2(bool isExample = false)
