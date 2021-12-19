@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AdventOfCode.Common;
 using AdventOfCode.Common.Utils;
+
 // ReSharper disable InconsistentNaming
 
 namespace AdventOfCode._2021.Day19
@@ -17,50 +18,59 @@ namespace AdventOfCode._2021.Day19
             // Z-UP
             // 0 Neg
             ZUp_XPos_YPos_ZPos,
+
             // 1 Neg
             ZUp_XPos_YPos_ZNeg,
             ZUp_XPos_YNeg_ZPos,
             ZUp_XNeg_YPos_ZPos,
+
             // 2 Neg
             ZUp_XPos_YNeg_ZNeg,
             ZUp_XNeg_YPos_ZNeg,
             ZUp_XNeg_YNeg_ZPos,
+
             // 3 Neg
             ZUp_XNeg_YNeg_ZNeg,
-            
+
             // Y-UP
             // 0 Neg
             YUp_XPos_YPos_ZPos,
+
             // 1 Neg
             YUp_XPos_YPos_ZNeg,
             YUp_XPos_YNeg_ZPos,
             YUp_XNeg_YPos_ZPos,
+
             // 2 Neg
             YUp_XPos_YNeg_ZNeg,
             YUp_XNeg_YPos_ZNeg,
             YUp_XNeg_YNeg_ZPos,
+
             // 3 Neg
             YUp_XNeg_YNeg_ZNeg,
-            
+
             // X-UP
             // 0 Neg
             XUp_XPos_YPos_ZPos,
+
             // 1 Neg
             XUp_XPos_YPos_ZNeg,
             XUp_XPos_YNeg_ZPos,
             XUp_XNeg_YPos_ZPos,
+
             // 2 Neg
             XUp_XPos_YNeg_ZNeg,
             XUp_XNeg_YPos_ZNeg,
             XUp_XNeg_YNeg_ZPos,
+
             // 3 Neg
             XUp_XNeg_YNeg_ZNeg,
         }
-        
+
         public class Scanner
         {
             public int Id { get; set; }
-            
+
             // Default Orientation = Zup, XYZ all Pos
             public List<(int, int, int)> Beacons { get; set; }
 
@@ -86,54 +96,107 @@ namespace AdventOfCode._2021.Day19
             {
                 return orientation switch
                 {
-                    Orientation.ZUp_XPos_YPos_ZPos => (original.Item1,      original.Item2,      original.Item3     ),
-                    Orientation.ZUp_XPos_YPos_ZNeg => (original.Item1,      original.Item2,      original.Item3 * -1),
-                    Orientation.ZUp_XPos_YNeg_ZPos => (original.Item1,      original.Item2 * -1, original.Item3     ),
-                    Orientation.ZUp_XNeg_YPos_ZPos => (original.Item1 * -1, original.Item2,      original.Item3     ),
-                    Orientation.ZUp_XPos_YNeg_ZNeg => (original.Item1,      original.Item2 * -1, original.Item3 * -1),
-                    Orientation.ZUp_XNeg_YPos_ZNeg => (original.Item1 * -1, original.Item2,      original.Item3 * -1),
-                    Orientation.ZUp_XNeg_YNeg_ZPos => (original.Item1 * -1, original.Item2 * -1, original.Item3     ),
+                    Orientation.ZUp_XPos_YPos_ZPos => (original.Item1, original.Item2, original.Item3),
+                    Orientation.ZUp_XPos_YPos_ZNeg => (original.Item1, original.Item2, original.Item3 * -1),
+                    Orientation.ZUp_XPos_YNeg_ZPos => (original.Item1, original.Item2 * -1, original.Item3),
+                    Orientation.ZUp_XNeg_YPos_ZPos => (original.Item1 * -1, original.Item2, original.Item3),
+                    Orientation.ZUp_XPos_YNeg_ZNeg => (original.Item1, original.Item2 * -1, original.Item3 * -1),
+                    Orientation.ZUp_XNeg_YPos_ZNeg => (original.Item1 * -1, original.Item2, original.Item3 * -1),
+                    Orientation.ZUp_XNeg_YNeg_ZPos => (original.Item1 * -1, original.Item2 * -1, original.Item3),
                     Orientation.ZUp_XNeg_YNeg_ZNeg => (original.Item1 * -1, original.Item2 * -1, original.Item3 * -1),
-                    
-                    Orientation.XUp_XPos_YPos_ZPos => (original.Item3     , original.Item2     , original.Item1      ),
-                    Orientation.XUp_XPos_YPos_ZNeg => (original.Item3 * -1, original.Item2     , original.Item1      ),
-                    Orientation.XUp_XPos_YNeg_ZPos => (original.Item3     , original.Item2 * -1, original.Item1      ),
-                    Orientation.XUp_XNeg_YPos_ZPos => (original.Item3     , original.Item2     , original.Item1 * -1 ),
-                    Orientation.XUp_XPos_YNeg_ZNeg => (original.Item3 * -1, original.Item2 * -1, original.Item1      ),
-                    Orientation.XUp_XNeg_YPos_ZNeg => (original.Item3 * -1, original.Item2     , original.Item1 * -1 ),
-                    Orientation.XUp_XNeg_YNeg_ZPos => (original.Item3     , original.Item2 * -1, original.Item1 * -1 ),
-                    Orientation.XUp_XNeg_YNeg_ZNeg => (original.Item3 * -1, original.Item2 * -1, original.Item1 * -1 ),
-                    
-                    Orientation.YUp_XPos_YPos_ZPos => (original.Item1     , original.Item3     , original.Item2     ),
-                    Orientation.YUp_XPos_YPos_ZNeg => (original.Item1     , original.Item3 * -1, original.Item2     ),
-                    Orientation.YUp_XPos_YNeg_ZPos => (original.Item1     , original.Item3     , original.Item2 * -1),
-                    Orientation.YUp_XNeg_YPos_ZPos => (original.Item1 * -1, original.Item3     , original.Item2     ),
-                    Orientation.YUp_XPos_YNeg_ZNeg => (original.Item1     , original.Item3 * -1, original.Item2 * -1),
-                    Orientation.YUp_XNeg_YPos_ZNeg => (original.Item1 * -1, original.Item3 * -1, original.Item2     ),
-                    Orientation.YUp_XNeg_YNeg_ZPos => (original.Item1 * -1, original.Item3     , original.Item2 * -1),
+
+                    Orientation.XUp_XPos_YPos_ZPos => (original.Item3, original.Item2, original.Item1),
+                    Orientation.XUp_XPos_YPos_ZNeg => (original.Item3 * -1, original.Item2, original.Item1),
+                    Orientation.XUp_XPos_YNeg_ZPos => (original.Item3, original.Item2 * -1, original.Item1),
+                    Orientation.XUp_XNeg_YPos_ZPos => (original.Item3, original.Item2, original.Item1 * -1),
+                    Orientation.XUp_XPos_YNeg_ZNeg => (original.Item3 * -1, original.Item2 * -1, original.Item1),
+                    Orientation.XUp_XNeg_YPos_ZNeg => (original.Item3 * -1, original.Item2, original.Item1 * -1),
+                    Orientation.XUp_XNeg_YNeg_ZPos => (original.Item3, original.Item2 * -1, original.Item1 * -1),
+                    Orientation.XUp_XNeg_YNeg_ZNeg => (original.Item3 * -1, original.Item2 * -1, original.Item1 * -1),
+
+                    Orientation.YUp_XPos_YPos_ZPos => (original.Item1, original.Item3, original.Item2),
+                    Orientation.YUp_XPos_YPos_ZNeg => (original.Item1, original.Item3 * -1, original.Item2),
+                    Orientation.YUp_XPos_YNeg_ZPos => (original.Item1, original.Item3, original.Item2 * -1),
+                    Orientation.YUp_XNeg_YPos_ZPos => (original.Item1 * -1, original.Item3, original.Item2),
+                    Orientation.YUp_XPos_YNeg_ZNeg => (original.Item1, original.Item3 * -1, original.Item2 * -1),
+                    Orientation.YUp_XNeg_YPos_ZNeg => (original.Item1 * -1, original.Item3 * -1, original.Item2),
+                    Orientation.YUp_XNeg_YNeg_ZPos => (original.Item1 * -1, original.Item3, original.Item2 * -1),
                     Orientation.YUp_XNeg_YNeg_ZNeg => (original.Item1 * -1, original.Item3 * -1, original.Item2 * -1),
                     _ => throw new ArgumentOutOfRangeException(nameof(orientation), orientation, null)
                 };
             }
-            
+
+            public (int, int, int) NormaliseCoord((int, int, int) original, (int, int, int) newOrigin)
+            {
+                return (
+                    original.Item1 - newOrigin.Item1,
+                    original.Item2 - newOrigin.Item2,
+                    original.Item3 - newOrigin.Item3
+                );
+            }
+
             public List<(int, int, int)> BeaconsInOrientation(Orientation orientation)
             {
                 return BeaconsByOrientation[orientation];
             }
 
-            public int OverlappingBeacons(Orientation orientation, Scanner other)
+
+            public void UpdateAllowedOrientations(Scanner other, int overlapNeeded = 12)
             {
-                return 0;
+                var orientationsToRemove = new HashSet<Orientation>();
+                foreach (var orientation in PossibleOrientations)
+                {
+                    Console.WriteLine($"Checking: {this.Id} vs {other.Id}, with this at {orientation}");
+                    if (!EnoughOverlappingBeacons(orientation, other, overlapNeeded))
+                    {
+                        orientationsToRemove.Add(orientation);
+                    }
+                }
+
+                PossibleOrientations = PossibleOrientations.Except(orientationsToRemove).ToHashSet();
+            }
+            
+            public bool EnoughOverlappingBeacons(Orientation orientation, Scanner other, int overlapNeeded = 12)
+            {
+                var beacons = BeaconsByOrientation[orientation];
+                foreach (var beaconToAlignOn in beacons)
+                {
+                    foreach (var otherBeaconOrientation in other.BeaconsByOrientation)
+                    {
+                        var myNormalised = beacons.Select(b => NormaliseCoord(b, beaconToAlignOn));
+                        var otherBeacons = otherBeaconOrientation.Value;
+                        foreach (var otherBeacon in otherBeacons)
+                        {
+                            var otherNormalised = otherBeacons.Select(b => NormaliseCoord(b, otherBeacon));
+                            var overlap = myNormalised.Count(otherNormalised.Contains);
+                            if (overlap >= overlapNeeded)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+
+                return false;
             }
         }
-        
+
         public static long Part1(bool isExample = false)
         {
             var lines = FileReader.ReadInputLines(Day, isExample).ToList();
 
             var rawDatas = lines.DoubleSplit("");
             var scanners = rawDatas.First().Select(q => new Scanner(q.ToList())).ToList();
-            
+
+            foreach (var scanner in scanners)
+            {
+                foreach (var otherScanner in scanners.Where(s=> s.Id != scanner.Id))
+                {
+                    // This will double count pairs, possible optimisation
+                    scanner.UpdateAllowedOrientations(otherScanner);
+                }
+            }
+
             return -1;
         }
 

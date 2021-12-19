@@ -28,6 +28,7 @@ namespace AdventOfCode._2021.Day19
             answer.Should().BeLessThan(573);
             answer.Should().BeLessThan(432);
             answer.Should().BeLessThan(402);
+            answer.Should().NotBe(351);
             answer.Should().Be(0);
         }
         
