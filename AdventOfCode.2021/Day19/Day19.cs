@@ -365,10 +365,94 @@ namespace AdventOfCode._2021.Day19
             return allBeacons.Distinct().Count();
         }
 
-        public static long Part2(bool isExample = false)
+        public static int Part2(bool isExample = false)
         {
             var lines = FileReader.ReadInputLines(Day, isExample).ToList();
-            return -1;
+
+            var rawDatas = lines.DoubleSplit("");
+            var scanners = rawDatas.First().Select(q => new Scanner(q.ToList())).ToList();
+            
+            var scannerPairs = new List<(Scanner, Scanner)>();
+            foreach (var scanner in scanners)
+            {
+                foreach (var otherScanner in scanners.Where(s=> s.Id != scanner.Id))
+                {
+                    var overlaps = scanner.DoesOverlap(otherScanner);
+                    var emoji = overlaps ? "✔" : "❌";
+                    Console.WriteLine($"{scanner.Id} vs {otherScanner.Id}: {emoji}");
+                    if (overlaps)
+                    {
+                        scannerPairs.Add((scanner, otherScanner));
+                    }
+                }
+            }
+
+            var originScanner = scannerPairs.First().Item1;
+            originScanner.HasOriented = true;
+            var originCoord = originScanner.Beacons.First();
+            foreach (var g in scannerPairs.GroupBy(p => p.Item1))
+            {
+                g.Key.PairedScanners = g.Select(q => q.Item2).ToList();
+            }
+
+            while (scanners.Any(s => !s.HasOriented))
+            {
+                foreach (var scannerPair in scannerPairs)
+                {
+                    var (s1, s2) = scannerPair;
+                    var both = new[] { s1, s2 };
+                    if (s1.HasOriented ^ s2.HasOriented)
+                    {
+                        var origin = both.Single(s => s.HasOriented);
+                        var other = both.Single(s => !s.HasOriented);
+                        other.OrientTo(origin);
+                    }
+                }
+            }
+
+            foreach (var scanner in scanners)
+            {
+                var emoji = scanner.HasOriented ? "✔" : "❌";
+                Console.WriteLine($"{scanner.Id}: {emoji}");
+            }
+
+            originScanner.NormaliseTo(originScanner, originCoord);
+
+            while (scanners.Any(s => !s.HasNormalised))
+            {
+                foreach (var scannerPair in scannerPairs)
+                {
+                    var (s1, s2) = scannerPair;
+                    var both = new[] { s1, s2 };
+                    if (s1.HasNormalised ^ s2.HasNormalised)
+                    {
+                        var origin = both.Single(s => s.HasNormalised);
+                        var other = both.Single(s => !s.HasNormalised);
+                        other.NormaliseTo(origin, originCoord);
+                    }
+                }
+            }
+
+            foreach (var scanner in scanners)
+            {
+                var emoji = scanner.HasNormalised ? "✔" : "❌";
+                Console.WriteLine($"{scanner.Id}: {emoji}");
+                Console.WriteLine(scanner.ScannerPosition);
+            }
+            
+            var allBeacons = scanners.SelectMany(s => s.Beacons);
+
+            var max = 0;
+            foreach (var scanner in scanners)
+            {
+                foreach (var otherScanner in scanners.Except(new [] {scanner}))
+                {
+                    var manhattan = scanners.First().ManhattanDistance(scanner.ScannerPosition, otherScanner.ScannerPosition);
+                    max = Math.Max(max, manhattan);
+                }
+            }
+
+            return max;
         }
     }
 }
