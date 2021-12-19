@@ -76,6 +76,11 @@ namespace AdventOfCode._2021.Day19
 
             public HashSet<Orientation> PossibleOrientations = Enum.GetValues(typeof(Orientation)).Cast<Orientation>().ToHashSet();
 
+            public Dictionary<Orientation, List<(int, int, int)>> BeaconsByOrientation = new Dictionary<Orientation, List<(int, int, int)>>();
+
+            // Manhattan distances from this beacon to all others in scanner  
+            public Dictionary<(int, int, int), List<int>> DistancesPerBeacon = new Dictionary<(int, int, int), List<int>>();
+
             public Scanner(List<string> rawData)
             {
                 Id = int.Parse(rawData.First().Split("scanner ").Last().Split(" -").First());
@@ -83,14 +88,27 @@ namespace AdventOfCode._2021.Day19
                 var ints = beaconLines.Select(line => line.Split(',').Select(int.Parse).ToList()).ToList();
                 Beacons = ints.Select(q => (q[0], q[1], q[2])).ToList();
 
-                BeaconsByOrientation = new Dictionary<Orientation, List<(int, int, int)>>();
-                foreach (var orientation in PossibleOrientations)
+                // foreach (var orientation in PossibleOrientations)
+                // {
+                //     BeaconsByOrientation[orientation] = Beacons.Select(b => TransformCoord(b, orientation)).ToList();
+                // }
+
+                foreach (var beacon in Beacons)
                 {
-                    BeaconsByOrientation[orientation] = Beacons.Select(b => TransformCoord(b, orientation)).ToList();
+                    var beaconDists = new List<int>();
+                    foreach (var otherBeacon in Beacons.Except(new [] {beacon}))
+                    {
+                        beaconDists.Add(ManhattanDistance(beacon, otherBeacon));
+                    }
+
+                    DistancesPerBeacon[beacon] = beaconDists;
                 }
             }
 
-            public Dictionary<Orientation, List<(int, int, int)>> BeaconsByOrientation;
+            public int ManhattanDistance((int, int, int) c1, (int, int, int) c2)
+            {
+                return Math.Abs(c2.Item1 - c1.Item1) + Math.Abs(c2.Item2 - c1.Item2) + Math.Abs(c2.Item3 - c1.Item3);
+            }
 
             public (int, int, int) TransformCoord((int, int, int) original, Orientation orientation)
             {
@@ -141,19 +159,21 @@ namespace AdventOfCode._2021.Day19
             }
 
 
-            public void UpdateAllowedOrientations(Scanner other, int overlapNeeded = 12)
+            public bool DoesOverlap(Scanner other, int overlapNeeded = 12)
             {
-                var orientationsToRemove = new HashSet<Orientation>();
-                foreach (var orientation in PossibleOrientations)
+                foreach (var myBeacon in Beacons)
                 {
-                    Console.WriteLine($"Checking: {this.Id} vs {other.Id}, with this at {orientation}");
-                    if (!EnoughOverlappingBeacons(orientation, other, overlapNeeded))
+                    foreach (var theirBeacon in other.Beacons)
                     {
-                        orientationsToRemove.Add(orientation);
+                        var overlap = DistancesPerBeacon[myBeacon].Intersect(other.DistancesPerBeacon[theirBeacon]).Count();
+                        if (overlap >= overlapNeeded - 1)
+                        {
+                            return true;
+                        }
                     }
                 }
 
-                PossibleOrientations = PossibleOrientations.Except(orientationsToRemove).ToHashSet();
+                return false;
             }
             
             public bool EnoughOverlappingBeacons(Orientation orientation, Scanner other, int overlapNeeded = 12)
@@ -193,7 +213,9 @@ namespace AdventOfCode._2021.Day19
                 foreach (var otherScanner in scanners.Where(s=> s.Id != scanner.Id))
                 {
                     // This will double count pairs, possible optimisation
-                    scanner.UpdateAllowedOrientations(otherScanner);
+                    var overlaps = scanner.DoesOverlap(otherScanner);
+                    var emoji = overlaps ? "✔" : "❌";
+                    Console.WriteLine($"{scanner.Id} vs {otherScanner.Id}: {emoji}");
                 }
             }
 
