@@ -26,7 +26,7 @@ namespace AdventOfCode._2021.Day20
             var answer = Day20.Part1();
             answer.Should().NotBe(-1);
             answer.Should().BeLessThan(5402L);
-            answer.Should().Be(0);
+            answer.Should().Be(5229);
         }
         
         [Test]

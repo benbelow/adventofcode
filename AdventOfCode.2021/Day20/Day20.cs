@@ -14,7 +14,8 @@ namespace AdventOfCode._2021.Day20
         {
             public Dictionary<(long, long), bool> pixels = new Dictionary<(long, long), bool>();
 
-            
+            public bool defaultValue = false;
+            public int leeway = 2;
             public long minX => pixels.Keys.Select(q => q.Item1).Min();
             public long maxX => pixels.Keys.Select(q => q.Item1).Max();
             public long minY => pixels.Keys.Select(q => q.Item2).Min();
@@ -36,7 +37,7 @@ namespace AdventOfCode._2021.Day20
 
             public bool GetAtCoord((long, long) c)
             {
-                return pixels.ContainsKey(c) && pixels[c];
+                return pixels.ContainsKey(c) ? pixels[c] : defaultValue;
             }
 
             public void SetAtCoord((long, long) c, bool val)
@@ -46,7 +47,6 @@ namespace AdventOfCode._2021.Day20
 
             public void ApplyEnhancementAlgorithm(List<bool> source)
             {
-                var leeway = 10;
                 var newGrid = pixels.Clone().ToDictionary(x => x.Key, x => x.Value);
                 var locals = (minX, minY, maxX, maxY);
                 for (var x = locals.minX - leeway; x <= locals.maxX + leeway; x++)
@@ -73,6 +73,8 @@ namespace AdventOfCode._2021.Day20
                 }
 
                 pixels = newGrid;
+                leeway += 2;
+                defaultValue = source[0];
             }
 
             public long CountPixels => pixels.Values.Count(x => x);
