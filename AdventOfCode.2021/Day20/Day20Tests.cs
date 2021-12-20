@@ -34,8 +34,7 @@ namespace AdventOfCode._2021.Day20
         {
             var answer = Day20.Part2();
             answer.Should().NotBe(-2);
-            answer.Should().Be(0);
-            answer.Should().BeLessThan(17009L);
+            answer.Should().Be(17009L);
         }
     }
 }
