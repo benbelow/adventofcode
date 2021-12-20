@@ -73,8 +73,11 @@ namespace AdventOfCode._2021.Day20
                 }
 
                 pixels = newGrid;
-                leeway += 2;
-                defaultValue = source[0];
+                // leeway += 2;
+                if (source[0])
+                {
+                    defaultValue = !defaultValue;
+                };
             }
 
             public long CountPixels => pixels.Values.Count(x => x);
@@ -116,7 +119,20 @@ namespace AdventOfCode._2021.Day20
         public static long Part2(bool isExample = false)
         {
             var lines = FileReader.ReadInputLines(Day, isExample).ToList();
-            return -1;
+            var lookup = lines.First().Select(x => x == '#').ToList();
+
+            var grid = new Grid(lines.Skip(2).ToList());
+
+            var lastOn = grid.CountPixels;
+            for (int i = 0; i < 50; i++)
+            {
+                grid.ApplyEnhancementAlgorithm(lookup);
+                var newOn = grid.CountPixels;
+                Console.WriteLine($"{i}: {newOn} on. Diff: {newOn - lastOn}");
+                lastOn = newOn;
+            }
+
+            return grid.CountPixels;
         }
     }
 }
