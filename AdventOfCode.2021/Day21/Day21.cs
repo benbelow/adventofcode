@@ -18,19 +18,19 @@ namespace AdventOfCode._2021.Day21
                 v++;
             }
         }
-        
+
         public static long Part1(long p1Start, long p2Start)
         {
             // consider 0-9 and add 1 for score to use modulo
 
             var p1Pos = p1Start - 1;
             var p2Pos = p2Start - 1;
-            
+
             var p1Score = 0L;
             var p2Score = 0L;
 
             var rolls = 0L;
-            
+
             using var dieResults = RollD100().GetEnumerator();
 
             var p1Turn = true;
@@ -50,7 +50,7 @@ namespace AdventOfCode._2021.Day21
                     p2Score += p2Pos + 1L;
                 }
             }
-            
+
             while (p1Score < 1000 && p2Score < 1000)
             {
                 dieResults.MoveNext();
@@ -63,19 +63,19 @@ namespace AdventOfCode._2021.Day21
 
                 var sum = roll1 + roll2 + roll3;
                 var remainder = sum % 10;
-                
+
                 BankTurn(remainder);
                 p1Turn = !p1Turn;
             }
-            
+
             return Math.Min(p1Score, p2Score) * rolls;
         }
 
         public static long Part2(long p1Start, long p2Start)
         {
-            // key = (score, pos). val = number of winning options
-            var cache = new Dictionary<(long, long), long>();
-            
+            // key = p1 (score, pos), p2 (score, pos) => number of winning options for p1 
+            var cache = new Dictionary<((long, long), (long, long)), long>();
+
             // possible rolls:
             // 111 = 3
             // 112 / 121 / 211 = 4
@@ -104,39 +104,62 @@ namespace AdventOfCode._2021.Day21
                 score += pos + 1L;
                 return (score, pos);
             }
-            
-            for (long score = 20; score >= 0; score--)
+
+            for (long p1Score = 20; p1Score >= 0; p1Score--)
             {
-                for (long pos = 0; pos < 10; pos++)
+                for (long p2Score = 20; p2Score >= 0; p2Score--)
                 {
-                    cache[(score, pos)] = 0;
-                    foreach (var rollPair in distribution)
+                    for (long p1Pos = 0; p1Pos < 10; p1Pos++)
                     {
-                        var roll = rollPair.Key;
-                        var times = rollPair.Value;
-                        
-                        // not sure about this base case!
-                        if (score >= 21)
+                        for (long p2Pos = 0; p2Pos < 10; p2Pos++)
                         {
-                            cache[(score, pos)] += times;
-                        }
-                        else
-                        {
-                            var (nextScore, nextPos) = Turn(score, pos, roll);
-                            if (nextScore >= 21)
+                            var p1 = (p1Score, p1Pos);
+                            var p2 = (p2Score, p2Pos);
+                            cache[(p1, p2)] = 0;
+                            foreach (var p1RollKvp in distribution)
                             {
-                                cache[(score, pos)] += times;
-                            }
-                            else
-                            {
-                                cache[(score, pos)] += cache[(nextScore, nextPos)] * times;
+                                foreach (var p2RollKvp in distribution)
+                                {
+                                    var roll1 = p1RollKvp.Key;
+                                    var times1 = p1RollKvp.Value;
+
+                                    var roll2 = p2RollKvp.Key;
+                                    var times2 = p2RollKvp.Value;
+
+                                    var totalTimes = times1 * times2;
+                                    
+                                    var (nextScore1, nextPos1) = Turn(p1Score, p1Pos, roll1);
+                                    if (nextScore1 >= 21)
+                                    {
+                                        // if p1 wins this roll, p2 never splits the universe again
+                                        cache[(p1, p2)] += times1;
+                                    }
+                                    else
+                                    {
+                                        var (nextScore2, nextPos2) = Turn(p2Score, p2Pos, roll2);
+                                        if (nextScore2 < 21)
+                                        {
+                                            cache[(p1, p2)] += cache[((nextScore1, nextPos1), (nextScore2, nextPos2))] * totalTimes;
+                                        }
+                                        else
+                                        {
+                                            // p2 has won, do not give p1 any more wins in this timeline.
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-            
-            return Math.Max(cache[(0, p1Start - 1L)], cache[(0, p2Start - 1L)]);
+
+            var total = 444356092776315 + 341960390180808;
+            Console.WriteLine($"Expected total: {total/1000000000}B");
+
+            var p1Final = cache[((0, p1Start - 1), (0, p2Start - 1))];
+            var p2Final = cache[((0, p2Start - 1), (0, p1Start - 1))];
+            Console.WriteLine($"My total: {(p1Final + p2Final)/1000000000}B");
+            return Math.Max(p1Final, p2Final);
         }
     }
 }
