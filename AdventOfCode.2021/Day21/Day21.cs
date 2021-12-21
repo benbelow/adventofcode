@@ -71,10 +71,72 @@ namespace AdventOfCode._2021.Day21
             return Math.Min(p1Score, p2Score) * rolls;
         }
 
-        public static long Part2(bool isExample = false)
+        public static long Part2(long p1Start, long p2Start)
         {
-            var lines = FileReader.ReadInputLines(Day, isExample).ToList();
-            return -1;
+            // key = (score, pos). val = number of winning options
+            var cache = new Dictionary<(long, long), long>();
+            
+            // possible rolls:
+            // 111 = 3
+            // 112 / 121 / 211 = 4
+            // 122 / 212 / 221 / 113 / 131 / 311= 5
+            // 222 / 123 / 132 / 321 / 312 / 213 / 231 = 6
+            // 133 / 313 / 331 / 223 / 232 / 322 = 7
+            // 332 / 323 / 233 = 8
+            // 333 = 9
+
+            var distribution = new Dictionary<long, long>
+            {
+                { 3, 1 },
+                { 4, 3 },
+                { 5, 6 },
+                { 6, 7 },
+                { 7, 6 },
+                { 8, 3 },
+                { 9, 1 },
+            };
+
+            // returns (score, pos)
+            (long, long) Turn(long score, long pos, long roll)
+            {
+                pos += roll;
+                pos %= 10;
+                score += pos + 1L;
+                return (score, pos);
+            }
+            
+            for (long score = 20; score >= 0; score--)
+            {
+                for (long pos = 0; pos < 10; pos++)
+                {
+                    cache[(score, pos)] = 0;
+                    foreach (var rollPair in distribution)
+                    {
+                        var roll = rollPair.Key;
+                        var times = rollPair.Value;
+                        
+                        // not sure about this base case!
+                        if (score >= 21)
+                        {
+                            cache[(score, pos)] += times;
+                        }
+                        else
+                        {
+                            var (nextScore, nextPos) = Turn(score, pos, roll);
+                            if (nextScore >= 21)
+                            {
+                                cache[(score, pos)] += times;
+                            }
+                            else
+                            {
+                                cache[(score, pos)] += cache[(nextScore, nextPos)] * times;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            return Math.Max(cache[(0, p1Start - 1L)], cache[(0, p2Start - 1L)]);
         }
     }
 }
