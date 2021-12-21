@@ -118,33 +118,32 @@ namespace AdventOfCode._2021.Day21
                             cache[(p1, p2)] = 0;
                             foreach (var p1RollKvp in distribution)
                             {
+                                var roll1 = p1RollKvp.Key;
+                                var times1 = p1RollKvp.Value;
+                                var (nextScore1, nextPos1) = Turn(p1Score, p1Pos, roll1);
+                                if (nextScore1 >= 21)
+                                {
+                                    // if p1 wins this roll, p2 never splits the universe again
+                                    cache[(p1, p2)] += times1;
+                                    continue;
+                                }
+
+                                // if p2 rolls the dice...
                                 foreach (var p2RollKvp in distribution)
                                 {
-                                    var roll1 = p1RollKvp.Key;
-                                    var times1 = p1RollKvp.Value;
-
                                     var roll2 = p2RollKvp.Key;
                                     var times2 = p2RollKvp.Value;
 
                                     var totalTimes = times1 * times2;
-                                    
-                                    var (nextScore1, nextPos1) = Turn(p1Score, p1Pos, roll1);
-                                    if (nextScore1 >= 21)
+
+                                    var (nextScore2, nextPos2) = Turn(p2Score, p2Pos, roll2);
+                                    if (nextScore2 < 21)
                                     {
-                                        // if p1 wins this roll, p2 never splits the universe again
-                                        cache[(p1, p2)] += times1;
+                                        cache[(p1, p2)] += cache[((nextScore1, nextPos1), (nextScore2, nextPos2))] * totalTimes;
                                     }
                                     else
                                     {
-                                        var (nextScore2, nextPos2) = Turn(p2Score, p2Pos, roll2);
-                                        if (nextScore2 < 21)
-                                        {
-                                            cache[(p1, p2)] += cache[((nextScore1, nextPos1), (nextScore2, nextPos2))] * totalTimes;
-                                        }
-                                        else
-                                        {
-                                            // p2 has won, do not give p1 any more wins in this timeline.
-                                        }
+                                        // p2 has won, do not give p1 any more wins in this timeline.
                                     }
                                 }
                             }
@@ -154,11 +153,11 @@ namespace AdventOfCode._2021.Day21
             }
 
             var total = 444356092776315 + 341960390180808;
-            Console.WriteLine($"Expected total: {total/1000000000}B");
+            Console.WriteLine($"Expected total: {total / 1000000000}B");
 
             var p1Final = cache[((0, p1Start - 1), (0, p2Start - 1))];
-            var p2Final = cache[((0, p2Start - 1), (0, p1Start - 1))];
-            Console.WriteLine($"My total: {(p1Final + p2Final)/1000000000}B");
+            var p2Final = total - p1Final;
+            Console.WriteLine($"My total: {(p1Final + p2Final) / 1000000000}B");
             return Math.Max(p1Final, p2Final);
         }
     }
