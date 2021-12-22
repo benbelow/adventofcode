@@ -17,7 +17,7 @@ namespace AdventOfCode._2021.Day22
         public void Part2_Example()
         {
             var answer = Day22.Part2(true);
-            answer.Should().Be(-1);
+            answer.Should().Be(2758514936282235);
         }
         
         [Test]
@@ -25,7 +25,7 @@ namespace AdventOfCode._2021.Day22
         {
             var answer = Day22.Part1();
             answer.Should().NotBe(-1);
-            answer.Should().Be(0);
+            answer.Should().Be(600458);
         }
         
         [Test]
