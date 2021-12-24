@@ -1,7 +1,7 @@
 var fs = require('fs');
 
 const year = 2021;
-const rawDay = 24;
+const rawDay = 25;
 const day = rawDay < 10 ? `0${rawDay}` : rawDay; 
 
 function replaceInFile(fileName, findReplacePairs) {

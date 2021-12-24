@@ -9,13 +9,23 @@ namespace AdventOfCode._2021.Day24
     {
         private const int Day = 24;
 
+        public static List<string> ops;
+
+
+        public static (long, long, long, long) Check(string inp)
+        {
+            return isValidInner(inp, ops);
+        } 
+        
         public static long Part1(bool isExample = false)
         {
             var lines = FileReader.ReadInputLines(Day, isExample).ToList();
-
-            // return long.Parse(getTarget(0, lines));
+            ops = lines;
             
-            for (long i = 66666666666666; i <= 77777777777777; i+= 100000000000)
+            // return long.Parse(getTarget(0, lines));
+
+            
+            for (long i = 66666666666666; i <= 77777777777777; i+= 1)
             {
                 var inputs = i.ToString();
                 if (inputs.Contains("0"))
@@ -40,6 +50,11 @@ namespace AdventOfCode._2021.Day24
 
 
         public static bool isValid(string modelNumber, List<string> operations)
+        {
+            return isValidInner(modelNumber, operations).Item4 == 0;
+        }
+        
+        public static (long, long, long, long) isValidInner(string modelNumber, List<string> operations)
         {
             var inputs = modelNumber;
             var inputIndex = 0;
@@ -102,7 +117,7 @@ namespace AdventOfCode._2021.Day24
                 Console.WriteLine($"{variable.Key}: {variable.Value}");
             }
 
-            return variables["z"] == 0;
+            return (variables["w"], variables["x"], variables["y"], variables["z"]);
         }
 
         public static string getTarget(int target, List<string> operations)
