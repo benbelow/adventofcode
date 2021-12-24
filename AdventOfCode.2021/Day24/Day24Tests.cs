@@ -23,8 +23,9 @@ namespace AdventOfCode._2021.Day24
         [Test]
         public void Part1()
         {
-            Day24.IsValidForInput("13579246899999").Should().Be(true);
+            // Day24.IsValidForInput("13579246899999").Should().Be(true);
             
+            // 55555555555555 too low 
             var answer = Day24.Part1();
             answer.Should().NotBe(-1);
             answer.Should().Be(0);

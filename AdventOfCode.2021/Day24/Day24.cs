@@ -8,14 +8,16 @@ namespace AdventOfCode._2021.Day24
     public static class Day24
     {
         private const int Day = 24;
-        
+
         public static long Part1(bool isExample = false)
         {
             var lines = FileReader.ReadInputLines(Day, isExample).ToList();
 
-            for (long i = 9999999; i >= 999999; i--)
+            // return long.Parse(getTarget(0, lines));
+            
+            for (long i = 66666666666666; i <= 77777777777777; i+= 100000000000)
             {
-                var inputs = i.ToString() + "9999999";
+                var inputs = i.ToString();
                 if (inputs.Contains("0"))
                 {
                     continue;
@@ -30,15 +32,13 @@ namespace AdventOfCode._2021.Day24
                 }
                 catch (Exception e)
                 {
-                    
                 }
             }
 
             return -1;
         }
 
-        
-        
+
         public static bool isValid(string modelNumber, List<string> operations)
         {
             var inputs = modelNumber;
@@ -57,9 +57,10 @@ namespace AdventOfCode._2021.Day24
                 {
                     return longX;
                 }
+
                 return variables.ContainsKey(x) ? variables[x] : 0;
             }
-            
+
             foreach (var line in operations)
             {
                 var op = line.Split(" ").First();
@@ -89,7 +90,92 @@ namespace AdventOfCode._2021.Day24
                             SetX(a, GetX(a) % GetX(b));
                             break;
                         case "eql":
-                            SetX(a, GetX(a) == GetX(b)  ? 1 : 0);
+                            SetX(a, GetX(a) == GetX(b) ? 1 : 0);
+                            break;
+                    }
+                }
+            }
+
+            Console.WriteLine(modelNumber);
+            foreach (var variable in variables)
+            {
+                Console.WriteLine($"{variable.Key}: {variable.Value}");
+            }
+
+            return variables["z"] == 0;
+        }
+
+        public static string getTarget(int target, List<string> operations)
+        {
+            var inputIndex = 0;
+
+            var variables = new Dictionary<string, long>();
+
+            
+
+            var targetString = "";
+
+            var buildTargetString = new List<string>();
+
+            Dictionary<string, string> funcs = new Dictionary<string, string>
+            {
+                {"w", "0"},
+                {"x", "0"},
+                {"y", "0"},
+                {"z", "0"},
+            };
+
+            void SetFunc(string t, string newFunc)
+            {
+                if (!newFunc.Contains("IN"))
+                {
+                    newFunc = Eval(newFunc);
+                }
+                
+                funcs[t] = newFunc;
+            }
+            
+            string GetFunc(string s)
+            {
+                if (int.TryParse(s, out var ints))
+                {
+                    return s;
+                }
+
+                return funcs[s];
+            }
+            
+            foreach (var line in operations)
+            {
+                var op = line.Split(" ").First();
+                if (op == "inp")
+                {
+                    var t = line.Split(" ").Last();
+                    funcs[t] = funcs[t] + "IN" + inputIndex;
+                    inputIndex++;
+                }
+
+                else
+                {
+                    var a = line.Split(" ")[1];
+                    var b = line.Split(" ")[2];
+
+                    switch (op)
+                    {
+                        case "add":
+                            SetFunc(a, GetFunc(a) + " + " + GetFunc(b));
+                            break;
+                        case "mul":
+                            SetFunc(a, GetFunc(a) + " * " + GetFunc(b));
+                            break;
+                        case "div":
+                            SetFunc(a, GetFunc(a) + " / " + GetFunc(b));
+                            break;
+                        case "mod":
+                            SetFunc(a, GetFunc(a) + " % " + GetFunc(b));
+                            break;
+                        case "eql":
+                            SetFunc(a, GetFunc(a) + " == " + GetFunc(b));
                             break;
                     }
                 }
@@ -99,9 +185,16 @@ namespace AdventOfCode._2021.Day24
             {
                 // Console.WriteLine($"{variable.Key}: {variable.Value}");
             }
-            return variables["z"] == 0;
+
+            return "";
         }
-        
+
+        private static string Eval(string newFunc)
+        {
+            System.Data.DataTable table = new System.Data.DataTable();
+            return Convert.ToDouble(table.Compute(newFunc, String.Empty)).ToString();
+        }
+
         public static long Part2(bool isExample = false)
         {
             var lines = FileReader.ReadInputLines(Day, isExample).ToList();
