@@ -12,14 +12,7 @@ namespace AdventOfCode._2021.Day25
             var answer = Day25.Part1(true);
             answer.Should().Be(58);
         }
-        
-        [Test]
-        public void Part2_Example()
-        {
-            var answer = Day25.Part2(true);
-            answer.Should().Be(-1);
-        }
-        
+
         [Test]
         public void Part1()
         {
