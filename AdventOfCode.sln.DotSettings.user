@@ -1,16 +1,10 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=55090645_002Dddff_002D4456_002Db10d_002Dd581481b3f9d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Or&gt;&#xD;
-    &lt;And&gt;&#xD;
-      &lt;Project Location="C:\Work\adventofcode\AdventOfCode.2021" Presentation="&amp;lt;AdventOfCode.2021&amp;gt;" /&gt;&#xD;
-      &lt;Namespace&gt;AdventOfCode._2021.Day22&lt;/Namespace&gt;&#xD;
-    &lt;/And&gt;&#xD;
-    &lt;TestAncestor&gt;&#xD;
-      &lt;TestId&gt;NUnit3x::DC497D96-BE51-4825-94FF-E2A4305E0E93::net6.0::AdventOfCode._2021.Day23.Day23Tests&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;NUnit3x::DC497D96-BE51-4825-94FF-E2A4305E0E93::net6.0::AdventOfCode._2021.Day24.Day24Tests&lt;/TestId&gt;&#xD;
-    &lt;/TestAncestor&gt;&#xD;
-  &lt;/Or&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d5564a23_002D6286_002D4792_002Dac45_002D2810ab4210bd/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Day25Tests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::DC497D96-BE51-4825-94FF-E2A4305E0E93::net6.0::AdventOfCode._2021.Day25.Day25Tests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	
 	
 	
 	
