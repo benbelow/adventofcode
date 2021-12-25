@@ -51,7 +51,7 @@ namespace AdventOfCode._2021.Day25
             
             Cucumber GetCucAt((int, int) coord)
             {
-                return cucs.SingleOrDefault(c => c.Coord == coord);
+                return dict.ContainsKey(coord) ? dict[coord] : null;
             }
 
             for (int y = 0; y < lines.Count; y++)
@@ -65,6 +65,7 @@ namespace AdventOfCode._2021.Day25
                     }
                 }
             }
+            CalculateDict();
 
             (int, int) Next(bool isRight, (int, int) coord)
             {
@@ -153,10 +154,5 @@ namespace AdventOfCode._2021.Day25
             return tick;
         }
 
-        public static long Part2(bool isExample = false)
-        {
-            var lines = FileReader.ReadInputLines(Day, isExample).ToList();
-            return -1;
-        }
     }
 }
