@@ -1,7 +1,6 @@
 import os
 
 def day1_part1(filename):
-    print(os.getcwd())
     file = open(f'{filename}.txt', 'r')
     lines = file.readlines()
 
