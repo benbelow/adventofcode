@@ -16,8 +16,6 @@ def dayX_part1(filename):
                (r[2] >= r[0] and r[2] <= r[1] and r[3] >= r[0] and r[3] <= r[1])
                or r[0] >= r[2] and r[0] <= r[3] and r[1] >= r[2] and r[1] <= r[3]]
 
-    print(targets)
-
     return len(targets)
 
 
@@ -38,8 +36,6 @@ def dayX_part2(filename):
                or (r[0] >= r[2] and r[0] <= r[3])
                or (r[1] >= r[2] and r[1] <= r[3])
                ]
-
-    print(targets)
 
     return len(targets)
 
